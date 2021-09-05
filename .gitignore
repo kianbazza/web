@@ -1,2 +1,7 @@
+## Jekyll
 .sass-cache/
 _site/
+
+## Firebase
+.firebaserc
+.firebase/
