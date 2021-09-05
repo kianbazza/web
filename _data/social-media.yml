@@ -1,0 +1,23 @@
+email:
+  id: 'bazarjani.kian@gmail.com'
+  href: 'mailto:'
+  title: 'Email'
+  fa-icon: 'fa-paper-plane'
+
+github:
+  id: 'BazzaDEV'
+  href: 'https://github.com/'
+  title: 'GitHub'
+  fa-icon: 'fa-github'
+
+linkedin:
+  id: 'kianbazza'
+  href: 'https://www.linkedin.com/in/'
+  title: 'LinkedIn'
+  fa-icon: 'fa-linkedin'
+
+twitter:
+  id: 'BazzaDEV'
+  href: 'https://www.twitter.com/'
+  title: 'Twitter'
+  fa-icon: 'fa-twitter'

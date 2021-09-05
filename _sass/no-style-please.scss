@@ -1,0 +1,153 @@
+// -------------- THEME SWITCHER -------------- //
+@mixin dark-appearance {
+  filter: invert(1);
+  img {
+    filter: invert(1);
+
+    &.ioda { filter: invert(0); }
+  }
+}
+
+body[a="dark"] { @include dark-appearance; }
+
+
+@media (prefers-color-scheme: dark) {
+  body[a="auto"] { @include dark-appearance; }
+}
+// -------------------------------------------- //
+
+// bg color is also needed in html in order to
+// block body's background propagation
+// see: https://stackoverflow.com/a/61265706
+html, body { background: white; }
+
+html { height: 100%; }
+
+body {
+  color: black;
+  font-family: monospace;
+  font-size: 16px;
+  line-height: 1.2;
+  margin: 0;
+  min-height: 100%;
+  overflow-wrap: break-word;
+}
+
+.post-meta { text-align: right; }
+
+h1 {
+  line-height: 0.7em;
+}
+
+h2, h3, h4, h5, h6 { margin-top: 0.7em; }
+
+hr { margin: 0.7rem 0; }
+
+p { margin: 0.7rem 0; }
+
+.ntm {
+  margin-top: 0px;
+}
+
+.nbm {
+  margin-bottom: 0px;
+}
+
+li { margin: 0.7rem 0; }
+
+*:target { background: yellow; }
+
+.w {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+hr {
+  text-align: center;
+  border: 0;
+
+  &:before { content: '/////' }
+  &:after { content: attr(data-content) '/////' }
+}
+
+table { width: 100%; }
+
+table, th, td {
+  border: thin solid black;
+  border-collapse: collapse;
+  padding: 0.4rem;
+}
+
+code {
+  color: white;
+  background: black;
+}
+
+div.highlighter-rouge code {
+  display: block;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  padding: 1rem;
+}
+
+blockquote {
+  font-style: italic;
+  border: thin solid black;
+  padding: 1rem;
+
+  p { margin: 0; }
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.greyfacolour {
+  color: gray
+}
+
+small-margin {
+  line-height: 0.4rem 0;
+}
+
+social-icons {
+  margin: 0.7rem 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.main {
+  padding-top: 2.2em;
+  padding-bottom: 2em;
+}
+
+/* Create two unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding-bottom: 1em;
+}
+
+.column-bottom {
+  float: left;
+  padding-bottom: 0em;
+}
+
+.left {
+  width: 20%;
+}
+
+.right {
+  width: 80%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
