@@ -5,3 +5,6 @@ _site/
 ## Firebase
 .firebaserc
 .firebase/
+
+## Other
+**/.DS_Store
