@@ -34,7 +34,8 @@ layout: default
         <div class="column-bottom right">
             <a href="https://github.com/BazzaDEV/DeltaCore">DeltaCore</a> &nbsp;
             <a href="https://github.com/BazzaDEV/SimpleMenus">Simple Menus</a> &nbsp;
-            <a href="https://github.com/BazzaDEV/OptimalEnchantTool">OET</a>
+            <a href="https://github.com/BazzaDEV/OptimalEnchantTool">OET</a> &nbsp;
+            <a href="https://bazza.dev/bank">Solution Bank</a>
         </div>
     </div>
 </div>
