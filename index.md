@@ -2,11 +2,11 @@
 layout: default
 ---
 
-# Kian Bazarjani
-#### `CS Undergrad Student // uOttawa`
-
-<div>
-{% include social-media-links.html %}
+<div class="header">
+    <h1>Kian Bazarjani</h1>
+    <h4><code>SWE Intern // Department of National Defence</code></h4>
+    <h4><code>CS Undergrad Student // uOttawa</code></h4>
+    <div class="social"> {% include social-media-links.html %}</div>
 </div>
 
 <div class="main">
