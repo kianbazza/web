@@ -21,21 +21,22 @@ layout: default
     </div>
     <div class="row">
         <div class="column left">
-            <b>Resume</b>
-        </div>
-        <div class="column right">
-            <a href="https://go.bazza.dev/resume">go.bazza.dev/resume</a>
-        </div>
-        </div>
-    <div class="row">
-        <div class="column-bottom left">
             <b>Projects</b>
         </div>
-        <div class="column-bottom right">
+        <div class="column right">
             <a href="https://github.com/BazzaDEV/DeltaCore">DeltaCore</a> &nbsp;
             <a href="https://github.com/BazzaDEV/SimpleMenus">Simple Menus</a> &nbsp;
-            <a href="https://github.com/BazzaDEV/OptimalEnchantTool">OET</a> &nbsp;
-            <a href="https://bazza.dev/bank">Solution Bank</a>
+            <a href="https://github.com/BazzaDEV/OptimalEnchantTool">OET</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column-bottom left">
+            <b>More</b>
+        </div>
+        <div class="column-bottom right">
+            <a href="https://go.bazza.dev/resume">Resume</a> &nbsp;
+            <a href="https://notion.bazza.dev/classes">Course Work</a> &nbsp;
+            <a href="https://notion.bazza.dev/leetcode">Leetcode</a>
         </div>
     </div>
 </div>
