@@ -1,5 +1,4 @@
 import Icons from "@/components/Icons"
-import IconsLayout from "@/components/Icons"
 
 export default function Home() {
   return (
@@ -12,12 +11,6 @@ export default function Home() {
       </div>
 
       <Icons />
-
-      {/* <div className="flex justify-around mb-10">
-        <span>Web Developer.</span>
-        <span>Systems Architect.</span>
-        <span>Cloud Solutions Analyst.</span>
-      </div> */}
 
       <div className="flex flex-col gap-8">
         <div>
