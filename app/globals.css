@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: var(--font-inter);
+}
+
+p {
+  text-align: justify;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-jetbrains-mono);
+    @apply text-transparent bg-clip-text bg-gradient-to-b from-slate-950 to-slate-900;
+  }
+
+  h1 {
+    padding-bottom: 0.05em;
+    margin-bottom: -0.05em;
+  }
+}
