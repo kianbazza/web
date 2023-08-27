@@ -20,12 +20,24 @@ export default function RootLayout({
         className={cn(
           jetbrains_mono.variable,
           inter.variable,
-          "min-h-screen max-w-3xl m-auto flex flex-col gap-10 mx-10 min-[900px]:mx-auto my-5",
-          "bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-rose-100 to-slate-100"
+          "min-h-screen max-w-3xl flex flex-col gap-10 mx-10 min-[900px]:mx-auto py-5",
+          "bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-rose-100 to-white"
         )}
       >
         <NavigationBar />
-        {children}
+        <div className="flex-1">{children}</div>
+        <footer
+          className={cn(
+            jetbrains_mono.className,
+            "text-slate-500 tracking-tight font-light text-sm sm:text-base"
+          )}
+        >
+          Copyright © 2023 by Kian Bazarjani.
+          <span className="hidden sm:inline-block sm:whitespace-pre">
+            {" "}
+            All rights reserved.
+          </span>
+        </footer>
       </body>
     </html>
   )
