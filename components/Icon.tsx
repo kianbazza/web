@@ -15,9 +15,9 @@ export default function Icon({ icon, text, hoverText, link }: Props) {
 
   return (
     <Button
+      className="flex-1 flex"
       asChild
       variant="ghost"
-      className="flex-1 flex"
       onMouseEnter={() => cycleOpen()}
       onMouseLeave={() => cycleOpen()}
     >
@@ -30,7 +30,7 @@ export default function Icon({ icon, text, hoverText, link }: Props) {
           <AnimatePresence>
             {open && (
               <motion.span
-                className="whitespace-nowrap"
+                className="whitespace-nowrap text-sm sm:text-base"
                 initial={{ width: 0, opacity: 0 }}
                 animate={{ width: "auto", opacity: 1 }}
                 transition={{ duration: 0.2 }}

@@ -1,11 +1,14 @@
 import Icons from "@/components/Icons"
+import WavingHand from "@/components/WavingHand"
 
 export default function Home() {
   return (
-    <main className="min-h-screen max-w-3xl flex flex-col mx-10 min-[900px]:mx-auto my-10 gap-10">
+    <main className="flex flex-col gap-10">
       <div className="flex flex-col gap-2">
-        <span>Hi, my name is</span>
-        <h1 className="text-6xl font-black tracking-tighter">
+        <span className="text-md sm:text-xl">
+          Hi <WavingHand />, my name is
+        </span>
+        <h1 className="text-4xl sm:text-6xl font-black tracking-tighter">
           Kian Bazarjani.
         </h1>
       </div>
@@ -14,10 +17,10 @@ export default function Home() {
 
       <div className="flex flex-col gap-8">
         <div>
-          <h1 className="text-4xl font-black tracking-tighter mb-5">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tighter mb-5">
             About Me
           </h1>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 text-sm sm:text-base">
             <p>Hello, I'm Kian.</p>
             <p>
               I come from a diverse background that has greatly influenced who I
@@ -36,7 +39,7 @@ export default function Home() {
         </div>
 
         <div>
-          <h1 className="text-4xl font-black tracking-tighter mb-3">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tighter mb-3">
             Projects
           </h1>
           <div></div>

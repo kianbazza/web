@@ -1,14 +1,8 @@
 import { cn } from "@/lib/utils"
 import "./globals.css"
 import type { Metadata } from "next"
-import { Inter, JetBrains_Mono } from "next/font/google"
 import NavigationBar from "@/components/NavigationBar"
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const jetbrains_mono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
-})
+import { jetbrains_mono, inter } from "./fonts"
 
 export const metadata: Metadata = {
   title: "Kian Bazarjani",
@@ -22,7 +16,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn(jetbrains_mono.variable, inter.variable)}>
+      <body
+        className={cn(
+          jetbrains_mono.variable,
+          inter.variable,
+          "min-h-screen max-w-3xl m-auto flex flex-col gap-10 mx-10 min-[900px]:mx-auto my-5",
+          "bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-rose-100 to-slate-100"
+        )}
+      >
         <NavigationBar />
         {children}
       </body>
