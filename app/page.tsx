@@ -3,7 +3,7 @@ import WavingHand from "@/components/WavingHand"
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-10">
+    <main className="flex-1 flex flex-col gap-10">
       <div className="flex flex-col gap-2">
         <span className="text-md sm:text-xl">
           Hi <WavingHand />, my name is
@@ -38,12 +38,12 @@ export default function Home() {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tighter mb-3">
             Projects
           </h1>
           <div></div>
-        </div>
+        </div> */}
       </div>
     </main>
   )
