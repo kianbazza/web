@@ -35,7 +35,7 @@ export default function NavigationBar() {
   return (
     <div className="flex items-center">
       <motion.div
-        className="mr-10"
+        className="mr-5 sm:mr-10 shrink-0"
         layout="position"
         whileHover={{
           rotate: [null, -30, 30, -30, 0],
