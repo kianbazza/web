@@ -11,6 +11,10 @@ p {
 }
 
 @layer base {
+  :root {
+    @apply text-base sm:text-lg;
+  }
+
   h1,
   h2,
   h3,

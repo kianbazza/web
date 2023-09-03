@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils"
-import "./globals.css"
+import "@/app/globals.css"
 import type { Metadata } from "next"
 import NavigationBar from "@/components/NavigationBar"
-import { jetbrains_mono, inter } from "./fonts"
+import { jetbrains_mono, inter } from "@/app/fonts"
 
 export const metadata: Metadata = {
   title: "Kian Bazarjani",
