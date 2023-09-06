@@ -8,6 +8,12 @@ import { Badge } from "@/components/ui/badge"
 import A from "@/components/A"
 import Image from "next/image"
 import microsoftLogo from "@/public/Microsoft_logo.svg.png"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 const roles = [
   "web developer",
@@ -113,10 +119,7 @@ export default function TldrPage() {
           </div>
           <div className="flex flex-col gap-1">
             <div className="inline-flex items-center gap-2 text-sky-700">
-              <A
-                className="underline inline-flex items-center gap-2"
-                href="https://github.com/bazzadev/PAMPortal"
-              >
+              <A className="underline inline-flex items-center gap-1">
                 {/* <svg
                   // role="img"
                   className="h-4 w-4 fill-sky-700"
@@ -135,12 +138,32 @@ export default function TldrPage() {
                 />
                 PAM Portal for MIM
               </A>
-              <Badge
-                className="font-medium bg-sky-700/20 text-sky-950 hover:bg-sky-700/10"
-                variant="secondary"
-              >
-                Upcoming
-              </Badge>
+              <div className="inline-flex gap-1 items-center">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Badge
+                        className="font-medium"
+                        // variant="secondary"
+                      >
+                        Private
+                      </Badge>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-xs">
+                        The source code for this project will not be released.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+
+                <Badge
+                  className="font-medium bg-sky-700/20 text-sky-950 hover:bg-sky-700/10"
+                  variant="secondary"
+                >
+                  Upcoming
+                </Badge>
+              </div>
             </div>
             <p className="text-sky-700/50">
               Beautiful user interface for{" "}
@@ -269,11 +292,7 @@ export default function TldrPage() {
               </div>
             </div>
           </div>
-          <div className="relative pl-8 sm:pl-32 py-6 group">
-            {/* <div className="font-medium text-2xl text-indigo-500 mb-1 sm:mb-0">
-              The origin
-            </div> */}
-
+          {/* <div className="relative pl-8 sm:pl-32 py-6 group">
             <div className="flex flex-col sm:flex-row items-start mb-1 group-last:before:hidden before:absolute before:left-2 sm:before:left-0 before:h-full before:px-px before:bg-slate-300 sm:before:ml-[6.5rem] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 sm:after:left-0 after:w-2 after:h-2 after:bg-indigo-600 after:border-4 after:box-content after:border-slate-50 after:rounded-full sm:after:ml-[6.5rem] after:-translate-x-1/2 after:translate-y-1.5">
               <Badge
                 variant="secondary"
@@ -287,7 +306,7 @@ export default function TldrPage() {
             </div>
 
             <div className="text-xs text-slate-500 flex flex-col gap-1"></div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
