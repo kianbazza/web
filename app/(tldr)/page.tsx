@@ -109,9 +109,7 @@ export default function TldrPage() {
                 Upcoming
               </Badge>
             </div>
-            <p className="text-sky-700/50">
-              File upload + sharing, with zero bulk and 100% ease.
-            </p>
+            <p className="text-sky-700/50">File sharing with zero hassle.</p>
           </div>
           <div className="flex flex-col gap-1">
             <div className="inline-flex items-center gap-2 text-sky-700">
@@ -135,7 +133,7 @@ export default function TldrPage() {
                   // objectFit="cover" // change to suit your needs
                   className="h-4 w-auto" // just an example
                 />
-                Privileged Access Management Portal
+                PAM Portal for MIM
               </A>
               <Badge
                 className="font-medium bg-sky-700/20 text-sky-950 hover:bg-sky-700/10"
@@ -152,7 +150,7 @@ export default function TldrPage() {
               >
                 Microsoft Identity Manager
               </A>
-              's PAM solution.
+              's Privileged Access Management solution.
             </p>
           </div>
           <div>
