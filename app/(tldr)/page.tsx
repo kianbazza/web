@@ -255,7 +255,7 @@ export default function TldrPage() {
 
             <div className="text-xs text-slate-500 flex flex-col gap-1">
               <p>
-                Afer taking a few months to myself after finishing school, I
+                After taking a few months to myself after finishing school, I
                 jumped into work with my previous team from DND.
               </p>
               <p>We get to wear many hats in my position:</p>
