@@ -8,20 +8,20 @@
 
 .shared {
   text-align: left;
-  /* max-width: 500px; */
+  max-width: 27rem;
   word-wrap: break-word;
   /* margin-bottom: 12px; */
   /* line-height: 24px; */
   position: relative;
-  padding: 10px 20px;
-  border-radius: 25px;
+  padding: 0.6rem 1.1rem;
+  border-radius: 1.4rem;
 
   &:before,
   &:after {
     content: "";
     position: absolute;
     bottom: 0;
-    height: 25px;
+    height: 1.4rem;
   }
 }
 
@@ -29,20 +29,20 @@
   color: var(--send-color);
   background: var(--send-bg);
   align-self: flex-end;
-  margin-left: 40px;
+  margin-left: 2.2rem;
 
   &:before {
-    right: -7px;
-    width: 20px;
+    right: -0.4rem;
+    width: 1.1rem;
     background-color: var(--send-bg);
-    border-bottom-left-radius: 16px 14px;
+    border-bottom-left-radius: 0.88rem 0.77rem;
   }
 
   &:after {
-    right: -26px;
-    width: 26px;
+    right: -1.4rem;
+    width: 1.4rem;
     background-color: var(--page-background);
-    border-bottom-left-radius: 10px;
+    border-bottom-left-radius: 0.55rem;
   }
 }
 
@@ -50,19 +50,19 @@
   background: var(--receive-bg);
   color: black;
   align-self: flex-start;
-  margin-right: 40px;
+  margin-right: 2.2rem;
 
   &:before {
-    left: -7px;
-    width: 20px;
+    left: -0.4rem;
+    width: 1.1rem;
     background-color: var(--receive-bg);
-    border-bottom-right-radius: 16px 14px;
+    border-bottom-right-radius: 0.88rem 0.77rem;
   }
 
   &:after {
-    left: -26px;
-    width: 26px;
+    left: -1.4rem;
+    width: 1.4rem;
     background-color: var(--page-background);
-    border-bottom-right-radius: 10px;
+    border-bottom-right-radius: 0.55rem;
   }
 }

@@ -6,9 +6,9 @@ body {
   font-family: var(--font-inter);
 }
 
-p {
+/* p {
   text-align: justify;
-}
+} */
 
 @layer base {
   :root {
