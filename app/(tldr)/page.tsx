@@ -187,6 +187,109 @@ export default function TldrPage() {
           </div>
         </div>
       </div>
+      <div>
+        <h2 className="text-2xl font-bold tracking-tighter mb-3">Experience</h2>
+        <div className="-my-6">
+          <div className="relative pl-8 sm:pl-32 py-6 group">
+            <div className="flex flex-col sm:flex-row items-start mb-1 group-last:before:hidden before:absolute before:left-2 sm:before:left-0 before:h-full before:px-px before:bg-slate-300 sm:before:ml-[6.5rem] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 sm:after:left-0 after:w-2 after:h-2 after:bg-indigo-600 after:border-4 after:box-content after:border-slate-50 after:rounded-full sm:after:ml-[6.5rem] after:-translate-x-1/2 after:translate-y-1.5">
+              <div>
+                <Badge
+                  variant="secondary"
+                  className="sm:absolute left-0 translate-y-0.5 inline-flex items-center justify-center text-xs mb-3 sm:mb-0"
+                >
+                  Sept 2021
+                </Badge>
+              </div>
+              <div className="text-base font-bold text-slate-900">
+                Developer (Intern){" "}
+                <span className="text-slate-600">@ National Defence</span>
+              </div>
+            </div>
+
+            <div className="text-xs text-slate-500 flex flex-col gap-1"></div>
+          </div>
+          <div className="relative pl-8 sm:pl-32 py-6 group">
+            <div className="flex flex-col sm:flex-row items-start mb-1 group-last:before:hidden before:absolute before:left-2 sm:before:left-0 before:h-full before:px-px before:bg-slate-300 sm:before:ml-[6.5rem] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 sm:after:left-0 after:w-2 after:h-2 after:bg-indigo-600 after:border-4 after:box-content after:border-slate-50 after:rounded-full sm:after:ml-[6.5rem] after:-translate-x-1/2 after:translate-y-1.5">
+              <div>
+                <Badge
+                  variant="secondary"
+                  className="sm:absolute left-0 translate-y-0.5 inline-flex items-center justify-center text-xs mb-3 sm:mb-0"
+                >
+                  April 2023
+                </Badge>
+              </div>
+              <div className="text-base font-bold text-slate-900">
+                BSc in Computer Science{" "}
+                <span className="text-slate-600">@ uOttawa</span>
+              </div>
+            </div>
+
+            <div className="text-xs text-slate-500 flex flex-col gap-1">
+              <p>
+                Started in Electrical Engineering, then switched into Computer
+                Science a year later.
+              </p>
+              <p>
+                After five years and many more virtual courses, I finished my
+                undergraduate degree and headed off to the workforce.
+              </p>
+            </div>
+          </div>
+          <div className="relative pl-8 sm:pl-32 py-6 group">
+            {/* <div className="font-medium text-2xl text-indigo-500 mb-1 sm:mb-0">
+              The origin
+            </div> */}
+
+            <div className="flex flex-col sm:flex-row items-start mb-1 group-last:before:hidden before:absolute before:left-2 sm:before:left-0 before:h-full before:px-px before:bg-slate-300 sm:before:ml-[6.5rem] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 sm:after:left-0 after:w-2 after:h-2 after:bg-indigo-600 after:border-4 after:box-content after:border-slate-50 after:rounded-full sm:after:ml-[6.5rem] after:-translate-x-1/2 after:translate-y-1.5">
+              <Badge
+                variant="secondary"
+                className="sm:absolute left-0 translate-y-0.5 inline-flex items-center justify-center text-xs mb-3 sm:mb-0"
+              >
+                July 2023
+              </Badge>
+              <div className="text-base font-bold text-slate-900">
+                Developer{" "}
+                <span className="text-slate-600">@ National Defence</span>
+              </div>
+            </div>
+
+            <div className="text-xs text-slate-500 flex flex-col gap-1">
+              <p>
+                Afer taking a few months to myself after finishing school, I
+                jumped into work with my previous team from DND.
+              </p>
+              <p>We get to wear many hats in my position:</p>
+              <div className="flex flex-col">
+                <span>• web application development using Next.js</span>
+                <span>
+                  • setup/configuration/maintenance of Windows server
+                  infrastructure
+                </span>
+                <span>• management of cloud resources in AWS</span>
+              </div>
+            </div>
+          </div>
+          <div className="relative pl-8 sm:pl-32 py-6 group">
+            {/* <div className="font-medium text-2xl text-indigo-500 mb-1 sm:mb-0">
+              The origin
+            </div> */}
+
+            <div className="flex flex-col sm:flex-row items-start mb-1 group-last:before:hidden before:absolute before:left-2 sm:before:left-0 before:h-full before:px-px before:bg-slate-300 sm:before:ml-[6.5rem] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 sm:after:left-0 after:w-2 after:h-2 after:bg-indigo-600 after:border-4 after:box-content after:border-slate-50 after:rounded-full sm:after:ml-[6.5rem] after:-translate-x-1/2 after:translate-y-1.5">
+              <Badge
+                variant="secondary"
+                className="sm:absolute left-0 translate-y-0.5 inline-flex items-center justify-center text-xs mb-3 sm:mb-0"
+              >
+                Upcoming
+              </Badge>
+              <div className="text-base font-bold text-slate-900">
+                AWS Certified Cloud Practitioner
+              </div>
+            </div>
+
+            <div className="text-xs text-slate-500 flex flex-col gap-1"></div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
