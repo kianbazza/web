@@ -21,7 +21,7 @@ export default function RootLayout({
         className={cn(
           jetbrains_mono.variable,
           inter.variable,
-          "min-h-screen max-w-xl flex flex-col gap-10 m-auto py-10 px-7"
+          "min-h-screen max-w-xl flex flex-col gap-10 m-auto py-12 px-8"
         )}
       >
         <div className="flex-1">{children}</div>
