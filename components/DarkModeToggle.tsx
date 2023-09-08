@@ -5,7 +5,7 @@ import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 
 export default function DarkModeToggle() {
-  const { setTheme, resolvedTheme } = useTheme()
+  const { setTheme, theme, resolvedTheme } = useTheme()
 
   return (
     <Button
@@ -13,7 +13,9 @@ export default function DarkModeToggle() {
       variant="ghost"
       size="icon"
       onClick={() =>
-        resolvedTheme === "light" ? setTheme("dark") : setTheme("light")
+        resolvedTheme === "light"
+          ? setTheme(theme === "system" ? "dark" : "system")
+          : setTheme(theme === "system" ? "light" : "system")
       }
     >
       <Moon className="h-4 w-4 scale-0 dark:scale-100" />
