@@ -2,8 +2,8 @@ import { cn } from "@/lib/utils"
 import "@/app/globals.css"
 import type { Metadata } from "next"
 import { jetbrains_mono, inter } from "@/app/fonts"
-import { Separator } from "@/components/ui/separator"
-import A from "@/components/A"
+
+import { ThemeProvider } from "@/providers/theme-provider"
 
 export const metadata: Metadata = {
   title: "Kian Bazarjani",
@@ -16,38 +16,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
           jetbrains_mono.variable,
           inter.variable,
-          "min-h-screen max-w-xl flex flex-col gap-10 m-auto py-12 px-8"
+          "min-h-screen max-w-xl flex flex-col gap-10 m-auto py-12 px-8 dark:bg-black"
         )}
       >
-        <div className="flex-1">{children}</div>
-        <footer className={cn("text-slate-400 text-sm flex flex-col")}>
-          <Separator className="mb-5" orientation="horizontal" />
-          <div>Copyright © 2023 by Kian Bazarjani.</div>
-
-          <span className="sm:whitespace-pre">
-            Built with ❤️ //{" "}
-            <A className="hover:underline" href="https://nextjs.org/">
-              Next.js
-            </A>
-            ,{" "}
-            <A className="hover:underline" href="https://ui.shadcn.com/">
-              shadcn/ui
-            </A>
-            ,{" "}
-            <A
-              className="hover:underline"
-              href="https://www.framer.com/motion/"
-            >
-              Framer Motion
-            </A>
-            .
-          </span>
-        </footer>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

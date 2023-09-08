@@ -22,7 +22,7 @@ body {
   h5,
   h6 {
     font-family: var(--font-jetbrains-mono);
-    @apply text-transparent bg-clip-text bg-gradient-to-b from-slate-950 to-slate-900;
+    @apply text-transparent bg-clip-text bg-gradient-to-b from-slate-950 to-slate-900 dark:from-slate-50 dark:to-slate-100;
   }
 
   h1 {

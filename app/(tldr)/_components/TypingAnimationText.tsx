@@ -26,9 +26,9 @@ export default function TypingAnimationText({ texts, loop = false }: Props) {
     repeatType: "reverse",
     repeatDelay: 0.1,
     onUpdate(latest) {
-      console.log(
-        `textIndex: ${textIndex.get()} baseText: ${baseText.get()} count: ${count.get()} displayText: ${displayText.get()} updatedThisRound: ${updatedThisRound.get()}`
-      )
+      // console.log(
+      //   `textIndex: ${textIndex.get()} baseText: ${baseText.get()} count: ${count.get()} displayText: ${displayText.get()} updatedThisRound: ${updatedThisRound.get()}`
+      // )
       if (updatedThisRound.get() === true && latest > 0) {
         updatedThisRound.set(false)
       } else if (
