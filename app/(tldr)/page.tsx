@@ -124,7 +124,9 @@ export default function TldrPage() {
               </div>
               <div className="flex flex-col gap-1">
                 <div className="inline-flex items-center gap-2">
-                  <A className="underline">PAM Portal for MIM</A>
+                  <A className="underline cursor-not-allowed">
+                    PAM Portal for MIM
+                  </A>
                   <div className="inline-flex gap-1 items-center">
                     <TooltipProvider>
                       <Tooltip>
