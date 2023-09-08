@@ -9,8 +9,8 @@ export default function DarkModeToggle() {
 
   return (
     <Button
-      className="relative hover:bg-slate-100 rounded-xl h-7 w-7"
-      variant="ghost"
+      variant="secondary"
+      className="relative rounded-lg h-7 w-7"
       size="icon"
       onClick={() =>
         resolvedTheme === "light"

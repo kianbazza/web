@@ -45,7 +45,7 @@ export default function TldrPage() {
             </div>
             <div className="flex gap-4">
               <Button
-                className="hover:bg-slate-100 rounded-xl h-7 w-7"
+                className="hover:bg-slate-100 rounded-lg h-7 w-7"
                 variant="ghost"
                 // size="icon"
               >
@@ -54,20 +54,22 @@ export default function TldrPage() {
                 </A>
               </Button>
               <Button
-                className="hover:bg-slate-100 rounded-xl h-7 w-7"
+                className="hover:bg-slate-100 rounded-lg h-7 w-7"
                 variant="ghost"
                 size="icon"
               >
                 <Github className="h-4 w-4" />
               </Button>
               <Button
-                className="hover:bg-slate-100 rounded-xl h-7 w-7"
+                className="hover:bg-slate-100 rounded-lg h-7 w-7"
                 variant="ghost"
                 size="icon"
               >
                 <Linkedin className="h-4 w-4" />
               </Button>
-              <DarkModeToggle />
+              <div className="ml-auto">
+                <DarkModeToggle />
+              </div>
             </div>
           </div>
           <div>
