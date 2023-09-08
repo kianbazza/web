@@ -82,7 +82,7 @@ export default function TldrPage() {
               <ReceiveChatBubble>
                 feel free to explore my projects, or{" "}
                 <A
-                  className="underline font-bold decoration-2 decoration-red-600/30 hover:decoration-red-600/70 dark:decoration-red-500/30 dark:hover:decoration-red-500/70"
+                  className="underline font-bold decoration-2 decoration-red-600/30 hover:decoration-red-600/70 dark:decoration-red-600/70 dark:hover:decoration-red-600/100"
                   href="https://go.bazza.dev/resume"
                 >
                   if you're here for my resume, click here!
