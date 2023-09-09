@@ -21,7 +21,8 @@ export default function RootLayout({
         className={cn(
           jetbrains_mono.variable,
           inter.variable,
-          "min-h-screen max-w-xl flex flex-col gap-10 m-auto py-12 px-8 dark:bg-black"
+          "min-h-screen max-w-xl flex flex-col gap-10 m-auto py-12 px-8",
+          "dark:bg-neutral-900"
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
