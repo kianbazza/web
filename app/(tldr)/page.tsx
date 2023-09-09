@@ -116,7 +116,7 @@ export default function TldrPage() {
                     blink.
                   </A>
                   <Badge
-                    className="font-medium bg-sky-700/20 text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50 dark:hover:bg-sky-500/30"
+                    className="font-medium select-none cursor-default bg-sky-700/20 text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50 dark:hover:bg-sky-500/30"
                     variant="secondary"
                   >
                     Upcoming
@@ -150,7 +150,7 @@ export default function TldrPage() {
                     </TooltipProvider>
 
                     <Badge
-                      className="font-medium bg-sky-700/20 text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50 dark:hover:bg-sky-500/30"
+                      className="font-medium select-none cursor-default bg-sky-700/20 text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50 dark:hover:bg-sky-500/30"
                       variant="secondary"
                     >
                       Upcoming
@@ -177,7 +177,7 @@ export default function TldrPage() {
                     Simple Menus
                   </A>
                   <Badge
-                    className="font-medium bg-amber-700/20 hover:bg-amber-700/10 text-amber-950 dark:bg-amber-500/20 dark:hover:bg-amber-500/30 dark:text-amber-50"
+                    className="font-medium select-none cursor-default bg-amber-700/20 hover:bg-amber-700/10 text-amber-950 dark:bg-amber-500/20 dark:hover:bg-amber-500/30 dark:text-amber-50"
                     variant="secondary"
                   >
                     Archived
@@ -196,7 +196,7 @@ export default function TldrPage() {
                     DeltaCore
                   </A>
                   <Badge
-                    className="font-medium bg-amber-700/20 hover:bg-amber-700/10 text-amber-950 dark:bg-amber-500/20 dark:hover:bg-amber-500/30 dark:text-amber-50"
+                    className="font-medium select-none cursor-default bg-amber-700/20 hover:bg-amber-700/10 text-amber-950 dark:bg-amber-500/20 dark:hover:bg-amber-500/30 dark:text-amber-50"
                     variant="secondary"
                   >
                     Archived
