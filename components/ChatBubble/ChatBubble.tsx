@@ -10,7 +10,7 @@ export function SendChatBubble({ children }: Props) {
 
 export function ReceiveChatBubble({ children }: Props) {
   return (
-    <div className="shared receive dark:bg-[#3b3b3d] dark:text-white dark:before:bg-[#3b3b3d] dark:after:bg-black">
+    <div className="shared receive dark:bg-[#3b3b3d] dark:text-white dark:before:bg-[#3b3b3d] dark:after:bg-neutral-900">
       {children}
     </div>
   )
