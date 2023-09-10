@@ -58,14 +58,18 @@ export default function TldrPage() {
                 variant="ghost"
                 size="icon"
               >
-                <Github className="h-4 w-4" />
+                <A href="https://github.com/bazzadev">
+                  <Github className="h-4 w-4" />
+                </A>
               </Button>
               <Button
                 className="hover:bg-slate-100 rounded-lg h-7 w-7"
                 variant="ghost"
                 size="icon"
               >
-                <Linkedin className="h-4 w-4" />
+                <A href="https://linkedin.com/in/kianbazarjani">
+                  <Linkedin className="h-4 w-4" />
+                </A>
               </Button>
               <div className="ml-auto">
                 <DarkModeToggle />
