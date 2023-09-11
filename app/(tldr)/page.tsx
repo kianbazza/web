@@ -1,9 +1,9 @@
 "use client"
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { FileText, Github, Linkedin } from "lucide-react"
 import TypingAnimationText from "./_components/TypingAnimationText"
-import { ReceiveChatBubble } from "@/components/ChatBubble/ChatBubble"
 import { Badge } from "@/components/ui/badge"
 import A from "@/components/A"
 import {
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/tooltip"
 import DarkModeToggle from "@/components/DarkModeToggle"
 import Footer from "./_components/Footer"
+import Chat from "@/components/Chat"
 
 const roles = [
   "web developer",
@@ -71,22 +72,19 @@ export default function TldrPage() {
                   <Linkedin className="h-4 w-4" />
                 </A>
               </Button>
-              <div className="ml-auto">
-                <DarkModeToggle />
-              </div>
+              <DarkModeToggle />
             </div>
           </div>
-          <div>
-            <div className="flex flex-col gap-2 text-sm">
-              <ReceiveChatBubble>hey! i'm Kian 😊</ReceiveChatBubble>
-              <ReceiveChatBubble>
-                i'm currently working for <b>National Defence</b> and expanding
-                my skills in <span className="underline">web development</span>,{" "}
-                <span className="underline">cloud engineering</span> (AWS), and{" "}
-                <span className="underline">infrastructure architecture</span>.
-              </ReceiveChatBubble>
-              <ReceiveChatBubble>
-                feel free to explore my projects, or{" "}
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1 text-sm">
+              <Chat>Hey, I'm Kian - nice to meet you! 😊</Chat>
+              <Chat>
+                I'm currently working for National Defence and expanding my
+                skills in web development, cloud engineering, and infrastructure
+                architecture.
+              </Chat>
+              <Chat>
+                Feel free to explore my projects, or{" "}
                 <A
                   className="underline font-bold decoration-2 decoration-red-600/30 hover:decoration-red-600/70 dark:decoration-red-600/70 dark:hover:decoration-red-600/100"
                   href="https://go.bazza.dev/resume"
@@ -94,9 +92,15 @@ export default function TldrPage() {
                   if you're here for my resume, click here!
                 </A>{" "}
                 👈
-              </ReceiveChatBubble>
-
-              <ReceiveChatBubble>cheers! 🍻</ReceiveChatBubble>
+              </Chat>
+              <Chat>Cheers! 🍻</Chat>
+            </div>
+            <div className="inline-flex gap-2 items-center text-sm text-neutral-500">
+              <Avatar className="h-5 w-5">
+                <AvatarImage src="/bazzadev-face.png" />
+                <AvatarFallback>KB</AvatarFallback>
+              </Avatar>
+              Kian, 3m ago
             </div>
           </div>
           <div>
@@ -109,7 +113,7 @@ export default function TldrPage() {
                   <A className="underline" href="https://oet.bazza.dev/">
                     Optimal Enchant Tool
                   </A>
-                  <p className="text-gray-500">
+                  <p className="text-neutral-500">
                     Optimize combining things in an anvil in Minecraft.
                   </p>
                 </div>
@@ -126,7 +130,9 @@ export default function TldrPage() {
                     Upcoming
                   </Badge>
                 </div>
-                <p className="text-gray-500">File sharing with zero hassle.</p>
+                <p className="text-neutral-500">
+                  File sharing with zero hassle.
+                </p>
               </div>
               <div className="flex flex-col gap-1">
                 <div className="inline-flex items-center gap-2">
@@ -161,7 +167,7 @@ export default function TldrPage() {
                     </Badge>
                   </div>
                 </div>
-                <p className="text-gray-500">
+                <p className="text-neutral-500">
                   Beautiful user interface for{" "}
                   <A
                     className="hover:underline"
@@ -187,7 +193,7 @@ export default function TldrPage() {
                     Archived
                   </Badge>
                 </div>
-                <p className="text-gray-500">
+                <p className="text-neutral-500">
                   Command line interface builder for Java applications.
                 </p>
               </div>
@@ -206,7 +212,7 @@ export default function TldrPage() {
                     Archived
                   </Badge>
                 </div>
-                <p className="text-gray-500">
+                <p className="text-neutral-500">
                   Core plugin for the DeltaCore SMP Minecraft server.
                 </p>
               </div>
