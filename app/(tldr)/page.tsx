@@ -1,27 +1,27 @@
-"use client"
+'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { FileText, Github, Linkedin } from "lucide-react"
-import TypingAnimationText from "./_components/TypingAnimationText"
-import { Badge } from "@/components/ui/badge"
-import A from "@/components/A"
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { FileText, Github, Linkedin } from 'lucide-react';
+import TypingAnimationText from './_components/TypingAnimationText';
+import { Badge } from '@/components/ui/badge';
+import A from '@/components/A';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
-import DarkModeToggle from "@/components/DarkModeToggle"
-import Footer from "./_components/Footer"
-import Chat from "@/components/Chat"
+} from '@/components/ui/tooltip';
+import DarkModeToggle from '@/components/DarkModeToggle';
+import Footer from './_components/Footer';
+import Chat from '@/components/Chat';
 
 const roles = [
-  "web developer",
-  "cloud engineer",
-  "infrastructure architect",
+  'web developer',
+  'cloud engineer',
+  'infrastructure architect',
   // "web/cloud/infrastructure developer",
-]
+];
 
 export default function TldrPage() {
   return (
@@ -40,7 +40,7 @@ export default function TldrPage() {
                 kian@bazza.dev
               </a>
               <a className="text-sm pt-2">
-                <TypingAnimationText texts={roles} loop={true} /> @{" "}
+                <TypingAnimationText texts={roles} loop={true} /> @{' '}
                 <span className="align-middle">🇨🇦</span>
               </a>
             </div>
@@ -84,20 +84,20 @@ export default function TldrPage() {
                 architecture.
               </Chat>
               <Chat>
-                Feel free to explore my projects, or{" "}
+                Feel free to explore my projects, or{' '}
                 <A
                   className="underline font-bold decoration-2 decoration-red-600/30 hover:decoration-red-600/70 dark:decoration-red-600/70 dark:hover:decoration-red-600/100"
                   href="https://go.bazza.dev/resume"
                 >
                   if you're here for my resume, click here!
-                </A>{" "}
+                </A>{' '}
                 👈
               </Chat>
               <Chat>Cheers! 🍻</Chat>
             </div>
             <div className="inline-flex gap-2 items-center text-sm text-neutral-500">
               <Avatar className="h-5 w-5">
-                <AvatarImage src="/bazzadev-face.png" />
+                <AvatarImage src="https://github.com/bazzadev.png" />
                 <AvatarFallback>KB</AvatarFallback>
               </Avatar>
               Kian, 3m ago
@@ -168,7 +168,7 @@ export default function TldrPage() {
                   </div>
                 </div>
                 <p className="text-neutral-500">
-                  Beautiful user interface for{" "}
+                  Beautiful user interface for{' '}
                   <A
                     className="hover:underline"
                     href="https://learn.microsoft.com/en-us/microsoft-identity-manager/pam/privileged-identity-management-for-active-directory-domain-services"
@@ -302,5 +302,5 @@ export default function TldrPage() {
       </div>
       <Footer />
     </>
-  )
+  );
 }
