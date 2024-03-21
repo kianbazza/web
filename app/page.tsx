@@ -1,27 +1,22 @@
-'use client';
+"use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { FileText, Github, Linkedin } from 'lucide-react';
-import TypingAnimationText from './_components/TypingAnimationText';
-import { Badge } from '@/components/ui/badge';
-import A from '@/components/A';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { FileText, Github, Linkedin } from "lucide-react";
+import TypingAnimationText from "./_components/TypingAnimationText";
+import { Badge } from "@/components/ui/badge";
+import A from "@/components/A";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import DarkModeToggle from '@/components/DarkModeToggle';
-import Footer from './_components/Footer';
-import Chat from '@/components/Chat';
+} from "@/components/ui/tooltip";
+import DarkModeToggle from "@/components/DarkModeToggle";
+import Footer from "./_components/Footer";
+import Chat from "@/components/Chat";
 
-const roles = [
-  'web developer',
-  'cloud engineer',
-  'infrastructure architect',
-  // "web/cloud/infrastructure developer",
-];
+const roles = ["web developer", "cloud engineer", "infrastructure architect"];
 
 export default function TldrPage() {
   return (
@@ -40,7 +35,7 @@ export default function TldrPage() {
                 kian@bazza.dev
               </a>
               <a className="text-sm pt-2">
-                <TypingAnimationText texts={roles} loop={true} /> @{' '}
+                <TypingAnimationText texts={roles} loop={true} /> @{" "}
                 <span className="align-middle">🇨🇦</span>
               </a>
             </div>
@@ -48,7 +43,6 @@ export default function TldrPage() {
               <Button
                 className="hover:bg-slate-100 rounded-lg h-7 w-7"
                 variant="ghost"
-                // size="icon"
               >
                 <A href="https://go.bazza.dev/resume">
                   <FileText className="h-4 w-4" />
@@ -84,13 +78,13 @@ export default function TldrPage() {
                 architecture.
               </Chat>
               <Chat>
-                Feel free to explore my projects, or{' '}
+                Feel free to explore my projects, or{" "}
                 <A
                   className="underline font-bold decoration-2 decoration-red-600/30 hover:decoration-red-600/70 dark:decoration-red-600/70 dark:hover:decoration-red-600/100"
                   href="https://go.bazza.dev/resume"
                 >
                   if you're here for my resume, click here!
-                </A>{' '}
+                </A>{" "}
                 👈
               </Chat>
               <Chat>Cheers! 🍻</Chat>
@@ -143,12 +137,7 @@ export default function TldrPage() {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger>
-                          <Badge
-                            className="font-medium"
-                            // variant="secondary"
-                          >
-                            Private
-                          </Badge>
+                          <Badge className="font-medium">Private</Badge>
                         </TooltipTrigger>
                         <TooltipContent>
                           <p className="text-xs">
@@ -168,7 +157,7 @@ export default function TldrPage() {
                   </div>
                 </div>
                 <p className="text-neutral-500">
-                  Beautiful user interface for{' '}
+                  Beautiful user interface for{" "}
                   <A
                     className="hover:underline"
                     href="https://learn.microsoft.com/en-us/microsoft-identity-manager/pam/privileged-identity-management-for-active-directory-domain-services"
@@ -218,86 +207,6 @@ export default function TldrPage() {
               </div>
             </div>
           </div>
-          {/* <div>
-            <h2 className="text-2xl font-bold tracking-tighter mb-5">Experience</h2>
-            <div className="-my-6">
-              <div className="relative pl-8 sm:pl-32 py-6 group">
-                <div className="flex flex-col sm:flex-row items-start mb-1 group-last:before:hidden before:absolute before:left-2 sm:before:left-0 before:h-full before:px-px before:bg-slate-300 sm:before:ml-[6.5rem] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 sm:after:left-0 after:w-2 after:h-2 after:bg-indigo-600 after:border-4 after:box-content after:border-slate-50 after:rounded-full sm:after:ml-[6.5rem] after:-translate-x-1/2 after:translate-y-1.5">
-                  <div>
-                    <Badge
-                      variant="secondary"
-                      className="sm:absolute left-0 translate-y-0.5 inline-flex items-center justify-center text-xs mb-3 sm:mb-0"
-                    >
-                      Sept 2021
-                    </Badge>
-                  </div>
-                  <div className="text-base font-bold text-slate-900">
-                    Developer (Intern){" "}
-                    <span className="text-slate-600">@ National Defence</span>
-                  </div>
-                </div>
-    
-                <div className="text-xs text-slate-500 flex flex-col gap-1"></div>
-              </div>
-              <div className="relative pl-8 sm:pl-32 py-6 group">
-                <div className="flex flex-col sm:flex-row items-start mb-1 group-last:before:hidden before:absolute before:left-2 sm:before:left-0 before:h-full before:px-px before:bg-slate-300 sm:before:ml-[6.5rem] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 sm:after:left-0 after:w-2 after:h-2 after:bg-indigo-600 after:border-4 after:box-content after:border-slate-50 after:rounded-full sm:after:ml-[6.5rem] after:-translate-x-1/2 after:translate-y-1.5">
-                  <div>
-                    <Badge
-                      variant="secondary"
-                      className="sm:absolute left-0 translate-y-0.5 inline-flex items-center justify-center text-xs mb-3 sm:mb-0"
-                    >
-                      April 2023
-                    </Badge>
-                  </div>
-                  <div className="text-base font-bold text-slate-900">
-                    BSc in Computer Science{" "}
-                    <span className="text-slate-600">@ uOttawa</span>
-                  </div>
-                </div>
-    
-                <div className="text-xs text-slate-500 flex flex-col gap-1">
-                  <p>
-                    Started in Electrical Engineering, then switched into Computer
-                    Science a year later.
-                  </p>
-                  <p>
-                    After five years and many more virtual courses, I finished my
-                    undergraduate degree and headed off to the workforce.
-                  </p>
-                </div>
-              </div>
-              <div className="relative pl-8 sm:pl-32 py-6 group">
-                <div className="flex flex-col sm:flex-row items-start mb-1 group-last:before:hidden before:absolute before:left-2 sm:before:left-0 before:h-full before:px-px before:bg-slate-300 sm:before:ml-[6.5rem] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 sm:after:left-0 after:w-2 after:h-2 after:bg-indigo-600 after:border-4 after:box-content after:border-slate-50 after:rounded-full sm:after:ml-[6.5rem] after:-translate-x-1/2 after:translate-y-1.5">
-                  <Badge
-                    variant="secondary"
-                    className="sm:absolute left-0 translate-y-0.5 inline-flex items-center justify-center text-xs mb-3 sm:mb-0"
-                  >
-                    July 2023
-                  </Badge>
-                  <div className="text-base font-bold text-slate-900">
-                    Developer{" "}
-                    <span className="text-slate-600">@ National Defence</span>
-                  </div>
-                </div>
-    
-                <div className="text-xs text-slate-500 flex flex-col gap-1">
-                  <p>
-                    After taking a few months to myself after finishing school, I
-                    jumped into work with my previous team from DND.
-                  </p>
-                  <p>We get to wear many hats in my position:</p>
-                  <div className="flex flex-col">
-                    <span>• web application development using Next.js</span>
-                    <span>
-                      • setup/configuration/maintenance of Windows server
-                      infrastructure
-                    </span>
-                    <span>• management of cloud resources in AWS</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
       <Footer />
