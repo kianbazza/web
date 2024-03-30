@@ -104,6 +104,25 @@ export default function TldrPage() {
             <div className="flex flex-col gap-4 text-sm">
               <div>
                 <div className="flex flex-col gap-1">
+                  <div className="inline-flex items-center gap-2">
+                    <A className="underline" href="https://logbook.bazza.dev/">
+                      Logbook
+                    </A>
+                    <Badge
+                      className="font-medium select-none cursor-default bg-green-700/20 text-green-950 hover:bg-green-700/10 dark:bg-green-500/20 dark:text-green-50 dark:hover:bg-greeen-500/30"
+                      variant="secondary"
+                    >
+                      New!
+                    </Badge>
+                  </div>
+                  <p className="text-neutral-500">
+                    A simple logbook to keep track of your work.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex flex-col gap-1">
                   <A className="underline" href="https://oet.bazza.dev/">
                     Optimal Enchant Tool
                   </A>
