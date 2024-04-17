@@ -1,35 +1,22 @@
-import A from "@/components/A"
-import { Separator } from "@/components/ui/separator"
-import { cn } from "@/lib/utils"
+import Image from 'next/image'
+import bazzadev from '@/public/bazzadev.png'
+import { Separator } from '@/components/ui/separator'
 
 export default function Footer() {
   return (
-    <footer
-      className={cn(
-        "text-neutral-400 dark:text-neutral-500 text-sm flex flex-col"
-      )}
-    >
-      <Separator
-        className="mb-5 bg-neutral-200 dark:bg-neutral-700"
-        orientation="horizontal"
-      />
-      <div>Copyright © 2023 by Kian Bazarjani.</div>
-
-      <span className="sm:whitespace-pre">
-        Built with ❤️ //{" "}
-        <A className="hover:underline" href="https://nextjs.org/">
-          Next.js
-        </A>
-        ,{" "}
-        <A className="hover:underline" href="https://ui.shadcn.com/">
-          shadcn/ui
-        </A>
-        ,{" "}
-        <A className="hover:underline" href="https://www.framer.com/motion/">
-          Framer Motion
-        </A>
-        .
-      </span>
+    <footer className="flex flex-col gap-12">
+      <Separator />
+      <div className="inline-flex items-center justify-center gap-2">
+        <Image
+          priority
+          src={bazzadev}
+          alt="BazzaDEV"
+          height={24}
+        />
+        <span className="font-mono text-sm tracking-tighter text-muted-foreground">
+          Built by <span className="text-zinc-300">me</span>.
+        </span>
+      </div>
     </footer>
   )
 }
