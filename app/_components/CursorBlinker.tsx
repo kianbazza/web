@@ -1,4 +1,6 @@
-import { motion } from "framer-motion"
+"use client";
+
+import { motion } from "framer-motion";
 
 const cursorVariants = {
   blinking: {
@@ -11,7 +13,7 @@ const cursorVariants = {
       times: [0, 0.5, 0.5, 1],
     },
   },
-}
+};
 
 export default function CursorBlinker() {
   return (
@@ -22,5 +24,5 @@ export default function CursorBlinker() {
     >
       _
     </motion.div>
-  )
+  );
 }

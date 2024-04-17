@@ -4,7 +4,7 @@ interface Props {
 
 export default function Chat({ children }: Props) {
   return (
-    <div className="rounded-xl w-fit max-w-md py-2 px-3 bg-neutral-100 dark:text-white dark:bg-neutral-800">
+    <div className="w-fit max-w-md rounded-xl bg-zinc-100 px-3 py-2 dark:bg-zinc-800 ">
       {children}
     </div>
   )

@@ -6,8 +6,8 @@
   "tailwind": {
     "config": "tailwind.config.ts",
     "css": "app/globals.css",
-    "baseColor": "slate",
-    "cssVariables": false
+    "baseColor": "zinc",
+    "cssVariables": true
   },
   "aliases": {
     "components": "@/components",
