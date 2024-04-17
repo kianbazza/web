@@ -14,7 +14,7 @@ export default function Footer() {
           height={24}
         />
         <span className="font-mono text-sm tracking-tighter text-muted-foreground">
-          Built by <span className="text-zinc-300">me</span>.
+          Built by <span className="text-primary dark:text-zinc-300">me</span>.
         </span>
       </div>
     </footer>
