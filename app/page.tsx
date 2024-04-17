@@ -113,7 +113,7 @@ export default function TldrPage() {
                       code.
                     </A>
                     <Badge
-                      className="cursor-default select-none bg-green-700/20 font-medium text-green-950 dark:bg-green-500/20 dark:text-green-50"
+                      className="dark:hover:bg-green-500/300 cursor-default select-none bg-green-700/20 font-medium text-green-950 hover:bg-green-700/10 dark:bg-green-500/20 dark:text-green-50"
                       variant="secondary"
                     >
                       New!
@@ -133,7 +133,7 @@ export default function TldrPage() {
                       ui labs.
                     </A>
                     <Badge
-                      className="cursor-default select-none bg-green-700/20 font-medium text-green-950 dark:bg-green-500/20 dark:text-green-50"
+                      className="dark:hover:bg-green-500/300 cursor-default select-none bg-green-700/20 font-medium text-green-950 hover:bg-green-700/10 dark:bg-green-500/20 dark:text-green-50"
                       variant="secondary"
                     >
                       New!
@@ -148,16 +148,17 @@ export default function TldrPage() {
                 <div className="flex flex-col gap-1">
                   <div className="inline-flex items-center gap-2">
                     <A
-                      className="hover:underline"
-                      href="https://logbook.bazza.dev/"
+                      // className="hover:underline"
+                      className="cursor-default"
+                      // href="https://logbook.bazza.dev/"
                     >
-                      logbook
+                      logbook.
                     </A>
                     <Badge
-                      className="cursor-default select-none bg-green-700/20 font-medium text-green-950 dark:bg-green-500/20 dark:text-green-50"
+                      className="cursor-default select-none bg-sky-700/20 font-medium text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50 dark:hover:bg-sky-500/30"
                       variant="secondary"
                     >
-                      New!
+                      Upcoming
                     </Badge>
                   </div>
                   <p className="text-zinc-500">Your workday, timed and told.</p>
@@ -212,12 +213,12 @@ export default function TldrPage() {
                       </Tooltip>
                     </TooltipProvider>
 
-                    <Badge
-                      className="cursor-default select-none bg-sky-700/20 font-medium text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50 dark:hover:bg-sky-500/30"
-                      variant="secondary"
-                    >
-                      Upcoming
-                    </Badge>
+                    {/* <Badge */}
+                    {/*   className="cursor-default select-none bg-sky-700/20 font-medium text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50 dark:hover:bg-sky-500/30" */}
+                    {/*   variant="secondary" */}
+                    {/* > */}
+                    {/*   Upcoming */}
+                    {/* </Badge> */}
                   </div>
                 </div>
                 <p className="text-zinc-500">
