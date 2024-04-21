@@ -13,7 +13,7 @@ export default function Footer() {
           alt="BazzaDEV"
           height={24}
         />
-        <span className="font-mono text-sm tracking-tighter text-muted-foreground">
+        <span className="font-mono text-xs tracking-tighter text-muted-foreground">
           Built by <span className="text-primary dark:text-zinc-300">me</span>.
         </span>
       </div>
