@@ -110,7 +110,7 @@ export default function TldrPage() {
               <h2 className="text-xl font-bold tracking-tighter sm:text-2xl">
                 Certifications
               </h2>
-              <div className="inline-flex w-full items-center gap-4">
+              <div className="hidden w-full items-center gap-4 sm:inline-flex">
                 <Image
                   src={redHatBanner}
                   alt="Red Hat"
@@ -137,10 +137,10 @@ export default function TldrPage() {
 
             <div className="flex flex-col gap-4 text-sm">
               <div className="flex flex-col gap-2">
-                <div className="inline-flex items-center gap-2">
+                <div className="inline-flex items-center justify-between gap-2 sm:justify-normal">
                   <span>Red Hat Certified Specialist in Containers</span>
                   <Badge
-                    className="dark:hover:bg-purple-500/300 cursor-default select-none bg-purple-700/20 font-medium text-purple-950 hover:bg-purple-700/10 dark:bg-purple-500/20 dark:text-purple-50"
+                    className="dark:hover:bg-purple-500/300 cursor-default select-none whitespace-nowrap bg-purple-700/20 font-medium text-purple-950 hover:bg-purple-700/10 dark:bg-purple-500/20 dark:text-purple-50"
                     variant="secondary"
                   >
                     Pending Exam
@@ -148,7 +148,7 @@ export default function TldrPage() {
                 </div>
                 <p className="text-zinc-500">
                   A Red Hat Certified Specialist in Containers has demonstrated
-                  a basic understanding of containers and Red Hat® OpenShift®
+                  a strong understanding of containers and Red Hat® OpenShift®
                   and can use this knowledge to run, find, and manage
                   containerized services, deploy single- and multiple-container
                   applications, and create custom containers.
@@ -156,10 +156,10 @@ export default function TldrPage() {
               </div>
 
               <div className="flex flex-col gap-1">
-                <div className="inline-flex gap-1">
+                <div className="inline-flex items-center justify-between gap-2 sm:justify-normal">
                   <span>Red Hat Certified System Administrator</span>
                   <Badge
-                    className="dark:hover:bg-sky-500/300 cursor-default select-none bg-sky-700/20 font-medium text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50"
+                    className="dark:hover:bg-sky-500/300 h-fit cursor-default select-none whitespace-nowrap bg-sky-700/20 font-medium text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50"
                     variant="secondary"
                   >
                     In Progress
@@ -185,10 +185,10 @@ export default function TldrPage() {
               </div>
 
               <div className="flex flex-col gap-1">
-                <div className="inline-flex gap-1">
+                <div className="inline-flex items-center justify-between gap-2 sm:justify-normal">
                   <span>AWS Solutions Architect - Associate</span>
                   <Badge
-                    className="dark:hover:bg-sky-500/300 cursor-default select-none bg-sky-700/20 font-medium text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50"
+                    className="dark:hover:bg-sky-500/300 h-fit cursor-default select-none whitespace-nowrap bg-sky-700/20 font-medium text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50"
                     variant="secondary"
                   >
                     In Progress
