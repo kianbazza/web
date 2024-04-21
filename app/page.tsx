@@ -13,8 +13,21 @@ import {
 import DarkModeToggle from '@/components/DarkModeToggle'
 import Footer from './_components/Footer'
 import Chat from '@/components/Chat'
+import Image from 'next/image'
 
 const roles = ['web developer', 'cloud engineer', 'infrastructure architect']
+
+import redHatBanner from '@/public/redhat_banner.svg'
+import aws from '@/public/aws.svg'
+
+import redHatBannerDark from '@/public/redhat_banner_darkmode.svg'
+import awsDark from '@/public/aws_darkmode.svg'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 
 export default function TldrPage() {
   return (
@@ -96,6 +109,110 @@ export default function TldrPage() {
                 <AvatarFallback>KB</AvatarFallback>
               </Avatar>
               Kian, just now
+            </div>
+          </div>
+          <div>
+            <div className="mb-5 inline-flex w-full items-center gap-8">
+              <h2 className="text-xl font-bold tracking-tighter sm:text-2xl">
+                Certifications
+              </h2>
+              <div className="inline-flex w-full items-center gap-4">
+                <Image
+                  src={redHatBanner}
+                  alt="Red Hat"
+                  className="h-6 w-auto dark:hidden"
+                />
+                <Image
+                  src={aws}
+                  alt="AWS"
+                  className="h-6 w-auto dark:hidden"
+                />
+
+                <Image
+                  src={redHatBannerDark}
+                  alt="Red Hat"
+                  className="hidden h-6 w-auto dark:inline"
+                />
+                <Image
+                  src={awsDark}
+                  alt="AWS"
+                  className="hidden h-6 w-auto dark:inline"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4 text-sm">
+              <div className="flex flex-col gap-2">
+                <div className="inline-flex items-center gap-2">
+                  <span>Red Hat Certified Specialist in Containers</span>
+                  <Badge
+                    className="dark:hover:bg-purple-500/300 cursor-default select-none bg-purple-700/20 font-medium text-purple-950 hover:bg-purple-700/10 dark:bg-purple-500/20 dark:text-purple-50"
+                    variant="secondary"
+                  >
+                    Pending Exam
+                  </Badge>
+                </div>
+                <p className="text-zinc-500">
+                  A Red Hat Certified Specialist in Containers has demonstrated
+                  a basic understanding of containers and Red Hat® OpenShift®
+                  and can use this knowledge to run, find, and manage
+                  containerized services, deploy single- and multiple-container
+                  applications, and create custom containers.
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <div className="inline-flex gap-1">
+                  <span>Red Hat Certified System Administrator</span>
+                  <Badge
+                    className="dark:hover:bg-sky-500/300 cursor-default select-none bg-sky-700/20 font-medium text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50"
+                    variant="secondary"
+                  >
+                    In Progress
+                  </Badge>
+                </div>
+                <p className="hidden text-zinc-500">
+                  A Red Hat Certified System Administrator (RHCSA) possesses a
+                  solid foundation in managing Red Hat Enterprise Linux systems.
+                  Skills include installing and configuring Red Hat Linux
+                  systems, managing users and groups, handling file permissions,
+                  and setting up security protocols. They are proficient in
+                  managing system software, operating services and processes,
+                  and troubleshooting basic system issues. Additionally, RHCSAs
+                  are skilled in configuring and managing network services and
+                  security, working with virtual machines, and automating system
+                  tasks using shell scripting. A key component of their
+                  expertise also involves managing storage solutions, such as
+                  creating and maintaining file systems, managing disk
+                  partitions, and implementing logical volume management,
+                  ensuring efficient data handling and storage scalability in
+                  Red Hat environments.
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <div className="inline-flex gap-1">
+                  <span>AWS Solutions Architect - Associate</span>
+                  <Badge
+                    className="dark:hover:bg-sky-500/300 cursor-default select-none bg-sky-700/20 font-medium text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50"
+                    variant="secondary"
+                  >
+                    In Progress
+                  </Badge>
+                </div>
+                <p className="hidden text-zinc-500">
+                  An AWS Certified Solutions Architect - Associate possesses
+                  expertise in designing scalable, reliable, and cost-efficient
+                  systems on Amazon Web Services. They are skilled in selecting
+                  appropriate AWS storage options like Amazon S3 and EBS,
+                  implementing robust security measures with AWS IAM, and
+                  setting up efficient network configurations using Amazon VPC.
+                  Additionally, they understand how to optimize AWS resource
+                  utilization to balance performance and cost, manage disaster
+                  recovery and data integrity, and deploy applications on AWS
+                  with best practices to ensure operational excellence.
+                </p>
+              </div>
             </div>
           </div>
           <div>

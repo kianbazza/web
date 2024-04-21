@@ -98,5 +98,8 @@ body {
     padding-bottom: 0.05em;
     margin-bottom: -0.05em;
   }
-}
 
+  .debug {
+    @apply border border-red-500;
+  }
+}
