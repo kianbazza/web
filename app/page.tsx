@@ -22,12 +22,6 @@ import aws from '@/public/aws.svg'
 
 import redHatBannerDark from '@/public/redhat_banner_darkmode.svg'
 import awsDark from '@/public/aws_darkmode.svg'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
 
 export default function TldrPage() {
   return (
