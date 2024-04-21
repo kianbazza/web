@@ -86,7 +86,10 @@ export default function TldrPage() {
                 architecture.`}
               </Chat>
               <Chat>
-                Feel free to explore my projects, or{' '}
+                Feel free to explore my projects and certifications...{' '}
+              </Chat>
+              <Chat>
+                ...or{' '}
                 <A
                   className="font-bold underline decoration-red-600/30 decoration-2 hover:decoration-red-600/70 dark:decoration-red-600/70 dark:hover:decoration-red-600/100"
                   href="https://go.bazza.dev/resume"
