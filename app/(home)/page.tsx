@@ -22,6 +22,7 @@ import aws from '@/public/aws.svg'
 
 import redHatBannerDark from '@/public/redhat_banner_darkmode.svg'
 import awsDark from '@/public/aws_darkmode.svg'
+import { cn } from '@/lib/utils'
 
 export default function TldrPage() {
   return (
@@ -30,7 +31,13 @@ export default function TldrPage() {
         <div className="flex flex-col gap-10">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-col">
-              <h1 className="text-2xl font-black tracking-tighter sm:text-3xl">
+              <h1
+                className={cn(
+                  'font-mono',
+                  'text-2xl font-black tracking-tighter sm:text-3xl',
+                  'bg-gradient-to-b from-slate-950 to-slate-900 bg-clip-text text-transparent dark:from-slate-50 dark:to-slate-100',
+                )}
+              >
                 Kian Bazarjani
               </h1>
               <a
@@ -110,7 +117,13 @@ export default function TldrPage() {
           </div>
           <div>
             <div className="mb-5 inline-flex w-full items-center gap-8">
-              <h2 className="text-xl font-bold tracking-tighter sm:text-2xl">
+              <h2
+                className={cn(
+                  'font-mono',
+                  'text-xl font-bold tracking-tighter sm:text-2xl',
+                  'bg-gradient-to-b from-slate-950 to-slate-900 bg-clip-text text-transparent dark:from-slate-50 dark:to-slate-100',
+                )}
+              >
                 Certifications
               </h2>
               <div className="hidden w-full items-center gap-4 sm:inline-flex">
@@ -213,7 +226,13 @@ export default function TldrPage() {
             </div>
           </div>
           <div>
-            <h2 className="mb-5 text-xl font-bold tracking-tighter sm:text-2xl">
+            <h2
+              className={cn(
+                'font-mono',
+                'mb-5 text-xl font-bold tracking-tighter sm:text-2xl',
+                'bg-gradient-to-b from-slate-950 to-slate-900 bg-clip-text text-transparent dark:from-slate-50 dark:to-slate-100',
+              )}
+            >
               Projects
             </h2>
             <div className="flex flex-col gap-4 text-sm">

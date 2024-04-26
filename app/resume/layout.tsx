@@ -1,6 +1,5 @@
 import { ArrowBigLeft } from 'lucide-react'
 import Link from 'next/link'
-import './styles.css'
 
 export default function RootLayout({
   children,

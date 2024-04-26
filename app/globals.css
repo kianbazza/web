@@ -75,28 +75,13 @@
   }
 }
 
-body {
-  font-family: var(--font-inter);
-}
-
 @layer base {
   :root {
     @apply text-base sm:text-lg;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: var(--font-jetbrains-mono);
-    @apply bg-gradient-to-b from-slate-950 to-slate-900 bg-clip-text text-transparent dark:from-slate-50 dark:to-slate-100;
-  }
-
-  h1 {
-    padding-bottom: 0.05em;
-    margin-bottom: -0.05em;
+  body {
+    @apply font-sans;
   }
 
   .debug {
