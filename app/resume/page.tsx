@@ -120,12 +120,7 @@ const DATE_FORMAT_STR = 'MMM yyyy'
 
 export default function Page() {
   return (
-    <div className="flex flex-col gap-8">
-      <Link href="https://bazza.dev">
-        <div className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary">
-          <ArrowBigLeft className="h-4 w-4" /> Home
-        </div>
-      </Link>
+    <div className="flex flex-col gap-8 py-12">
       <div className="flex flex-col items-center gap-4">
         <h1 className="text-center text-4xl font-semibold tracking-tighter">
           Kian Bazarjani
