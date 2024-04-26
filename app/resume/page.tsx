@@ -153,7 +153,7 @@ export default function Page() {
                 Apr 2023
               </span>
 
-              <h3 className="mt-1.5 font-medium">University of Ottawa</h3>
+              <h3 className="mt-1.5 font-semibold">University of Ottawa</h3>
             </div>
             <div className="mt-2 flex w-full justify-between dark:text-muted-foreground">
               <p className="text-xs">
@@ -174,7 +174,7 @@ export default function Page() {
               className="flex flex-col"
             >
               <h3>
-                <span className="font-medium">{organization}</span>
+                <span className="font-semibold">{organization}</span>
               </h3>
               <ul className="mt-2 space-y-1 text-xs">
                 {certifications.map((c, index) => (
@@ -223,7 +223,7 @@ export default function Page() {
                 </span>
               </div>
               <h3 className="mt-1.5">
-                <span className="font-medium">{w.title}</span> @ {w.company}
+                <span className="font-semibold">{w.title}</span> @ {w.company}
               </h3>
               <ul className="ml-4 mt-2 list-outside list-disc space-y-2 text-xs">
                 {w.content.map((c, index) => (
@@ -250,7 +250,7 @@ export default function Page() {
               className="flex flex-col"
             >
               <h3 className="flex items-center gap-2">
-                <span className="font-medium">{p.name}</span>
+                <span className="font-semibold">{p.name}</span>
                 <div className="flex gap-1">
                   {p.technologies.map((t) => (
                     <Badge
