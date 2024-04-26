@@ -23,6 +23,7 @@ import aws from '@/public/aws.svg'
 import redHatBannerDark from '@/public/redhat_banner_darkmode.svg'
 import awsDark from '@/public/aws_darkmode.svg'
 import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
 export default function TldrPage() {
   return (
@@ -59,9 +60,9 @@ export default function TldrPage() {
                 className="h-7 w-7 rounded-lg"
                 variant="ghost"
               >
-                <A href="/resume">
+                <Link href="/resume">
                   <FileText className="h-4 w-4" />
-                </A>
+                </Link>
               </Button>
               <Button
                 className="h-7 w-7 rounded-lg"
@@ -97,12 +98,12 @@ export default function TldrPage() {
               </Chat>
               <Chat>
                 ...or{' '}
-                <A
+                <Link
                   className="font-bold underline decoration-red-600/30 decoration-2 hover:decoration-red-600/70 dark:decoration-red-600/70 dark:hover:decoration-red-600/100"
-                  href="https://bazza.dev/resume"
+                  href="/resume"
                 >
                   {`if you're here for my resume, click here!`}
-                </A>{' '}
+                </Link>{' '}
                 👈
               </Chat>
               <Chat>Cheers! 🍻</Chat>
