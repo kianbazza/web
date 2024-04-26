@@ -52,7 +52,7 @@ export default function TldrPage() {
                 className="h-7 w-7 rounded-lg"
                 variant="ghost"
               >
-                <A href="https://go.bazza.dev/resume">
+                <A href="https://bazza.dev/resume">
                   <FileText className="h-4 w-4" />
                 </A>
               </Button>
@@ -92,7 +92,7 @@ export default function TldrPage() {
                 ...or{' '}
                 <A
                   className="font-bold underline decoration-red-600/30 decoration-2 hover:decoration-red-600/70 dark:decoration-red-600/70 dark:hover:decoration-red-600/100"
-                  href="https://go.bazza.dev/resume"
+                  href="https://bazza.dev/resume"
                 >
                   {`if you're here for my resume, click here!`}
                 </A>{' '}
