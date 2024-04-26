@@ -122,7 +122,7 @@ export default function Page() {
   return (
     <div className="flex flex-col gap-8 py-12">
       <div className="flex flex-col items-center gap-4">
-        <h1 className="text-center text-5xl font-semibold tracking-tighter">
+        <h1 className="text-center text-4xl font-semibold tracking-tighter sm:text-5xl">
           Kian Bazarjani
         </h1>
         <div className="flex items-center gap-4">
@@ -132,14 +132,15 @@ export default function Page() {
               href={social.href}
             >
               <span className="inline-flex items-center gap-1.5 text-xs">
-                <social.icon className="h-4 w-4" /> {social.label}
+                <social.icon className="h-4 w-4" />{' '}
+                <span className="text-muted-foreground">{social.label}</span>
               </span>
             </Link>
           ))}
         </div>
       </div>
       <div className="flex flex-col gap-4">
-        <h2 className="bg-none text-4xl font-bold tracking-tighter text-zinc-300 dark:text-primary">
+        <h2 className="bg-none text-3xl font-bold tracking-tighter text-zinc-300 dark:text-primary sm:text-4xl">
           Education
         </h2>
         <ul>
@@ -163,7 +164,7 @@ export default function Page() {
         </ul>
       </div>
       <div className="flex flex-col gap-4">
-        <h2 className="bg-none text-4xl font-bold tracking-tighter text-zinc-300 dark:text-primary">
+        <h2 className="bg-none text-3xl font-bold tracking-tighter text-zinc-300 dark:text-primary sm:text-4xl">
           Certifications
         </h2>
         <ul className="space-y-4">
@@ -180,12 +181,13 @@ export default function Page() {
                   <li key={index}>
                     <span className="dark:text-muted-foreground">{c.name}</span>{' '}
                     <Badge
+                      variant="secondary"
                       className={cn(
                         'h-fit w-fit px-2 py-0 text-xs font-medium',
                         c.status === 'In Progress' &&
-                          'bg-blue-600/10 text-blue-700 hover:bg-blue-600/10',
+                          'dark:hover:bg-sky-500/300 h-fit cursor-default select-none whitespace-nowrap bg-sky-700/20 font-medium text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50',
                         c.status === 'Pending Exam' &&
-                          'bg-purple-600/10 text-purple-700 hover:bg-purple-600/10',
+                          'dark:hover:bg-purple-500/300 h-fit cursor-default select-none whitespace-nowrap bg-purple-700/20 font-medium text-purple-950 hover:bg-purple-700/10 dark:bg-purple-500/20 dark:text-purple-50',
                       )}
                     >
                       {c.status}
@@ -198,7 +200,7 @@ export default function Page() {
         </ul>
       </div>
       <div className="flex flex-col gap-4">
-        <h2 className="bg-none text-4xl font-bold tracking-tighter text-zinc-300 dark:text-primary">
+        <h2 className="bg-none text-3xl font-bold tracking-tighter text-zinc-300 dark:text-primary sm:text-4xl">
           Work
         </h2>
         <ul className="space-y-6">
@@ -238,7 +240,7 @@ export default function Page() {
         </ul>
       </div>
       <div className="flex flex-col gap-4">
-        <h2 className="bg-none text-4xl font-bold tracking-tighter text-zinc-300 dark:text-primary">
+        <h2 className="bg-none text-3xl font-bold tracking-tighter text-zinc-300 dark:text-primary sm:text-4xl">
           Projects
         </h2>
         <ul className="space-y-6">
@@ -269,7 +271,7 @@ export default function Page() {
         </ul>
       </div>
       <div className="flex flex-col gap-4">
-        <h2 className="bg-none text-4xl font-bold tracking-tighter text-zinc-300 dark:text-primary">
+        <h2 className="bg-none text-3xl font-bold tracking-tighter text-zinc-300 dark:text-primary sm:text-4xl">
           More
         </h2>
         <ul className="space-y-1 text-xs">
