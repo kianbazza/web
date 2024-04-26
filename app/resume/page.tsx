@@ -122,7 +122,7 @@ export default function Page() {
   return (
     <div className="flex flex-col gap-8 py-12">
       <div className="flex flex-col items-center gap-4">
-        <h1 className="text-center text-4xl font-semibold tracking-tighter">
+        <h1 className="text-center text-5xl font-semibold tracking-tighter">
           Kian Bazarjani
         </h1>
         <div className="flex items-center gap-4">
@@ -139,14 +139,14 @@ export default function Page() {
         </div>
       </div>
       <div className="flex flex-col gap-4">
-        <h2 className="bg-none text-3xl font-bold tracking-tighter text-zinc-300">
+        <h2 className="bg-none text-4xl font-bold tracking-tighter text-zinc-300 dark:text-primary">
           Education
         </h2>
         <ul>
           <li>
             <div className="flex w-full flex-col ">
               <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                <CalendarRange className="mr-0.5 h-4 w-4 text-zinc-600" />
+                <CalendarRange className="mr-0.5 h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                 Sep 2018
                 <ArrowRight className="h-3 w-3" />
                 Apr 2023
@@ -154,7 +154,7 @@ export default function Page() {
 
               <h3 className="mt-1.5 font-medium">University of Ottawa</h3>
             </div>
-            <div className="flex w-full justify-between">
+            <div className="mt-2 flex w-full justify-between dark:text-muted-foreground">
               <p className="text-xs">
                 BSc with Honours in Computer Science, Data Science Stream
               </p>
@@ -163,7 +163,7 @@ export default function Page() {
         </ul>
       </div>
       <div className="flex flex-col gap-4">
-        <h2 className="bg-none text-3xl font-bold tracking-tighter text-zinc-300">
+        <h2 className="bg-none text-4xl font-bold tracking-tighter text-zinc-300 dark:text-primary">
           Certifications
         </h2>
         <ul className="space-y-4">
@@ -178,7 +178,7 @@ export default function Page() {
               <ul className="mt-2 space-y-1 text-xs">
                 {certifications.map((c, index) => (
                   <li key={index}>
-                    {c.name}{' '}
+                    <span className="dark:text-muted-foreground">{c.name}</span>{' '}
                     <Badge
                       className={cn(
                         'h-fit w-fit px-2 py-0 text-xs font-medium',
@@ -198,7 +198,7 @@ export default function Page() {
         </ul>
       </div>
       <div className="flex flex-col gap-4">
-        <h2 className="bg-none text-3xl font-bold tracking-tighter text-zinc-300">
+        <h2 className="bg-none text-4xl font-bold tracking-tighter text-zinc-300 dark:text-primary">
           Work
         </h2>
         <ul className="space-y-6">
@@ -209,11 +209,12 @@ export default function Page() {
             >
               <div className="flex items-center gap-4 text-muted-foreground">
                 <span className="inline-flex items-center text-xs">
-                  <MapPin className="mr-1 h-4 w-4 text-zinc-600" /> {w.location}
+                  <MapPin className="mr-1 h-4 w-4 text-zinc-600 dark:text-zinc-300" />{' '}
+                  {w.location}
                 </span>
 
                 <span className="inline-flex items-center gap-1 text-xs">
-                  <CalendarRange className="mr-1 h-4 w-4 text-zinc-600" />
+                  <CalendarRange className="mr-1 h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                   {format(w.startDate, DATE_FORMAT_STR)}
                   <ArrowRight className="h-3 w-3" />
                   {w.endDate ? format(w.endDate, DATE_FORMAT_STR) : 'Present'}
@@ -224,7 +225,12 @@ export default function Page() {
               </h3>
               <ul className="ml-4 mt-2 list-outside list-disc space-y-2 text-xs">
                 {w.content.map((c, index) => (
-                  <li key={index}>{c}</li>
+                  <li
+                    className="dark:text-muted-foreground"
+                    key={index}
+                  >
+                    {c}
+                  </li>
                 ))}
               </ul>
             </li>
@@ -232,7 +238,7 @@ export default function Page() {
         </ul>
       </div>
       <div className="flex flex-col gap-4">
-        <h2 className="bg-none text-3xl font-bold tracking-tighter text-zinc-300">
+        <h2 className="bg-none text-4xl font-bold tracking-tighter text-zinc-300 dark:text-primary">
           Projects
         </h2>
         <ul className="space-y-6">
@@ -255,27 +261,41 @@ export default function Page() {
                   ))}
                 </div>
               </h3>
-              <p className="mt-2 text-xs">{p.description}</p>
+              <p className="mt-2 text-xs dark:text-muted-foreground">
+                {p.description}
+              </p>
             </li>
           ))}
         </ul>
       </div>
       <div className="flex flex-col gap-4">
-        <h2 className="bg-none text-3xl font-bold tracking-tighter text-zinc-300">
+        <h2 className="bg-none text-4xl font-bold tracking-tighter text-zinc-300 dark:text-primary">
           More
         </h2>
         <ul className="space-y-1 text-xs">
           <li>
-            <b>Languages:</b> {languages.join(', ')}
+            <b>Languages:</b>{' '}
+            <span className="dark:text-muted-foreground">
+              {languages.join(', ')}
+            </span>
           </li>
           <li>
-            <b>Tools/Technologies:</b> {tools.join(', ')}
+            <b>Tools/Technologies:</b>{' '}
+            <span className="dark:text-muted-foreground">
+              {tools.join(', ')}
+            </span>
           </li>
           <li>
-            <b>Frameworks:</b> {frameworks.join(', ')}
+            <b>Frameworks:</b>{' '}
+            <span className="dark:text-muted-foreground">
+              {frameworks.join(', ')}
+            </span>
           </li>
           <li>
-            <b>Libraries:</b> {libraries.join(', ')}
+            <b>Libraries:</b>{' '}
+            <span className="dark:text-muted-foreground">
+              {libraries.join(', ')}
+            </span>
           </li>
         </ul>
       </div>
