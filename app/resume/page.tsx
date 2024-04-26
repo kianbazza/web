@@ -1,12 +1,9 @@
-import './styles.css'
 import {
-  ArrowBigLeft,
   ArrowRight,
   CalendarRange,
   Github,
   Linkedin,
   MapPin,
-  MoveRight,
   Send,
 } from 'lucide-react'
 import { format } from 'date-fns'
@@ -18,14 +15,17 @@ const socials = [
   {
     icon: Send,
     label: 'kian@bazza.dev',
+    href: 'mailto:kian@bazza.dev',
   },
   {
     icon: Linkedin,
     label: 'kianbazarjani',
+    href: 'https://linkedin.com/in/kianbazarjani',
   },
   {
     icon: Github,
     label: 'bazzadev',
+    href: 'https://github.com/bazzadev',
   },
 ]
 
@@ -40,7 +40,7 @@ const work = [
       'Developed a Next.js (React) web application for end users to interface with an internal Privileged Access Management (PAM) solution; utilized TypeScript for type safety, React Query for async data management, React Server Components (RSCs) for server-side rendering, and designed a custom component library using Radix UI components for a modern, accessible UI/UX.',
       'Deployed an AWS-based development lab mirroring the production environment for prototyping; deployed, configured, and maintained core services and workstations; created detailed documentation and onboarding guides for all services.',
       'Hardened infrastructure using Microsoft best practices, implemented tiered environment models, applied GPOs to manage access and permissions, and leveraged AWS services (EC2, Lambda, EventBridge, S3).',
-      'Automated training processes by integrating a Learning Management System (LMS) with the IdAM solution using Microsoft Identity Manager (MIM); developed a custom synchronization service management agent for updating user records in external databases based on LMS course completion data, enhancing compliance and reducing overhead and human error.',
+      'Automated training processes by integrating a Learning Management System (LMS) with an internal Identity and Access Management (IdAM) solution using Microsoft Identity Manager (MIM); developed a custom synchronization service management agent for updating user records in external databases based on LMS course completion data, enhancing compliance and reducing overhead and human error.',
     ],
   },
   {
@@ -127,12 +127,14 @@ export default function Page() {
         </h1>
         <div className="flex items-center gap-4">
           {socials.map((social) => (
-            <span
+            <Link
               key={social.label}
-              className="inline-flex items-center gap-1.5 text-xs"
+              href={social.href}
             >
-              <social.icon className="h-4 w-4" /> {social.label}
-            </span>
+              <span className="inline-flex items-center gap-1.5 text-xs">
+                <social.icon className="h-4 w-4" /> {social.label}
+              </span>
+            </Link>
           ))}
         </div>
       </div>
@@ -170,7 +172,7 @@ export default function Page() {
               key={organization}
               className="flex flex-col"
             >
-              <h3 className="">
+              <h3>
                 <span className="font-medium">{organization}</span>
               </h3>
               <ul className="mt-2 space-y-1 text-xs">

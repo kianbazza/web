@@ -1,5 +1,6 @@
 import { ArrowBigLeft } from 'lucide-react'
 import Link from 'next/link'
+import './styles.css'
 
 export default function RootLayout({
   children,
@@ -8,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <div className="m-auto flex min-h-screen max-w-screen-md flex-col p-4">
-      <Link href="https://bazza.dev">
+      <Link href="/">
         <div className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary">
           <ArrowBigLeft className="h-4 w-4" /> Home
         </div>

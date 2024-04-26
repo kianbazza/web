@@ -52,7 +52,7 @@ export default function TldrPage() {
                 className="h-7 w-7 rounded-lg"
                 variant="ghost"
               >
-                <A href="https://bazza.dev/resume">
+                <A href="/resume">
                   <FileText className="h-4 w-4" />
                 </A>
               </Button>
