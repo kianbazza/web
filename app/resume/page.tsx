@@ -33,21 +33,22 @@ const work = [
   {
     title: 'Software Developer',
     company: 'National Defence',
-    startDate: new Date(2023, 7),
+    startDate: new Date(2023, 6),
     endDate: null,
     location: 'Ottawa, ON',
     content: [
       'Developed a Next.js (React) web application for end users to interface with an internal Privileged Access Management (PAM) solution; utilized TypeScript for type safety, React Query for async data management, React Server Components (RSCs) for server-side rendering, and designed a custom component library using Radix UI components for a modern, accessible UI/UX.',
       'Deployed an AWS-based development lab mirroring the production environment for prototyping; deployed, configured, and maintained core services and workstations; created detailed documentation and onboarding guides for all services.',
-      'Hardened infrastructure using Microsoft best practices, implemented tiered environment models, applied GPOs to manage access and permissions, and leveraged AWS services (EC2, Lambda, EventBridge, S3).',
+      'Deployed and maintained a Red Hat OpenShift cluster in AWS, which allowed clients to efficiently develop and test their containerized applications, leading to a significant reduction in time-to-production.',
+      'Hardened infrastructure using Microsoft best practices, implemented tiered environment models, applied GPOs to manage access and permissions, and leveraged AWS services (EC2, Lambda, EventBridge, S3, IAM).',
       'Automated training processes by integrating a Learning Management System (LMS) with an internal Identity and Access Management (IdAM) solution using Microsoft Identity Manager (MIM); developed a custom synchronization service management agent for updating user records in external databases based on LMS course completion data, enhancing compliance and reducing overhead and human error.',
     ],
   },
   {
     title: 'Software Developer Intern',
     company: 'National Defence',
-    startDate: new Date(2023, 7),
-    endDate: new Date(2021, 8),
+    startDate: new Date(2021, 8),
+    endDate: new Date(2023, 4),
     location: 'Ottawa, ON',
     content: [
       'Participated in the initial delivery of a classified project with a combined budget of $249 million',
@@ -72,7 +73,7 @@ const certifications = [
     certifications: [
       {
         name: 'Red Hat Certified System Administrator',
-        status: 'In Progress',
+        status: 'Pending Exam',
       },
       {
         name: 'Red Hat Certified Specialist in Containers',
