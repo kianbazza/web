@@ -31,7 +31,7 @@ const socials = [
 
 const work = [
   {
-    title: 'Software Developer',
+    title: 'Software/Cloud Developer',
     company: 'National Defence',
     startDate: new Date(2023, 6),
     endDate: null,
@@ -73,11 +73,11 @@ const certifications = [
     certifications: [
       {
         name: 'Red Hat Certified System Administrator',
-        status: 'Pending Exam',
+        status: 'Certified',
       },
       {
-        name: 'Red Hat Certified Specialist in Containers',
-        status: 'Pending Exam',
+        name: 'Red Hat Certified OpenShift Administrator',
+        status: 'In Progress',
       },
     ],
   },
@@ -189,6 +189,8 @@ export default function Page() {
                           'dark:hover:bg-sky-500/300 h-fit cursor-default select-none whitespace-nowrap bg-sky-700/20 font-medium text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50',
                         c.status === 'Pending Exam' &&
                           'dark:hover:bg-purple-500/300 h-fit cursor-default select-none whitespace-nowrap bg-purple-700/20 font-medium text-purple-950 hover:bg-purple-700/10 dark:bg-purple-500/20 dark:text-purple-50',
+                        c.status === 'Certified' &&
+                          'dark:hover:bg-green-500/300 h-fit cursor-default select-none whitespace-nowrap bg-green-700/20 font-medium text-green-950 hover:bg-green-700/10 dark:bg-green-500/20 dark:text-green-50',
                       )}
                     >
                       {c.status}
