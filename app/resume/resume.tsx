@@ -1,4 +1,5 @@
 import {
+  AppWindowIcon,
   ArrowRight,
   CalendarRange,
   Github,
@@ -15,6 +16,11 @@ import { GitHubIcon } from '@/lib/icons'
 import { buttonVariants } from '@/components/ui/button'
 
 const socials = [
+  {
+    icon: AppWindowIcon,
+    label: 'bazza.dev',
+    href: 'https://bazza.dev',
+  },
   {
     icon: Send,
     label: 'kian@bazza.dev',
