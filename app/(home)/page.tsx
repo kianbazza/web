@@ -55,7 +55,7 @@ export default function TldrPage() {
                 @ <span className="align-middle">🇨🇦</span>
               </a>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-2">
               <Button
                 className="h-7 w-7 rounded-lg"
                 variant="ghost"
@@ -82,6 +82,35 @@ export default function TldrPage() {
                   <Linkedin className="h-4 w-4" />
                 </A>
               </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className="ml-4 h-7 w-7 rounded-lg border-2 border-yellow-500 bg-zinc-200/70 hover:bg-zinc-200 dark:border-yellow-500 dark:bg-zinc-50 dark:hover:bg-zinc-200"
+                      size="icon"
+                    >
+                      <A
+                        className="relative h-4 w-4"
+                        href="https://buymeacoffee.com/bazzadev"
+                      >
+                        <Image
+                          src="/bmc-logo.svg"
+                          alt="Buy Me A Coffee"
+                          className="h-4 w-4"
+                          fill
+                          objectFit="contain"
+                        />
+                      </A>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="bottom"
+                    className="text-xs"
+                  >
+                    Support my work - buy me a coffee!
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               <DarkModeToggle />
             </div>
           </div>
