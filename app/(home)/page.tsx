@@ -281,10 +281,10 @@ export default function TldrPage() {
                 <div className="flex flex-col gap-1">
                   <div className="inline-flex items-center gap-2">
                     <A
-                      href="https://code.bazza.dev/"
+                      href="https://avelin.app/"
                       className="hover:underline"
                     >
-                      code.
+                      avelin.
                     </A>
                     <Badge
                       className="dark:hover:bg-green-500/300 cursor-default select-none bg-green-700/20 font-medium text-green-950 hover:bg-green-700/10 dark:bg-green-500/20 dark:text-green-50"
@@ -306,19 +306,19 @@ export default function TldrPage() {
                     >
                       ui labs.
                     </A>
-                    <Badge
-                      className="dark:hover:bg-green-500/300 cursor-default select-none bg-green-700/20 font-medium text-green-950 hover:bg-green-700/10 dark:bg-green-500/20 dark:text-green-50"
-                      variant="secondary"
-                    >
-                      New!
-                    </Badge>
+                    {/* <Badge */}
+                    {/*   className="dark:hover:bg-green-500/300 cursor-default select-none bg-green-700/20 font-medium text-green-950 hover:bg-green-700/10 dark:bg-green-500/20 dark:text-green-50" */}
+                    {/*   variant="secondary" */}
+                    {/* > */}
+                    {/*   New! */}
+                    {/* </Badge> */}
                   </div>
                   <p className="text-zinc-500">
                     My UI laboratory for designing beautiful components.
                   </p>
                 </div>
               </div>
-              <div>
+              <div className="hidden">
                 <div className="flex flex-col gap-1">
                   <div className="inline-flex items-center gap-2">
                     <A
@@ -352,7 +352,7 @@ export default function TldrPage() {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col gap-1">
+              <div className="hidden flex-col gap-1">
                 <div className="inline-flex items-center gap-2">
                   <A
                     className="hover:underline"
@@ -369,80 +369,86 @@ export default function TldrPage() {
                 </div>
                 <p className="text-zinc-500">File sharing with zero hassle.</p>
               </div>
-              <div className="flex flex-col gap-1">
-                <div className="inline-flex items-center gap-2">
-                  <A className="cursor-not-allowed">PAM Portal for MIM</A>
-                  <div className="inline-flex items-center gap-1">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Badge className="font-medium">Private</Badge>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-xs">
-                            The source code for this project will not be
-                            released.
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+              <div className="hidden">
+                <div className="flex flex-col gap-1">
+                  <div className="inline-flex items-center gap-2">
+                    <A className="cursor-not-allowed">PAM Portal for MIM</A>
+                    <div className="inline-flex items-center gap-1">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Badge className="font-medium">Private</Badge>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-xs">
+                              The source code for this project will not be
+                              released.
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
 
-                    {/* <Badge */}
-                    {/*   className="cursor-default select-none bg-sky-700/20 font-medium text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50 dark:hover:bg-sky-500/30" */}
-                    {/*   variant="secondary" */}
-                    {/* > */}
-                    {/*   Upcoming */}
-                    {/* </Badge> */}
+                      {/* <Badge */}
+                      {/*   className="cursor-default select-none bg-sky-700/20 font-medium text-sky-950 hover:bg-sky-700/10 dark:bg-sky-500/20 dark:text-sky-50 dark:hover:bg-sky-500/30" */}
+                      {/*   variant="secondary" */}
+                      {/* > */}
+                      {/*   Upcoming */}
+                      {/* </Badge> */}
+                    </div>
                   </div>
+                  <p className="text-zinc-500">
+                    Beautiful user interface for{' '}
+                    <A
+                      className="hover:underline"
+                      href="https://learn.microsoft.com/en-us/microsoft-identity-manager/pam/privileged-identity-management-for-active-directory-domain-services"
+                    >
+                      MIM
+                    </A>
+                    {`'s Privileged Access Management solution.`}
+                  </p>
                 </div>
-                <p className="text-zinc-500">
-                  Beautiful user interface for{' '}
-                  <A
-                    className="hover:underline"
-                    href="https://learn.microsoft.com/en-us/microsoft-identity-manager/pam/privileged-identity-management-for-active-directory-domain-services"
-                  >
-                    MIM
-                  </A>
-                  {`'s Privileged Access Management solution.`}
-                </p>
               </div>
-              <div className="flex flex-col gap-1">
-                <div className="inline-flex items-center gap-2">
-                  <A
-                    className="hover:underline"
-                    href="https://github.com/bazzadev/simplemenus"
-                  >
-                    Simple Menus
-                  </A>
-                  <Badge
-                    className="cursor-default select-none bg-amber-700/20 font-medium text-amber-950 hover:bg-amber-700/10 dark:bg-amber-500/20 dark:text-amber-50 dark:hover:bg-amber-500/30"
-                    variant="secondary"
-                  >
-                    Archived
-                  </Badge>
+              <div className="hidden">
+                <div className="flex flex-col gap-1">
+                  <div className="inline-flex items-center gap-2">
+                    <A
+                      className="hover:underline"
+                      href="https://github.com/bazzadev/simplemenus"
+                    >
+                      Simple Menus
+                    </A>
+                    <Badge
+                      className="cursor-default select-none bg-amber-700/20 font-medium text-amber-950 hover:bg-amber-700/10 dark:bg-amber-500/20 dark:text-amber-50 dark:hover:bg-amber-500/30"
+                      variant="secondary"
+                    >
+                      Archived
+                    </Badge>
+                  </div>
+                  <p className="text-zinc-500">
+                    Command line interface builder for Java applications.
+                  </p>
                 </div>
-                <p className="text-zinc-500">
-                  Command line interface builder for Java applications.
-                </p>
               </div>
-              <div className="flex flex-col gap-1">
-                <div className="inline-flex items-center gap-2">
-                  <A
-                    className="hover:underline"
-                    href="https://github.com/bazzadev/deltacore"
-                  >
-                    DeltaCore
-                  </A>
-                  <Badge
-                    className="cursor-default select-none bg-amber-700/20 font-medium text-amber-950 hover:bg-amber-700/10 dark:bg-amber-500/20 dark:text-amber-50 dark:hover:bg-amber-500/30"
-                    variant="secondary"
-                  >
-                    Archived
-                  </Badge>
+              <div className="hidden">
+                <div className="flex flex-col gap-1">
+                  <div className="inline-flex items-center gap-2">
+                    <A
+                      className="hover:underline"
+                      href="https://github.com/bazzadev/deltacore"
+                    >
+                      DeltaCore
+                    </A>
+                    <Badge
+                      className="cursor-default select-none bg-amber-700/20 font-medium text-amber-950 hover:bg-amber-700/10 dark:bg-amber-500/20 dark:text-amber-50 dark:hover:bg-amber-500/30"
+                      variant="secondary"
+                    >
+                      Archived
+                    </Badge>
+                  </div>
+                  <p className="text-zinc-500">
+                    Core plugin for the DeltaCore SMP Minecraft server.
+                  </p>
                 </div>
-                <p className="text-zinc-500">
-                  Core plugin for the DeltaCore SMP Minecraft server.
-                </p>
               </div>
             </div>
           </div>
