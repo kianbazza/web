@@ -2,8 +2,6 @@ export const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     {...props}
     viewBox="0 0 20 20"
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
   >
     <title>github [#142]</title>
     <desc>Created with Sketch.</desc>
@@ -11,9 +9,9 @@ export const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <g
       id="Page-1"
       stroke="none"
-      stroke-width="1"
+      strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g
         id="Dribbble-Light-Preview"
