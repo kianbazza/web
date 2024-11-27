@@ -70,10 +70,17 @@ const work = [
 
 const projects = [
   {
-    name: 'code.',
-    repoUrl: 'https://github.com/bazzadev/code',
-    projectUrl: 'https://code.bazza.dev/',
-    technologies: ['React', 'Next.js', 'WebRTC', 'PostgreSQL'],
+    name: 'Avelin',
+    repoUrl: 'https://github.com/avelinapp/avelin',
+    projectUrl: 'https://avelin.app/',
+    technologies: [
+      'React',
+      'Next.js',
+      'WebSockets',
+      'PostgreSQL',
+      'Kubernetes',
+      'Argo CD',
+    ],
     description: 'Collaborative code editing on the web.',
   },
 ]
