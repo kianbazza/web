@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "pnpm check && next build",
     "start": "next start",
     "format": "biome format --write .",
     "lint": "biome lint --write .",
