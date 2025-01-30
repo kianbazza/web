@@ -16,7 +16,7 @@ const containerVariants: Variants = {
     opacity: 1,
     transition: {
       delayChildren: 0,
-      staggerChildren: 0.3,
+      staggerChildren: 0.5,
     },
   },
 }
@@ -114,7 +114,7 @@ export default function Home() {
         <motion.div className="space-y-2" variants={sectionVariants}>
           <h1 className="font-mono text-sm font-bold text-sand-8">Career</h1>
           <div className="flex flex-col gap-1.5 font-mono">
-            <div className="grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content] gap-x-4 items-center">
+            <div className="grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content] gap-x-6 items-center">
               <span className="font-bold col-span-1">2025</span>
               <span className="text-sand-10 font-medium col-span-1">
                 National Defence
@@ -124,14 +124,14 @@ export default function Home() {
                 <span className="text-sand-10">(A)</span>
               </span>
             </div>
-            <div className=" gap-x-4 grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content]">
+            <div className=" gap-x-6 grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content]">
               <span className="font-bold">2023</span>
               <span className="text-sand-10 font-medium">National Defence</span>
               <span className="sm:col-span-1 col-start-2">
                 Software Developer
               </span>
             </div>
-            <div className=" gap-x-4 grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content]">
+            <div className=" gap-x-6 grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content]">
               <span className="font-bold">2021</span>
               <span className="text-sand-10 font-medium">National Defence</span>
               <span className="sm:col-span-1 col-start-2">
@@ -180,31 +180,29 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <div className="space-y-1 group">
-                <div className="flex items-center gap-6 w-full">
+              <div className="inline-flex items-center gap-6 group">
+                <div className="gap-x-6 grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content]">
                   <span className="font-bold">2025</span>
                   <span className="text-sand-10 font-medium">Red Hat</span>
-                  <span className="hidden sm:block">
+                  <span className="sm:block hidden">
                     Certified System Administrator
                   </span>
-                  <span className="group-hover:inline-flex hidden items-center gap-2 font-bold ml-2">
-                    View
-                    <ArrowRightIcon strokeWidth={2.5} className="size-4" />
-                  </span>
+                  <span className="col-start-2 sm:hidden">RHCSA</span>
                 </div>
+                <span className="group-hover:inline-flex hidden items-center gap-2 font-bold ml-2">
+                  View
+                  <ArrowRightIcon strokeWidth={2.5} className="size-4" />
+                </span>
               </div>
             </Link>
-            <div className="space-y-1">
-              <div className="flex items-center gap-6 w-full">
-                <span className="font-bold">2023</span>
-                <span className="sm:hidden text-sand-10 font-medium">
-                  uOttawa
-                </span>
-                <span className="hidden sm:block text-sand-10 font-medium">
-                  University of Ottawa
-                </span>
-                <span className="hidden sm:block">BSc, Computer Science</span>
-              </div>
+            <div className="gap-x-6 grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content]">
+              <span className="font-bold">2023</span>
+              <span className="text-sand-10 font-medium">
+                University of Ottawa
+              </span>
+              <span className="sm:col-span-1 col-start-2">
+                BSc., Computer Science
+              </span>
             </div>
           </div>
         </motion.div>
