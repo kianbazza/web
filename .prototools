@@ -1,0 +1,7 @@
+bun = "1.2.1"
+node = "~22"
+pnpm = "9.15.4"
+
+[settings]
+auto-install = true
+auto-clean = true
