@@ -172,7 +172,7 @@ export default function Home() {
             </div>
           </div>
         </motion.div>
-        <motion.div className="space-y-2" variants={sectionVariants}>
+        <motion.div className="space-y-2 mb-8" variants={sectionVariants}>
           <h1 className="font-mono text-sm font-bold text-sand-8">Education</h1>
           <div className="flex flex-col gap-1.5 font-mono">
             <Link
