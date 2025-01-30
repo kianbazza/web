@@ -4,6 +4,7 @@ import { berkeleyMono, inter } from '@/lib/fonts'
 
 export const metadata: Metadata = {
   title: 'Kian Bazarjani',
+  description: 'Kian Bazarjani. Designing beautiful, modern interfaces. Building avelin.app.',
 }
 
 export default function RootLayout({
