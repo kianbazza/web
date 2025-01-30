@@ -31,5 +31,20 @@ export const berkeleyMono = localFont({
       weight: '600',
       style: 'normal',
     },
+    {
+      path: './fonts/berkeley-mono/BerkeleyMono-Bold.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: './fonts/berkeley-mono/BerkeleyMono-ExtraBold.woff2',
+      weight: '800',
+      style: 'normal',
+    },
+    {
+      path: './fonts/berkeley-mono/BerkeleyMono-Black.woff2',
+      weight: '900',
+      style: 'normal',
+    },
   ],
 })

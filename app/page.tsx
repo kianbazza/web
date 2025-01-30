@@ -1,9 +1,224 @@
+'use client'
+
+import { Signature } from '@/components/signature'
+import { LogoAvelin } from '@/lib/icons'
+import { cn } from '@/lib/utils'
+import { ArrowRightIcon } from 'lucide-react'
+import { motion, type Variants } from 'motion/react'
+import Link from 'next/link'
+import type { HTMLAttributes } from 'react'
+
+const containerVariants: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0,
+      staggerChildren: 0.3,
+    },
+  },
+}
+
+const sectionVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.99,
+    translateY: 5,
+    filter: 'blur(2px)',
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    translateY: 0,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.5,
+      ease: 'easeOut',
+    },
+  },
+}
+
 export default function Home() {
   return (
-    <div className="h-screen w-screen">
-      <div className="max-w-screen-lg border border-red-500 mx-auto">
-        <div className="text-3xl font-mono tracking-tighter">Hello!</div>
-      </div>
+    <div className="h-screen w-screen p-4 select-none">
+      <motion.div
+        className="max-w-screen-md mx-auto my-auto flex flex-col gap-6"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div className="space-y-8" variants={sectionVariants}>
+          <Signature className="max-w-[300px] sm:max-w-[400px] pt-4 stroke-sand-12" />
+          <div className="space-y-4 tracking-[-0.01em]">
+            <p className="font-mono font-semibold text-sand-9">
+              I'm a <H>developer</H> with a passion for designing{' '}
+              <H>beautiful, modern interfaces</H>.
+            </p>
+            <p className="font-mono font-semibold text-sand-9">
+              My professional experience in <H>backend systems</H> — AWS, Linux
+              and Kubernetes — help me bring my ideas to life.
+            </p>
+            <p className="font-mono font-semibold text-sand-9">
+              Currently building{' '}
+              <Link href="https://avelin.app">
+                <H className="hover:bg-sand-12 hover:text-sand-1 border tracking-tighter border-transparent hover:border-sand-3 hover:drop-shadow-md py-1.5 rounded-xl px-2 transition-all duration-200 ease-in-out">
+                  <LogoAvelin
+                    className="size-5 inline text-center translate-y-[-1px] mr-1.5"
+                    style={{ verticalAlign: 'middle' }}
+                  />
+                  avelin.app
+                </H>
+              </Link>
+              .
+            </p>
+          </div>
+        </motion.div>
+        <motion.div className="h-[1px] w-full bg-sand-6" />
+        <motion.div className="space-y-2 font-mono" variants={sectionVariants}>
+          <h1 className="font-mono text-sm font-bold text-sand-8">Contact</h1>
+          <div className="flex flex-col gap-1.5 font-mono">
+            <Link href="mailto:kian@bazza.dev">
+              <div className="flex items-center gap-4 group">
+                <span className="font-bold">Mail</span>
+                <span className="text-sand-10 font-medium">kian@bazza.dev</span>
+                <span className="inline-flex items-center gap-2 invisible group-hover:visible font-bold ml-2">
+                  Open
+                  <ArrowRightIcon strokeWidth={2.5} className="size-4" />
+                </span>
+              </div>
+            </Link>
+            <Link href="https://linkedin.com/in/kianbazarjani">
+              <div className="flex items-center gap-4 group">
+                <span className="font-bold">LinkedIn</span>
+                <span className="text-sand-10 font-medium">kianbazarjani</span>
+                <span className="inline-flex items-center gap-2 invisible group-hover:visible font-bold ml-2">
+                  Open
+                  <ArrowRightIcon strokeWidth={2.5} className="size-4" />
+                </span>
+              </div>
+            </Link>
+            <Link href="https://x.com/kianbazza">
+              <div className="flex items-center gap-4 group">
+                <span className="font-bold">X</span>
+                <span className="text-sand-10 font-medium">kianbazza</span>
+                <span className="inline-flex items-center gap-2 invisible group-hover:visible font-bold ml-2">
+                  Open
+                  <ArrowRightIcon strokeWidth={2.5} className="size-4" />
+                </span>
+              </div>
+            </Link>
+          </div>
+        </motion.div>
+        <motion.div className="space-y-2" variants={sectionVariants}>
+          <h1 className="font-mono text-sm font-bold text-sand-8">Career</h1>
+          <div className="flex flex-col gap-1.5 font-mono">
+            <div className="grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content] gap-x-4 items-center">
+              <span className="font-bold col-span-1">2025</span>
+              <span className="text-sand-10 font-medium col-span-1">
+                National Defence
+              </span>
+              <span className="sm:col-span-1 col-start-2">
+                DevSecOps Lead Architect{' '}
+                <span className="text-sand-10">(A)</span>
+              </span>
+            </div>
+            <div className=" gap-x-4 grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content]">
+              <span className="font-bold">2023</span>
+              <span className="text-sand-10 font-medium">National Defence</span>
+              <span className="sm:col-span-1 col-start-2">
+                Software Developer
+              </span>
+            </div>
+            <div className=" gap-x-4 grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content]">
+              <span className="font-bold">2021</span>
+              <span className="text-sand-10 font-medium">National Defence</span>
+              <span className="sm:col-span-1 col-start-2">
+                Software Developer Intern
+              </span>
+            </div>
+          </div>
+        </motion.div>
+        <motion.div className="space-y-2" variants={sectionVariants}>
+          <h1 className="font-mono text-sm font-bold text-sand-8">Projects</h1>
+          <div className="flex flex-col gap-1.5 font-mono">
+            <div className="space-y-1">
+              <div className="flex items-center gap-6 w-full">
+                <span className="font-bold">2025</span>
+                <span className="text-sand-10 font-medium">Avelin</span>
+                <span className="hidden sm:block">
+                  Code together, right now.
+                </span>
+              </div>
+              <p className="text-sm text-sand-10">
+                {'/* Collaborative code editor in the browser. */'}
+              </p>
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-6 w-full">
+                <span className="font-bold">2023</span>
+                <span className="text-sand-10 font-medium">OET</span>
+                <span className="hidden sm:block">
+                  Combine enchanted items, optimized.
+                </span>
+              </div>
+
+              <p className="text-sm text-sand-10">
+                {
+                  '/* Minecraft tool for combining enchanted items in an anvil. */'
+                }
+              </p>
+            </div>
+          </div>
+        </motion.div>
+        <motion.div className="space-y-2" variants={sectionVariants}>
+          <h1 className="font-mono text-sm font-bold text-sand-8">Education</h1>
+          <div className="flex flex-col gap-1.5 font-mono">
+            <Link
+              href="https://rhtapps.redhat.com/verify?certId=240-088-146"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className="space-y-1 group">
+                <div className="flex items-center gap-6 w-full">
+                  <span className="font-bold">2025</span>
+                  <span className="text-sand-10 font-medium">Red Hat</span>
+                  <span className="hidden sm:block">
+                    Certified System Administrator
+                  </span>
+                  <span className="group-hover:inline-flex hidden items-center gap-2 font-bold ml-2">
+                    View
+                    <ArrowRightIcon strokeWidth={2.5} className="size-4" />
+                  </span>
+                </div>
+              </div>
+            </Link>
+            <div className="space-y-1">
+              <div className="flex items-center gap-6 w-full">
+                <span className="font-bold">2023</span>
+                <span className="sm:hidden text-sand-10 font-medium">
+                  uOttawa
+                </span>
+                <span className="hidden sm:block text-sand-10 font-medium">
+                  University of Ottawa
+                </span>
+                <span className="hidden sm:block">BSc, Computer Science</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
     </div>
   )
 }
+
+const H = ({
+  children,
+  className,
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) => (
+  <span className={cn('text-sand-12 font-bold', className)} {...props}>
+    {children}
+  </span>
+)

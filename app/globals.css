@@ -1,3 +1,28 @@
+@import "@radix-ui/colors/gray.css";
+@import "@radix-ui/colors/gray-dark.css";
+@import "@radix-ui/colors/sand.css";
+@import "@radix-ui/colors/sand-dark.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  * {
+    cursor: default;
+  }
+
+  /* Opt text-based inputs out of "forced" default cursor */
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  textarea,
+  select {
+    cursor: text;
+  }
+
+  /* A CSS media query to target mobile devices */
+  @media (max-width: 640px) {
+    font-size: 14px;
+  }
+}

@@ -21,7 +21,15 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "style": {
+        "useSelfClosingElements": {
+          "level": "off"
+        }
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off"
+      }
     }
   },
   "javascript": {
