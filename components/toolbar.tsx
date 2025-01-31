@@ -1,8 +1,11 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import { LightbulbIcon, LightbulbOffIcon, MonitorCogIcon } from 'lucide-react'
+import { useTheme } from 'next-themes'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 type ToolbarItem = {
   value: string
@@ -45,7 +48,19 @@ const toolbarItems: ToolbarItem[] = [
 ] as const
 
 export default function Toolbar() {
+  const [mounted, setMounted] = useState(false)
+
   const pathname = usePathname()
+  const { setTheme, theme } = useTheme()
+
+  // useEffect only runs on the client, so now we can safely show the UI
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
 
   return (
     <div
@@ -63,7 +78,7 @@ export default function Toolbar() {
             'flex items-center gap-2 px-4 py-2 rounded-xl shadow-sm backdrop-blur-md bg-sand-4 hover:bg-sand-5 transition-all duration-200 select-none',
             item.paths.includes(pathname) && 'bg-sand-6',
             item.disabled &&
-              '!cursor-not-allowed *:!cursor-not-allowed !pointer-events-none opacity-50',
+            '!cursor-not-allowed *:!cursor-not-allowed !pointer-events-none opacity-50',
           )}
         >
           <span className="font-medium mr-4">{item.name}</span>
@@ -72,6 +87,19 @@ export default function Toolbar() {
           )}
         </Link>
       ))}
+      <button
+        type="button"
+        className="mt-2 w-fit flex items-center gap-2 px-4 py-2 rounded-xl shadow-sm backdrop-blur-md bg-sand-4 hover:bg-sand-5 transition-all duration-200 select-none"
+        onClick={() =>
+          setTheme(
+            theme === 'dark' ? 'system' : theme === 'light' ? 'dark' : 'light',
+          )
+        }
+      >
+        {theme === 'light' && <LightbulbIcon className="size-4" />}
+        {theme === 'dark' && <LightbulbOffIcon className="size-4" />}
+        {theme === 'system' && <MonitorCogIcon className="size-4" />}
+      </button>
     </div>
   )
 }

@@ -61,7 +61,11 @@ export default function Home() {
           </p>
           <p className="font-mono font-semibold text-sand-9">
             Currently building{' '}
-            <Link href="https://avelin.app">
+            <Link
+              href="https://avelin.app"
+              // target="_blank"
+              // rel="noopener noreferrer"
+            >
               <H className="hover:bg-sand-12 hover:text-sand-1 border tracking-tighter border-transparent hover:border-sand-3 hover:drop-shadow-md py-1.5 rounded-xl px-2 transition-all duration-200 ease-in-out">
                 <LogoAvelin
                   className="size-5 inline text-center translate-y-[-1.5px] mr-1.5"
