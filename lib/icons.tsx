@@ -1,5 +1,8 @@
+'use client'
+
 import type { HTMLAttributes, SVGProps } from 'react'
 import { cn } from './utils'
+import { motion, type SVGMotionProps } from 'motion/react'
 
 export function ElysiaLogo(props: SVGProps<SVGSVGElement>) {
   return (
@@ -458,9 +461,9 @@ export function MotionLogo({
   ...props
 }: HTMLAttributes<HTMLSpanElement>) {
   return (
-    <span className={cn('relative rounded-full', className)} {...props}>
+    <span className={cn('relative', className)} {...props}>
       <svg
-        className="absolute left-[50%] top-[50%] translate-y-[-50%] translate-x-[-50%] p-[0.1em]"
+        className="absolute left-[50%] top-[50%] translate-y-[-50%] translate-x-[-50%] p-[0.2em]"
         viewBox="0 0 41 14"
         width="100%"
         height="100%"
@@ -474,16 +477,93 @@ export function MotionLogo({
   )
 }
 
-export function VercelLogo(props: SVGProps<SVGSVGElement>) {
+export function VercelLogo({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 128 128"
       width="1em"
       height="1em"
+      fill="var(--sand-12)"
+      className={cn('fill-sand-12', className)}
       {...props}
     >
-      <path d="M64.002 8.576L128 119.424H0Zm0 0"></path>
+      <path d="M64.002 8.576L128 119.424H0Zm0 0" />
+    </svg>
+  )
+}
+
+export function BacklogStatusIcon({
+  className,
+  ...props
+}: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 14 14"
+      fill="none"
+      className={cn(className)}
+      {...props}
+    >
+      <circle
+        cx="7"
+        cy="7"
+        r="6"
+        fill="none"
+        stroke="var(--sand-8)"
+        strokeWidth="2"
+        strokeDasharray="1.4 1.74"
+        strokeDashoffset="0.65"
+      />
+      <circle
+        cx="7"
+        cy="7"
+        r="2"
+        fill="none"
+        stroke="var(--sand-8)"
+        strokeWidth="4"
+        strokeDasharray="0 100"
+        strokeDashoffset="0"
+        transform="rotate(-90 7 7)"
+      />
+    </svg>
+  )
+}
+export function InProgressStatusIcon({
+  className,
+  ...props
+}: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 14 14"
+      fill="none"
+      className={cn(className)}
+      {...props}
+    >
+      <circle
+        cx="7"
+        cy="7"
+        r="6"
+        fill="none"
+        stroke="lch(80% 90 85)"
+        strokeWidth="2"
+        strokeDasharray="3.14 0"
+        strokeDashoffset="-0.7"
+      ></circle>
+      <circle
+        cx="7"
+        cy="7"
+        r="2"
+        fill="none"
+        stroke="lch(80% 90 85)"
+        strokeWidth="4"
+        strokeDasharray="6.2517693806436885 100"
+        strokeDashoffset="0"
+        transform="rotate(-90 7 7)"
+      ></circle>
     </svg>
   )
 }

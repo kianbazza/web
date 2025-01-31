@@ -1,10 +1,16 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { berkeleyMono, inter } from '@/lib/fonts'
-import { MotionLogo, NextJSLogo, VercelLogo } from '@/lib/icons'
-import Link from 'next/link'
-import Toolbar from '@/components/toolbar'
 import { ThemeProvider } from '@/components/theme-provider'
+import Toolbar from '@/components/toolbar'
+import { berkeleyMono, inter } from '@/lib/fonts'
+import {
+  BacklogStatusIcon,
+  InProgressStatusIcon,
+  MotionLogo,
+  NextJSLogo,
+  VercelLogo,
+} from '@/lib/icons'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Kian Bazarjani',
@@ -33,19 +39,34 @@ export default function RootLayout({
             {children}
           </main>
           <footer className="flex flex-col w-full font-mono text-sand-10 text-sm select-none">
+            <div className="lg:hidden inline-block h-[1px] w-full bg-sand-4 mb-4" />
+            <div className="max-w-screen-md text-xs font-medium mx-auto rounded-xl px-4 flex lg:hidden gap-4 items-center mb-4 w-full">
+              <span className="text-sand-10 font-bold">Legend</span>
+              <div className="flex items-center gap-4">
+                <div className="inline-flex gap-1.5 items-center">
+                  <BacklogStatusIcon />
+                  <span>Backlog</span>
+                </div>
+                <div className="inline-flex gap-1.5 items-center">
+                  <InProgressStatusIcon />
+                  <span>In Progress</span>
+                </div>
+              </div>
+            </div>
+
             <div className="h-[1px] w-full bg-sand-4 mb-4" />
             <div className="max-w-screen-md mx-auto flex w-full px-4 justify-between">
               <p>2025 © Kian Bazarjani.</p>
               <p className="h-4 inline-flex items-center">
                 <span className="hidden sm:block">Built with </span>
                 <Link href="https://vercel.com">
-                  <VercelLogo className="ml-[1.5ch] size-5 inline-block mr-1 dark:fill-sand-12" />
+                  <VercelLogo className="ml-[1.5ch] size-5 inline-block mr-1" />
                 </Link>
                 <Link href="https://nextjs.org">
                   <NextJSLogo className="size-5 inline-block mr-1" />
                 </Link>
                 <Link href="https://motion.dev">
-                  <MotionLogo className="inline-block size-5 translate-y-1 bg-[#fff312]" />
+                  <MotionLogo className="inline-block size-5 translate-y-1 bg-[#fff312] rounded-full" />
                 </Link>
                 .
               </p>

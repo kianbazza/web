@@ -1,7 +1,11 @@
 'use client'
 
 import { Signature } from '@/components/signature'
-import { LogoAvelin } from '@/lib/icons'
+import {
+  BacklogStatusIcon,
+  InProgressStatusIcon,
+  LogoAvelin,
+} from '@/lib/icons'
 import { cn } from '@/lib/utils'
 import { ArrowRightIcon } from 'lucide-react'
 import { motion, type Variants } from 'motion/react'
@@ -63,8 +67,8 @@ export default function Home() {
             Currently building{' '}
             <Link
               href="https://avelin.app"
-              // target="_blank"
-              // rel="noopener noreferrer"
+            // target="_blank"
+            // rel="noopener noreferrer"
             >
               <H className="hover:bg-sand-12 hover:text-sand-1 border tracking-tighter border-transparent hover:border-sand-3 hover:drop-shadow-md py-1.5 rounded-xl px-2 transition-all duration-200 ease-in-out">
                 <LogoAvelin
@@ -154,18 +158,36 @@ export default function Home() {
       </motion.div>
       <motion.div className="space-y-2" variants={sectionVariants}>
         <h1 className="font-mono text-sm font-bold text-sand-8">Projects</h1>
-        <div className="flex flex-col gap-1.5 font-mono">
-          <div className="space-y-1">
+        <div className="flex flex-col gap-2 font-mono">
+          <div className="space-y-0.5">
             <div className="flex items-center gap-6 w-full">
               <span className="font-bold">2025</span>
-              <span className="text-sand-10 font-medium">Avelin</span>
+              <div className="inline-flex items-center gap-2">
+                <InProgressStatusIcon className="size-fit" />
+                <span className="text-sand-10 font-medium">Avelin</span>
+              </div>
               <span className="hidden sm:block">Code together, right now.</span>
             </div>
             <p className="text-sm text-sand-10">
               {'/* Collaborative code editor in the browser. */'}
             </p>
           </div>
-          <div className="space-y-1">
+          <div className="space-y-0.5">
+            <div className="flex items-center gap-6 w-full">
+              <span className="font-bold">2025</span>
+              <div className="inline-flex items-center gap-2">
+                {/* <InProgressStatusIcon className="size-fit" /> */}
+                <span className="text-sand-10 font-medium">bazza.dev</span>
+              </div>
+              <span className="hidden sm:block font-bold">
+                {'<-- You are here!'}
+              </span>
+            </div>
+            <p className="text-sm text-sand-10">
+              {'/* My personal portfolio website. */'}
+            </p>
+          </div>
+          <div className="space-y-0.5">
             <div className="flex items-center gap-6 w-full">
               <span className="font-bold">2023</span>
               <span className="text-sand-10 font-medium">OET</span>
@@ -182,7 +204,7 @@ export default function Home() {
           </div>
         </div>
       </motion.div>
-      <motion.div className="space-y-2 mb-8" variants={sectionVariants}>
+      <motion.div className="space-y-2" variants={sectionVariants}>
         <h1 className="font-mono text-sm font-bold text-sand-8">Education</h1>
         <div className="flex flex-col gap-1.5 font-mono">
           <Link
@@ -216,9 +238,36 @@ export default function Home() {
           </div>
         </div>
       </motion.div>
+      <motion.div className="space-y-2 mb-8" variants={sectionVariants}>
+        <h1 className="font-mono text-sm font-bold text-sand-8">More</h1>
+        <div className="flex flex-col gap-1.5 font-mono">
+          <div className="gap-x-6 grid grid-cols-[max-content_max-content] !cursor-not-allowed *:!cursor-not-allowed">
+            <div className="inline-flex items-center gap-2 *:!cursor-not-allowed">
+              <BacklogStatusIcon className="size-fit" />
+              <span className="font-bold">Blog</span>
+            </div>
+            <span className="text-sand-10 font-medium">
+              Strong opinions, weak type safety.
+            </span>
+          </div>
+          <div className="gap-x-6 grid grid-cols-[max-content_max-content] !cursor-not-allowed *:!cursor-not-allowed">
+            <div className="inline-flex items-center gap-2 *:!cursor-not-allowed">
+              <BacklogStatusIcon className="size-fit" />
+              <span className="font-bold">Quotes</span>
+            </div>
+            <span className="text-sand-10 font-medium">
+              Borrowed wisdom and stolen wit.
+            </span>
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   )
 }
+
+// const EasterEgg = () => {
+//   const []
+// }
 
 const H = ({
   children,
