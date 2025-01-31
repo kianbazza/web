@@ -1,8 +1,8 @@
 'use client'
 
+import { type SVGMotionProps, motion } from 'motion/react'
 import type { HTMLAttributes, SVGProps } from 'react'
 import { cn } from './utils'
-import { motion, type SVGMotionProps } from 'motion/react'
 
 export function ElysiaLogo(props: SVGProps<SVGSVGElement>) {
   return (

@@ -8,7 +8,7 @@ import {
 } from '@/lib/icons'
 import { cn } from '@/lib/utils'
 import { ArrowRightIcon } from 'lucide-react'
-import { motion, type Variants } from 'motion/react'
+import { type Variants, motion } from 'motion/react'
 import Link from 'next/link'
 import type { HTMLAttributes } from 'react'
 
@@ -67,8 +67,8 @@ export default function Home() {
             Currently building{' '}
             <Link
               href="https://avelin.app"
-            // target="_blank"
-            // rel="noopener noreferrer"
+              // target="_blank"
+              // rel="noopener noreferrer"
             >
               <H className="hover:bg-sand-12 hover:text-sand-1 border tracking-tighter border-transparent hover:border-sand-3 hover:drop-shadow-md py-1.5 rounded-xl px-2 transition-all duration-200 ease-in-out">
                 <LogoAvelin

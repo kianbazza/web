@@ -70,7 +70,7 @@ export default function Toolbar() {
               'flex items-center gap-2 px-4 py-2 rounded-xl shadow-sm backdrop-blur-md bg-sand-4 hover:bg-sand-5 transition-all duration-200',
               item.paths.includes(pathname) && 'bg-sand-6',
               item.disabled &&
-              '!cursor-not-allowed *:!cursor-not-allowed !pointer-events-none opacity-50',
+                '!cursor-not-allowed *:!cursor-not-allowed !pointer-events-none opacity-50',
             )}
           >
             <span className="font-medium mr-4">{item.name}</span>
