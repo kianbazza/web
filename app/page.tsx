@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 import { ArrowRightIcon } from 'lucide-react'
 import { type Variants, motion } from 'motion/react'
 import Link from 'next/link'
-import type { HTMLAttributes, SVGProps } from 'react'
+import type { HTMLAttributes } from 'react'
 
 const containerVariants: Variants = {
   hidden: {
@@ -163,7 +163,7 @@ export default function Home() {
         <div className="flex gap-4">
           <h1 className="font-mono text-sm font-bold text-sand-8">Projects</h1>
           <Link
-            className="text-sm font-mono font-bold text-sand-11 blur-sm group-hover/section:blur-none transition-all ease-out hover-expand inline-flex items-center gap-2 !cursor-not-allowed"
+            className="text-sm font-mono font-bold text-sand-11 blur-[2px] group-hover/section:blur-none transition-all ease-out inline-flex items-center gap-2 *:!cursor-not-allowed !cursor-not-allowed"
             href="/"
           >
             <BacklogStatusIcon className="size-fit" /> Browse {'->'}

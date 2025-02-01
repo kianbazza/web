@@ -1,7 +1,7 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { motion, type HTMLMotionProps, type Variants } from 'motion/react'
+import { type HTMLMotionProps, type Variants, motion } from 'motion/react'
 
 const variants: Variants = {
   hidden: {

@@ -1,12 +1,14 @@
-import Container from '@/components/container'
 import { randomInt } from 'node:crypto'
+import Container from '@/components/container'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: '404',
+}
 
 export default function NotFound() {
   return (
     <Container className="flex flex-col justify-center my-auto gap-8 select-none">
-      {/* <h1 className="text-4xl font-bold font-mono tracking-tight text-red-11"> */}
-      {/*   throw new Error(404); */}
-      {/* </h1> */}
       <div className="font-mono font-medium text-sand-10 text-xl flex flex-col">
         <div>
           <span className="text-plum-10">catch</span>{' '}
@@ -16,7 +18,6 @@ export default function NotFound() {
           <span className="text-sand-10">{'{'}</span>
         </div>
         <div className="flex flex-col ml-[2ch] my-2">
-          {/* {'console.error(`'} */}
           <div>
             <span className="text-sand-11">console</span>
             <span className="text-blue-11">.</span>
@@ -47,7 +48,6 @@ export default function NotFound() {
         </div>
         {'}'}
       </div>
-      {/* <div>Go back</div> */}
     </Container>
   )
 }
