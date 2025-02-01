@@ -2,6 +2,14 @@
 @import "@radix-ui/colors/gray-dark.css";
 @import "@radix-ui/colors/sand.css";
 @import "@radix-ui/colors/sand-dark.css";
+@import "@radix-ui/colors/red.css";
+@import "@radix-ui/colors/red-dark.css";
+@import "@radix-ui/colors/plum.css";
+@import "@radix-ui/colors/plum-dark.css";
+@import "@radix-ui/colors/blue.css";
+@import "@radix-ui/colors/blue-dark.css";
+@import "@radix-ui/colors/lime.css";
+@import "@radix-ui/colors/lime-dark.css";
 
 @tailwind base;
 @tailwind components;
@@ -24,5 +32,26 @@
   /* A CSS media query to target mobile devices */
   @media (max-width: 640px) {
     font-size: 14px;
+  }
+}
+
+@layer utilities {
+
+  /* This utility extends the hover/click area by 3px on all sides */
+  .hover-expand {
+    position: relative;
+  }
+
+  .hover-expand::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    /* By not setting background or borders, this pseudo–element is invisible,
+       but because it’s part of the element’s subtree, hovering over it
+       triggers the parent’s :hover state. */
+    pointer-events: auto;
   }
 }

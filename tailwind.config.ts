@@ -12,6 +12,7 @@ function getColorScale(name: string) {
 }
 
 export default {
+  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -22,6 +23,10 @@ export default {
       colors: {
         gray: getColorScale('gray'),
         sand: getColorScale('sand'),
+        red: getColorScale('red'),
+        plum: getColorScale('plum'),
+        blue: getColorScale('blue'),
+        lime: getColorScale('lime'),
         background: 'var(--sand-1)',
         foreground: 'var(--sand-12)',
       },
@@ -33,3 +38,16 @@ export default {
   },
   plugins: [],
 } satisfies Config
+
+export function hello() {
+  try {
+    console.log('hello')
+  } catch (e) {
+    console.error(`
+      On this lonely road,
+      Something else here.
+    `)
+
+    throw new Error('404')
+  }
+}

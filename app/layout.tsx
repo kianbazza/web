@@ -8,6 +8,7 @@ import {
   InProgressStatusIcon,
   MotionLogo,
   NextJSLogo,
+  RadixLogo,
   VercelLogo,
 } from '@/lib/icons'
 import Link from 'next/link'
@@ -56,18 +57,23 @@ export default function RootLayout({
 
             <div className="h-[1px] w-full bg-sand-4 mb-4" />
             <div className="max-w-screen-md mx-auto flex w-full px-4 justify-between">
-              <p>2025 © Kian Bazarjani.</p>
+              <span>2025 © Kian Bazarjani.</span>
               <p className="h-4 inline-flex items-center">
-                <span className="hidden sm:block">Built with </span>
-                <Link href="https://vercel.com">
-                  <VercelLogo className="ml-[1.5ch] size-5 inline-block mr-1" />
-                </Link>
-                <Link href="https://nextjs.org">
-                  <NextJSLogo className="size-5 inline-block mr-1" />
-                </Link>
-                <Link href="https://motion.dev">
-                  <MotionLogo className="inline-block size-5 translate-y-1 bg-[#fff312] rounded-full" />
-                </Link>
+                <span className="hidden sm:block mr-[1.5ch]">Built with</span>
+                <span className="inline-flex items-center gap-1">
+                  <Link href="https://vercel.com">
+                    <VercelLogo className="size-5 inline-block" />
+                  </Link>
+                  <Link href="https://nextjs.org">
+                    <NextJSLogo className="size-5 inline-block" />
+                  </Link>
+                  <Link href="https://motion.dev">
+                    <MotionLogo className="inline-block size-5 translate-y-1 bg-[#fff312] rounded-full" />
+                  </Link>
+                  <Link href="https://radix-ui.com">
+                    <RadixLogo className="inline-block size-5 fill-sand-12" />
+                  </Link>
+                </span>
                 .
               </p>
             </div>

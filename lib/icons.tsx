@@ -465,18 +465,26 @@ export function MotionLogo({
       <svg
         className="absolute left-[50%] top-[50%] translate-y-[-50%] translate-x-[-50%] p-[0.2em]"
         viewBox="0 0 41 14"
-        width="100%"
-        height="100%"
       >
         <path
-          className="fill-sand-12 dark:fill-sand-1"
           d="M 15.481 0 L 7.38 13.988 L 0 13.988 L 6.325 3.066 C 7.306 1.372 9.753 0 11.791 0 Z M 33.579 3.497 C 33.579 1.566 35.231 0 37.269 0 C 39.307 0 40.959 1.566 40.959 3.497 C 40.959 5.428 39.307 6.994 37.269 6.994 C 35.231 6.994 33.579 5.428 33.579 3.497 Z M 16.865 0 L 24.245 0 L 16.144 13.988 L 8.764 13.988 Z M 25.581 0 L 32.961 0 L 26.636 10.922 C 25.655 12.615 23.208 13.988 21.17 13.988 L 17.48 13.988 Z"
+          fill="inherit"
         />
       </svg>
     </span>
   )
 }
 
+export function RadixLogo({ className, ...props }: SVGProps<SVGSVGElement>) {
+  return (
+    <svg className={cn(className)} viewBox="4 0 17 25" {...props}>
+      <path
+        d="M12 25a8 8 0 1 1 0-16v16zM12 0H4v8h8V0zM17 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"
+        fill="inherit"
+      />
+    </svg>
+  )
+}
 export function VercelLogo({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -485,7 +493,7 @@ export function VercelLogo({ className, ...props }: SVGProps<SVGSVGElement>) {
       width="1em"
       height="1em"
       fill="var(--sand-12)"
-      className={cn('fill-sand-12', className)}
+      className={className}
       {...props}
     >
       <path d="M64.002 8.576L128 119.424H0Zm0 0" />
@@ -530,6 +538,7 @@ export function BacklogStatusIcon({
     </svg>
   )
 }
+
 export function InProgressStatusIcon({
   className,
   ...props
@@ -552,7 +561,7 @@ export function InProgressStatusIcon({
         strokeWidth="2"
         strokeDasharray="3.14 0"
         strokeDashoffset="-0.7"
-      ></circle>
+      />
       <circle
         cx="7"
         cy="7"
@@ -563,7 +572,10 @@ export function InProgressStatusIcon({
         strokeDasharray="6.2517693806436885 100"
         strokeDashoffset="0"
         transform="rotate(-90 7 7)"
-      ></circle>
+        // initial={{ strokeWidth: 0, pathLength: 0 }}
+        // animate={{ strokeWidth: 4, pathLength: 0.5 }}
+        // transition={{ delay: 2 }}
+      />
     </svg>
   )
 }

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "clean": "rm -rf .next",
     "dev": "next dev --turbopack",
     "build": "pnpm check && next build",
     "start": "next start",

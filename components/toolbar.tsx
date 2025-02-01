@@ -60,7 +60,7 @@ export default function Toolbar() {
         'lg:grid hidden',
       )}
     >
-      {/* <div className="row-span-1">clas</div> */}
+      {/* <div className="row-span-1 pt-4 justify-self-end">Index</div> */}
       <div className="row-start-2 self-center flex flex-col gap-2">
         {toolbarItems.map((item) => (
           <Link

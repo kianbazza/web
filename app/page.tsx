@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 import { ArrowRightIcon } from 'lucide-react'
 import { type Variants, motion } from 'motion/react'
 import Link from 'next/link'
-import type { HTMLAttributes } from 'react'
+import type { HTMLAttributes, SVGProps } from 'react'
 
 const containerVariants: Variants = {
   hidden: {
@@ -156,8 +156,19 @@ export default function Home() {
           </div>
         </div>
       </motion.div>
-      <motion.div className="space-y-2" variants={sectionVariants}>
-        <h1 className="font-mono text-sm font-bold text-sand-8">Projects</h1>
+      <motion.div
+        className="space-y-2 group/section"
+        variants={sectionVariants}
+      >
+        <div className="flex gap-4">
+          <h1 className="font-mono text-sm font-bold text-sand-8">Projects</h1>
+          <Link
+            className="text-sm font-mono font-bold text-sand-11 blur-sm group-hover/section:blur-none transition-all ease-out hover-expand inline-flex items-center gap-2 !cursor-not-allowed"
+            href="/"
+          >
+            <BacklogStatusIcon className="size-fit" /> Browse {'->'}
+          </Link>
+        </div>
         <div className="flex flex-col gap-2 font-mono">
           <div className="space-y-0.5">
             <div className="flex items-center gap-6 w-full">
@@ -168,24 +179,18 @@ export default function Home() {
               </div>
               <span className="hidden sm:block">Code together, right now.</span>
             </div>
-            <p className="text-sm text-sand-10">
-              {'/* Collaborative code editor in the browser. */'}
-            </p>
           </div>
           <div className="space-y-0.5">
             <div className="flex items-center gap-6 w-full">
               <span className="font-bold">2025</span>
               <div className="inline-flex items-center gap-2">
-                {/* <InProgressStatusIcon className="size-fit" /> */}
+                <InProgressStatusIcon className="size-fit" />
                 <span className="text-sand-10 font-medium">bazza.dev</span>
               </div>
               <span className="hidden sm:block font-bold">
                 {'<-- You are here!'}
               </span>
             </div>
-            <p className="text-sm text-sand-10">
-              {'/* My personal portfolio website. */'}
-            </p>
           </div>
           <div className="space-y-0.5">
             <div className="flex items-center gap-6 w-full">
@@ -195,12 +200,6 @@ export default function Home() {
                 Combine enchanted items, optimized.
               </span>
             </div>
-
-            <p className="text-sm text-sand-10">
-              {
-                '/* Minecraft tool for combining enchanted items in an anvil. */'
-              }
-            </p>
           </div>
         </div>
       </motion.div>
@@ -264,10 +263,6 @@ export default function Home() {
     </motion.div>
   )
 }
-
-// const EasterEgg = () => {
-//   const []
-// }
 
 const H = ({
   children,
