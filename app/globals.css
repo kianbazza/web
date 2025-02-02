@@ -37,7 +37,6 @@
 }
 
 @layer utilities {
-
   /* This utility extends the hover/click area on all sides */
   .hover-expand {
     position: relative;

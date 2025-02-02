@@ -1,12 +1,23 @@
 'use client'
 
+import { hoveredProjectRowItem } from '@/lib/atoms'
 import {
   BacklogStatusIcon,
-  InProgressStatusIcon,
   DoneStatusIcon,
+  InProgressStatusIcon,
 } from '@/lib/icons'
 import { cn } from '@/lib/utils'
-import { useRef } from 'react'
+import { useAtom } from 'jotai'
+import { AnimatePresence, motion } from 'motion/react'
+import { useEffect, useMemo, useRef } from 'react'
+
+export type TProjectListItem = {
+  year: string
+  status: 'backlog' | 'in-progress' | 'done'
+  title: string
+  url: string
+  videoSrc: string
+}
 
 export function ProjectListItem({
   year,
@@ -23,23 +34,40 @@ export function ProjectListItem({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null)
 
+  const [hoveredProject, setHoveredProject] = useAtom(hoveredProjectRowItem)
+  const isActive = useMemo(
+    () => hoveredProject?.title === title,
+    [hoveredProject, title],
+  )
+
+  useEffect(() => {
+    if (!videoRef.current) return
+
+    if (isActive) {
+      // console.log('PLAYING', title)
+      videoRef.current.currentTime = 0 // Reset the video
+      videoRef.current.play() // Start playing
+    } else {
+      // console.log('RESETTING', title)
+      videoRef.current.pause() // Pause when not hovered
+      videoRef.current.currentTime = 0 // Reset to beginning
+    }
+  }, [isActive])
+
   return (
-    <div
+    <motion.div
       className={cn(
         'grid grid-cols-subgrid col-span-4 items-center py-2 relative group/row',
         'transition-all duration-200 group-hover/projects:opacity-40 hover:!opacity-100 hover:bg-sand-2 border border-transparent hover:border-sand-3 px-4 rounded-md',
       )}
       onMouseEnter={() => {
-        if (videoRef.current) {
-          videoRef.current.currentTime = 0 // Reset the video
-          videoRef.current.play() // Start playing
-        }
-      }}
-      onMouseLeave={() => {
-        if (videoRef.current) {
-          videoRef.current.pause() // Pause when not hovered
-          videoRef.current.currentTime = 0 // Reset to beginning
-        }
+        setHoveredProject({
+          year,
+          status,
+          title,
+          url,
+          videoSrc,
+        })
       }}
     >
       <span className="font-medium text-sand-9">{year}</span>
@@ -50,19 +78,43 @@ export function ProjectListItem({
         <span className="font-medium text-sand-12">{title}</span>
       </span>
       <span className="font-medium">{url}</span>
-      <div className="absolute invisible group-hover/row:visible hover:opacity-0 transition-none h-[400px] rounded-md drop-shadow-lg border border-sand-4 bg-[url(/projects/avelin/thumbnail.png)] bg-cover aspect-video right-[-70%] top-[50%] translate-y-[-50%] overflow-hidden">
-        <div className="w-full h-full overflow-hidden">
-          <video
-            src={videoSrc}
-            ref={(ref) => {
-              if (ref) videoRef.current = ref
+      <AnimatePresence mode="wait">
+        {hoveredProject?.title === title && (
+          <motion.div
+            id="video-preview"
+            layoutId="video-preview"
+            layout="position"
+            className="border-sand-4 overflow-hidden bg-sand-1 flex flex-col gap-2"
+            style={{
+              zIndex: 20,
+              position: 'absolute',
+              top: '-100px',
+              right: '-500px',
+              height: '400px',
+              aspectRatio: '16/9',
+              borderWidth: '1px',
+              borderRadius: '0.375rem',
+              boxShadow:
+                '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
             }}
-            playsInline
-            loop
-            muted
-          />
-        </div>
-      </div>
-    </div>
+          >
+            <div className="w-full h-full overflow-hidden">
+              <motion.video
+                initial={{ filter: 'blur(4px)' }}
+                animate={{ filter: 'blur(0px)' }}
+                exit={{ filter: 'blur(4px)' }}
+                src={videoSrc}
+                ref={(ref) => {
+                  if (ref) videoRef.current = ref
+                }}
+                playsInline
+                loop
+                muted
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   )
 }
