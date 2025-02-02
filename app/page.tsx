@@ -163,10 +163,10 @@ export default function Home() {
         <div className="flex gap-4">
           <h1 className="font-mono text-sm font-bold text-sand-8">Projects</h1>
           <Link
-            className="text-sm font-mono font-bold text-sand-11 blur-[2px] group-hover/section:blur-none transition-all ease-out inline-flex items-center gap-2 *:!cursor-not-allowed !cursor-not-allowed"
-            href="/"
+            className="text-sm font-mono font-bold !tracking-normal text-sand-10 opacity-0 blur-[2px] group-hover/section:opacity-100 group-hover/section:blur-none hover-expand hover:text-sand-12 transition-all ease-out inline-flex items-center gap-2"
+            href="/projects"
           >
-            <BacklogStatusIcon className="size-fit" /> Browse {'->'}
+            Browse {'->'}
           </Link>
         </div>
         <div className="flex flex-col gap-2 font-mono">

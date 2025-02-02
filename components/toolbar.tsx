@@ -1,6 +1,10 @@
 'use client'
 
-import { BacklogStatusIcon, InProgressStatusIcon } from '@/lib/icons'
+import {
+  BacklogStatusIcon,
+  DoneStatusIcon,
+  InProgressStatusIcon,
+} from '@/lib/icons'
 import { cn } from '@/lib/utils'
 import { LightbulbIcon, LightbulbOffIcon, MonitorCogIcon } from 'lucide-react'
 import { motion } from 'motion/react'
@@ -14,6 +18,7 @@ type ToolbarItem = {
   name: string
   paths: string[]
   disabled?: boolean
+  hidden?: boolean
 }
 
 const toolbarItems: ToolbarItem[] = [
@@ -21,31 +26,32 @@ const toolbarItems: ToolbarItem[] = [
     value: 'home',
     name: 'Home',
     paths: ['/', '/home'],
-    disabled: false,
   },
   {
     value: 'connect',
     name: 'Connect',
     paths: ['/connect'],
     disabled: true,
+    hidden: true,
   },
   {
     value: 'career',
     name: 'Career',
     paths: ['/career'],
     disabled: true,
+    hidden: true,
   },
   {
     value: 'projects',
     name: 'Projects',
     paths: ['/projects'],
-    disabled: true,
   },
   {
     value: 'education',
     name: 'Education',
     paths: ['/education'],
     disabled: true,
+    hidden: true,
   },
 ] as const
 
@@ -62,23 +68,25 @@ export default function Toolbar() {
     >
       {/* <div className="row-span-1 pt-4 justify-self-end">Index</div> */}
       <div className="row-start-2 self-center flex flex-col gap-2">
-        {toolbarItems.map((item) => (
-          <Link
-            key={item.value}
-            href={item.paths[0]}
-            className={cn(
-              'flex items-center gap-2 px-4 py-2 rounded-xl shadow-sm backdrop-blur-md bg-sand-4 hover:bg-sand-5 transition-all duration-200',
-              item.paths.includes(pathname) && 'bg-sand-6',
-              item.disabled &&
-                '!cursor-not-allowed *:!cursor-not-allowed !pointer-events-none opacity-50',
-            )}
-          >
-            <span className="font-medium mr-4">{item.name}</span>
-            {item.paths.includes(pathname) && (
-              <span className="text-sand-12 mr-2 absolute right-2">*</span>
-            )}
-          </Link>
-        ))}
+        {toolbarItems
+          .filter((item) => !item.hidden)
+          .map((item) => (
+            <Link
+              key={item.value}
+              href={item.paths[0]}
+              className={cn(
+                'flex items-center gap-2 px-4 py-2 rounded-xl shadow-sm backdrop-blur-md bg-sand-4 hover:bg-sand-5 transition-all duration-200',
+                item.paths.includes(pathname) && 'bg-sand-6',
+                item.disabled &&
+                  '!cursor-not-allowed *:!cursor-not-allowed !pointer-events-none opacity-50',
+              )}
+            >
+              <span className="font-medium mr-4">{item.name}</span>
+              {item.paths.includes(pathname) && (
+                <span className="text-sand-12 mr-2 absolute right-2">*</span>
+              )}
+            </Link>
+          ))}
         <ThemeToggle />
       </div>
       <div className="row-start-3 rounded-xl px-4 py-4 shadow-sm backdrop-blur-md bg-sand-2 border border-sand-3 self-end mb-24 flex flex-col gap-2">
@@ -91,6 +99,10 @@ export default function Toolbar() {
           <div className="flex gap-2 items-center">
             <InProgressStatusIcon />
             <span>In Progress</span>
+          </div>
+          <div className="flex gap-2 items-center">
+            <DoneStatusIcon />
+            <span>Done</span>
           </div>
         </div>
       </div>
