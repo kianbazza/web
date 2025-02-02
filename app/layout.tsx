@@ -12,6 +12,7 @@ import {
   VercelLogo,
 } from '@/lib/icons'
 import Link from 'next/link'
+import BreakpointVisualizer from '@/components/breakpoint-visualizer'
 
 export const metadata: Metadata = {
   title: 'Kian Bazarjani',
@@ -36,6 +37,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Toolbar />
+          <BreakpointVisualizer />
           <main className="flex flex-col max-w-screen-md h-full mx-auto w-full sm:flex-1 px-4">
             {children}
           </main>

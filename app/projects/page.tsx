@@ -66,7 +66,7 @@ export default function Page() {
         <div className="h-[1px] w-full bg-sand-6 mt-4" />
       </div>
       <div
-        className="grid grid-cols-[max-content_max-content_max-content_minmax(0,_1fr)] gap-x-6 items-center group/projects w-full"
+        className="grid grid-cols-[max-content_max-content_max-content_minmax(0,_1fr)] gap-x-6 items-center group/projects w-full 2xl:hover:scale-[102%] 2xl:transition-transform 2xl:ease-in-out"
         onMouseEnter={() => setHoveringProjects(true)}
         onMouseLeave={() => {
           setHoveringProjects(false)

@@ -84,7 +84,7 @@ export function ProjectListItem({
             id="video-preview"
             layoutId="video-preview"
             layout="position"
-            className="border-sand-4 overflow-hidden bg-sand-1 flex flex-col gap-2"
+            className="border-sand-4 overflow-hidden bg-sand-1 hidden 2xl:flex flex-col gap-2"
             style={{
               zIndex: 20,
               position: 'absolute',
@@ -93,7 +93,7 @@ export function ProjectListItem({
               height: '400px',
               aspectRatio: '16/9',
               borderWidth: '1px',
-              borderRadius: '0.375rem',
+              borderRadius: 6,
               boxShadow:
                 '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
             }}
