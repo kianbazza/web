@@ -1,6 +1,8 @@
+'use client'
+
 import { ProjectListItem } from '@/components/project-list-item'
 import { cn } from '@/lib/utils'
-import type { HTMLAttributes } from 'react'
+import { useState, type HTMLAttributes } from 'react'
 
 const H = ({
   children,
@@ -13,9 +15,14 @@ const H = ({
 )
 
 export default function Page() {
+  const [hoveringProjects, setHoveringProjects] = useState(false)
+
   return (
     <div className="font-mono mt-16 flex flex-col gap-8">
-      <div className="flex flex-col gap-4">
+      <div
+        data-state={hoveringProjects ? 'projects-hover' : ''}
+        className="flex flex-col gap-4 opacity-100 data-[state=projects-hover]:opacity-40 transition-opacity duration-200"
+      >
         <h1 className="!tracking-[-0.05em] text-3xl">Projects</h1>
         <p className="font-medium text-sand-10">
           The <H>craft</H> of creation — projects born from <H>curiosity</H>,
@@ -24,7 +31,11 @@ export default function Page() {
         </p>
         <div className="h-[1px] w-full bg-sand-6 mt-4" />
       </div>
-      <div className="grid grid-cols-[max-content_max-content_max-content_minmax(0,_1fr)] gap-x-6 items-center group/projects w-full">
+      <div
+        className="grid grid-cols-[max-content_max-content_max-content_minmax(0,_1fr)] gap-x-6 items-center group/projects w-full"
+        onMouseEnter={() => setHoveringProjects(true)}
+        onMouseLeave={() => setHoveringProjects(false)}
+      >
         <ProjectListItem
           // id="kian-bazarjani"
           year="2025"
