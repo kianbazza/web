@@ -43,7 +43,7 @@ export function ProjectListItem({
       }}
     >
       <span className="font-medium text-sand-9">{year}</span>
-      <span className="flex items-center gap-2">
+      <span className="flex items-center gap-3">
         {status === 'backlog' && <BacklogStatusIcon />}
         {status === 'in-progress' && <InProgressStatusIcon />}
         {status === 'done' && <DoneStatusIcon />}

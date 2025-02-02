@@ -174,7 +174,7 @@ export default function Home() {
             <div className="flex items-center gap-6 w-full">
               <span className="font-bold">2025</span>
               <div className="inline-flex items-center gap-2">
-                <InProgressStatusIcon className="size-fit" />
+                {/* <InProgressStatusIcon className="size-fit" /> */}
                 <span className="text-sand-10 font-medium">Avelin</span>
               </div>
               <span className="hidden sm:block">Code together, right now.</span>
@@ -184,7 +184,7 @@ export default function Home() {
             <div className="flex items-center gap-6 w-full">
               <span className="font-bold">2025</span>
               <div className="inline-flex items-center gap-2">
-                <InProgressStatusIcon className="size-fit" />
+                {/* <InProgressStatusIcon className="size-fit" /> */}
                 <span className="text-sand-10 font-medium">bazza.dev</span>
               </div>
               <span className="hidden sm:block font-bold">
