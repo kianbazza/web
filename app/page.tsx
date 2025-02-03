@@ -1,11 +1,7 @@
 'use client'
 
 import { Signature } from '@/components/signature'
-import {
-  BacklogStatusIcon,
-  InProgressStatusIcon,
-  LogoAvelin,
-} from '@/lib/icons'
+import { BacklogStatusIcon, LogoAvelin } from '@/lib/icons'
 import { cn } from '@/lib/utils'
 import { ArrowRightIcon } from 'lucide-react'
 import { type Variants, motion } from 'motion/react'
@@ -65,11 +61,7 @@ export default function Home() {
           </p>
           <p className="font-mono font-semibold text-sand-9">
             Currently building{' '}
-            <Link
-              href="https://avelin.app"
-              // target="_blank"
-              // rel="noopener noreferrer"
-            >
+            <Link href="https://avelin.app">
               <H className="hover:bg-sand-12 hover:text-sand-1 border tracking-tighter border-transparent hover:border-sand-3 hover:drop-shadow-md py-1.5 rounded-xl px-2 transition-all duration-200 ease-in-out">
                 <LogoAvelin
                   className="size-5 inline text-center translate-y-[-1.5px] mr-1.5"
@@ -163,10 +155,13 @@ export default function Home() {
         <div className="flex gap-4">
           <h1 className="font-mono text-sm font-bold text-sand-8">Projects</h1>
           <Link
-            className="text-sm font-mono font-bold !tracking-normal text-sand-10 opacity-0 blur-[2px] group-hover/section:opacity-100 group-hover/section:blur-none hover-expand hover:text-sand-12 transition-all ease-out inline-flex items-center gap-2"
+            className="text-sm font-mono font-bold !tracking-normal text-blue-11 group-hover/section:opacity-100 group-hover/section:blur-none hover-expand hover:text-blue-12 transition-all ease-out inline-flex items-center gap-2 group/link"
             href="/projects"
           >
-            Browse {'->'}
+            Browse{' '}
+            <span className="!tracking-normal group-hover/link:translate-x-1 transition-transform">
+              {'->'}
+            </span>
           </Link>
         </div>
         <div className="flex flex-col gap-2 font-mono">
@@ -174,7 +169,6 @@ export default function Home() {
             <div className="flex items-center gap-6 w-full">
               <span className="font-bold">2025</span>
               <div className="inline-flex items-center gap-2">
-                {/* <InProgressStatusIcon className="size-fit" /> */}
                 <span className="text-sand-10 font-medium">Avelin</span>
               </div>
               <span className="hidden sm:block">Code together, right now.</span>
@@ -184,7 +178,6 @@ export default function Home() {
             <div className="flex items-center gap-6 w-full">
               <span className="font-bold">2025</span>
               <div className="inline-flex items-center gap-2">
-                {/* <InProgressStatusIcon className="size-fit" /> */}
                 <span className="text-sand-10 font-medium">bazza.dev</span>
               </div>
               <span className="hidden sm:block font-bold">

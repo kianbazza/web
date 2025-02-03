@@ -1,11 +1,11 @@
 import type { Config } from 'tailwindcss'
 
-function getColorScale(name: string) {
+function getColorScale(name: string, alpha?: boolean) {
   const scale: Record<string, string> = {}
   for (let i = 1; i <= 12; i++) {
     scale[i] = `var(--${name}-${i})`
     // next line only needed if using alpha values
-    // scale[`a${i}`] = `var(--${name}-a${i})`
+    // if (alpha) scale[`a${i}`] = `var(--${name}-a${i})`
   }
 
   return scale

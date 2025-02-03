@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import BreakpointVisualizer from '@/components/breakpoint-visualizer'
 import { ThemeProvider } from '@/components/theme-provider'
 import Toolbar from '@/components/toolbar'
 import { berkeleyMono, inter } from '@/lib/fonts'
 import {
   BacklogStatusIcon,
+  DoneStatusIcon,
   InProgressStatusIcon,
   MotionLogo,
   NextJSLogo,
@@ -12,7 +14,6 @@ import {
   VercelLogo,
 } from '@/lib/icons'
 import Link from 'next/link'
-import BreakpointVisualizer from '@/components/breakpoint-visualizer'
 
 export const metadata: Metadata = {
   title: 'Kian Bazarjani',
@@ -53,6 +54,10 @@ export default function RootLayout({
                 <div className="inline-flex gap-1.5 items-center">
                   <InProgressStatusIcon />
                   <span>In Progress</span>
+                </div>
+                <div className="inline-flex gap-1.5 items-center">
+                  <DoneStatusIcon />
+                  <span>Done</span>
                 </div>
               </div>
             </div>
