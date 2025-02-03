@@ -77,7 +77,7 @@ export function ProjectListItem({
         {status === 'done' && <DoneStatusIcon />}
         <span className="font-medium text-sand-12">{title}</span>
       </span>
-      <span className="font-medium">{url}</span>
+      <span className="font-medium hidden sm:block">{url}</span>
       <AnimatePresence mode="wait">
         {hoveredProject?.title === title && (
           <motion.div
