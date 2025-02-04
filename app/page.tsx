@@ -1,7 +1,11 @@
 'use client'
 
 import { Signature } from '@/components/signature'
-import { BacklogStatusIcon, LogoAvelin } from '@/lib/icons'
+import {
+  BacklogStatusIcon,
+  InProgressStatusIcon,
+  LogoAvelin,
+} from '@/lib/icons'
 import { cn } from '@/lib/utils'
 import { ArrowRightIcon } from 'lucide-react'
 import { type Variants, motion } from 'motion/react'
@@ -232,16 +236,21 @@ export default function Home() {
       </motion.div>
       <motion.div className="space-y-2 mb-8" variants={sectionVariants}>
         <h1 className="font-mono text-sm font-bold text-sand-8">More</h1>
-        <div className="flex flex-col gap-1.5 font-mono">
-          <div className="gap-x-6 grid grid-cols-[max-content_max-content] !cursor-not-allowed *:!cursor-not-allowed">
-            <div className="inline-flex items-center gap-2 *:!cursor-not-allowed">
-              <BacklogStatusIcon className="size-fit" />
-              <span className="font-bold">Blog</span>
+        <div className="flex flex-col gap-2 font-mono">
+          <Link className="hover-expand-x group/link" href="/writing">
+            <div className="gap-x-6 grid grid-cols-[max-content_max-content]">
+              <div className="inline-flex items-center gap-2">
+                <InProgressStatusIcon className="size-fit" />
+                <span className="font-bold">Writing</span>
+              </div>
+              <span className="text-sand-10 font-medium group-hover/link:hidden">
+                Strong opinions, weak type safety.
+              </span>
+              <span className="text-sand-12 font-bold hidden group-hover/link:block">
+                Read more <span className="!tracking-normal">{'-->'}</span>
+              </span>
             </div>
-            <span className="text-sand-10 font-medium">
-              Strong opinions, weak type safety.
-            </span>
-          </div>
+          </Link>
           <div className="gap-x-6 grid grid-cols-[max-content_max-content] !cursor-not-allowed *:!cursor-not-allowed">
             <div className="inline-flex items-center gap-2 *:!cursor-not-allowed">
               <BacklogStatusIcon className="size-fit" />

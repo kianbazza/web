@@ -38,16 +38,3 @@ export default {
   },
   plugins: [],
 } satisfies Config
-
-export function hello() {
-  try {
-    console.log('hello')
-  } catch (e) {
-    console.error(`
-      On this lonely road,
-      Something else here.
-    `)
-
-    throw new Error('404')
-  }
-}

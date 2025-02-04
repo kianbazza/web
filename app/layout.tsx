@@ -28,6 +28,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      {/* <head> */}
+      {/*   <link */}
+      {/*     rel="stylesheet" */}
+      {/*     href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/atom-one-light.min.css" */}
+      {/*     media="screen and (prefers-color-scheme: light)" */}
+      {/*   /> */}
+      {/*   <link */}
+      {/*     rel="stylesheet" */}
+      {/*     href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/atom-one-dark.min.css" */}
+      {/*     media="screen and (prefers-color-scheme: dark)" */}
+      {/*   /> */}
+      {/* </head> */}
       <body
         className={`${inter.variable} ${berkeleyMono.variable} font-sans antialiased bg-background text-foreground min-h-screen w-screen flex flex-col py-4`}
       >

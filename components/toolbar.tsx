@@ -47,6 +47,11 @@ const toolbarItems: ToolbarItem[] = [
     paths: ['/projects'],
   },
   {
+    value: 'writing',
+    name: 'Writing',
+    paths: ['/writing'],
+  },
+  {
     value: 'education',
     name: 'Education',
     paths: ['/education'],
