@@ -34,7 +34,7 @@ const projects: TProjectListItem[] = [
     status: 'in-progress',
     title: 'Avelin',
     url: 'avelin.app',
-    videoSrc: '/projects/avelin/video-sm.mp4',
+    videoSrc: '/projects/avelin/avelin-pre-launch-alpha.mp4',
   },
   {
     year: '2023',
@@ -73,30 +73,16 @@ export default function Page() {
           setHoveredProject(null)
         }}
       >
-        <ProjectListItem
-          // id="kian-bazarjani"
-          year="2025"
-          status="in-progress"
-          title="Kian Bazarjani"
-          url="bazza.dev"
-          videoSrc="/projects/kian-bazarjani/video-sm.mp4"
-        />
-        <ProjectListItem
-          // id="avelin"
-          year="2025"
-          status="in-progress"
-          title="Avelin"
-          url="avelin.app"
-          videoSrc="/projects/avelin/video-sm.mp4"
-        />
-        <ProjectListItem
-          // id="oet"
-          year="2023"
-          status="done"
-          title="Optimal Enchant Tool"
-          url="oet.bazza.dev"
-          videoSrc="/projects/oet/video-sm.mp4"
-        />
+        {projects.map(({ year, status, title, url, videoSrc }) => (
+          <ProjectListItem
+            key={url}
+            year={year}
+            status={status}
+            title={title}
+            url={url}
+            videoSrc={videoSrc}
+          />
+        ))}
       </div>
       <ProjectVideoPreview projects={projects} />
     </Container>
