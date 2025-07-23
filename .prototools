@@ -1,6 +1,5 @@
-bun = "1.2.1"
+bun = "1.2.19"
 node = "~22"
-pnpm = "9.15.4"
 
 [settings]
 auto-install = true
