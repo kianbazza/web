@@ -1,6 +1,6 @@
 import { randomInt } from 'node:crypto'
-import Container from '@/components/container'
 import type { Metadata } from 'next'
+import Container from '@/components/container'
 
 export const metadata: Metadata = {
   title: '404',

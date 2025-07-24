@@ -1,49 +1,132 @@
-@import "@radix-ui/colors/gray.css";
-@import "@radix-ui/colors/gray-dark.css";
-@import "@radix-ui/colors/sand.css";
-@import "@radix-ui/colors/sand-dark.css";
-@import "@radix-ui/colors/red.css";
-@import "@radix-ui/colors/red-dark.css";
-@import "@radix-ui/colors/plum.css";
-@import "@radix-ui/colors/plum-dark.css";
-@import "@radix-ui/colors/blue.css";
-@import "@radix-ui/colors/blue-dark.css";
-@import "@radix-ui/colors/lime.css";
-@import "@radix-ui/colors/lime-dark.css";
+@import "@radix-ui/colors/gray.css" layer(base);
+@import "@radix-ui/colors/gray-dark.css" layer(base);
+@import "@radix-ui/colors/sand.css" layer(base);
+@import "@radix-ui/colors/sand-dark.css" layer(base);
+@import "@radix-ui/colors/red.css" layer(base);
+@import "@radix-ui/colors/red-dark.css" layer(base);
+@import "@radix-ui/colors/plum.css" layer(base);
+@import "@radix-ui/colors/plum-dark.css" layer(base);
+@import "@radix-ui/colors/blue.css" layer(base);
+@import "@radix-ui/colors/blue-dark.css" layer(base);
+@import "@radix-ui/colors/lime.css" layer(base);
+@import "@radix-ui/colors/lime-dark.css" layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  * {
-    cursor: default;
-    letter-spacing: -0.01em;
-  }
+@custom-variant dark (&:is(.dark *));
 
-  /* Opt text-based inputs out of "forced" default cursor */
-  input[type="text"],
-  input[type="password"],
-  input[type="email"],
-  textarea,
-  select {
-    cursor: text;
-  }
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-berkeley-mono);
+}
 
-  /* A CSS media query to target mobile devices */
-  @media (max-width: 639px) {
-    font-size: 14px;
+@theme {
+  --color-gray-1: var(--gray-1);
+  --color-gray-2: var(--gray-2);
+  --color-gray-3: var(--gray-3);
+  --color-gray-4: var(--gray-4);
+  --color-gray-5: var(--gray-5);
+  --color-gray-6: var(--gray-6);
+  --color-gray-7: var(--gray-7);
+  --color-gray-8: var(--gray-8);
+  --color-gray-9: var(--gray-9);
+  --color-gray-10: var(--gray-10);
+  --color-gray-11: var(--gray-11);
+  --color-gray-12: var(--gray-12);
+
+  --color-sand-1: var(--sand-1);
+  --color-sand-2: var(--sand-2);
+  --color-sand-3: var(--sand-3);
+  --color-sand-4: var(--sand-4);
+  --color-sand-5: var(--sand-5);
+  --color-sand-6: var(--sand-6);
+  --color-sand-7: var(--sand-7);
+  --color-sand-8: var(--sand-8);
+  --color-sand-9: var(--sand-9);
+  --color-sand-10: var(--sand-10);
+  --color-sand-11: var(--sand-11);
+  --color-sand-12: var(--sand-12);
+
+  --color-red-1: var(--red-1);
+  --color-red-2: var(--red-2);
+  --color-red-3: var(--red-3);
+  --color-red-4: var(--red-4);
+  --color-red-5: var(--red-5);
+  --color-red-6: var(--red-6);
+  --color-red-7: var(--red-7);
+  --color-red-8: var(--red-8);
+  --color-red-9: var(--red-9);
+  --color-red-10: var(--red-10);
+  --color-red-11: var(--red-11);
+  --color-red-12: var(--red-12);
+
+  --color-plum-1: var(--plum-1);
+  --color-plum-2: var(--plum-2);
+  --color-plum-3: var(--plum-3);
+  --color-plum-4: var(--plum-4);
+  --color-plum-5: var(--plum-5);
+  --color-plum-6: var(--plum-6);
+  --color-plum-7: var(--plum-7);
+  --color-plum-8: var(--plum-8);
+  --color-plum-9: var(--plum-9);
+  --color-plum-10: var(--plum-10);
+  --color-plum-11: var(--plum-11);
+  --color-plum-12: var(--plum-12);
+
+  --color-blue-1: var(--blue-1);
+  --color-blue-2: var(--blue-2);
+  --color-blue-3: var(--blue-3);
+  --color-blue-4: var(--blue-4);
+  --color-blue-5: var(--blue-5);
+  --color-blue-6: var(--blue-6);
+  --color-blue-7: var(--blue-7);
+  --color-blue-8: var(--blue-8);
+  --color-blue-9: var(--blue-9);
+  --color-blue-10: var(--blue-10);
+  --color-blue-11: var(--blue-11);
+  --color-blue-12: var(--blue-12);
+
+  --color-lime-1: var(--lime-1);
+  --color-lime-2: var(--lime-2);
+  --color-lime-3: var(--lime-3);
+  --color-lime-4: var(--lime-4);
+  --color-lime-5: var(--lime-5);
+  --color-lime-6: var(--lime-6);
+  --color-lime-7: var(--lime-7);
+  --color-lime-8: var(--lime-8);
+  --color-lime-9: var(--lime-9);
+  --color-lime-10: var(--lime-10);
+  --color-lime-11: var(--lime-11);
+  --color-lime-12: var(--lime-12);
+
+  --color-background: var(--sand-1);
+  --color-foreground: var(--sand-12);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
   }
 }
 
-@layer utilities {
+@utility hover-expand {
   /* This utility extends the hover/click area on all sides */
-  .hover-expand {
-    position: relative;
-    --hover-radius: -10px;
-  }
+  position: relative;
+  --hover-radius: -10px;
 
-  .hover-expand::before {
+  &::before {
     content: "";
     position: absolute;
     top: var(--hover-radius);
@@ -55,5 +138,35 @@
        but because it’s part of the element’s subtree, hovering over it
        triggers the parent’s :hover state. */
     pointer-events: auto;
+  }
+}
+
+@layer utilities {
+  :root {
+    * {
+      cursor: default;
+      letter-spacing: -0.01em;
+    }
+
+    /* Opt text-based inputs out of "forced" default cursor */
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    textarea,
+    select {
+      cursor: text;
+    }
+
+    /* A CSS media query to target mobile devices */
+    @media (max-width: 639px) {
+      font-size: 14px;
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    scrollbar-color: transparent;
   }
 }

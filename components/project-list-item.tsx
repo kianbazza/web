@@ -1,5 +1,8 @@
 'use client'
 
+import { useAtom } from 'jotai'
+import { AnimatePresence, motion } from 'motion/react'
+import { useEffect, useMemo, useRef } from 'react'
 import { hoveredProjectRowItem } from '@/lib/atoms'
 import {
   BacklogStatusIcon,
@@ -7,9 +10,6 @@ import {
   InProgressStatusIcon,
 } from '@/lib/icons'
 import { cn } from '@/lib/utils'
-import { useAtom } from 'jotai'
-import { AnimatePresence, motion } from 'motion/react'
-import { useEffect, useMemo, useRef } from 'react'
 
 export type TProjectListItem = {
   year: string
@@ -58,7 +58,7 @@ export function ProjectListItem({
     <motion.div
       className={cn(
         'grid grid-cols-subgrid col-span-4 items-center py-2 relative group/row',
-        'transition-all duration-200 group-hover/projects:opacity-40 hover:!opacity-100 hover:bg-sand-2 border border-transparent hover:border-sand-3 px-4 rounded-md',
+        'transition-all duration-200 group-hover/projects:opacity-40 hover:opacity-100! hover:bg-sand-2 border border-transparent hover:border-sand-3 px-4 rounded-md',
       )}
       onMouseEnter={() => {
         setHoveredProject({

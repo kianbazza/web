@@ -1,17 +1,11 @@
 'use client'
 
-import {
-  BacklogStatusIcon,
-  DoneStatusIcon,
-  InProgressStatusIcon,
-} from '@/lib/icons'
-import { cn } from '@/lib/utils'
-import { LightbulbIcon, LightbulbOffIcon, MonitorCogIcon } from 'lucide-react'
 import { motion } from 'motion/react'
-import { useTheme } from 'next-themes'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { cn } from '@/lib/utils'
+import { ThemeToggle } from './theme-toggle'
 
 type ToolbarItem = {
   value: string
@@ -42,6 +36,12 @@ const toolbarItems: ToolbarItem[] = [
     hidden: true,
   },
   {
+    value: 'craft',
+    name: 'Craft',
+    paths: ['/craft'],
+  },
+
+  {
     value: 'projects',
     name: 'Projects',
     paths: ['/projects'],
@@ -62,12 +62,19 @@ export default function Toolbar() {
     <div
       className={cn(
         'text-sand-12 font-mono text-sm select-none',
-        'fixed left-8 top-[50%] translate-y-[-50%] z-10 grid grid-rows-3 gap-4 h-full',
-        'lg:grid hidden',
+        'fixed bottom-6 sm:bottom-8 left-[50%] translate-x-[-50%] z-100000',
       )}
     >
-      {/* <div className="row-span-1 pt-4 justify-self-end">Index</div> */}
-      <div className="row-start-2 self-center flex flex-col gap-2">
+      <div className="rounded-full bg-white dark:bg-black pl-4 pr-4 h-11 flex items-center drop-shadow-lg border border-gray-5 w-fit">
+        <div className="h-11 overflow-hidden w-11">
+          <Image
+            height={36}
+            width={36}
+            className="translate-y-[4px] grayscale mr-2 pr-2"
+            alt="Kian Bazza"
+            src="/kianbazza-head.png"
+          />
+        </div>
         {toolbarItems
           .filter((item) => !item.hidden)
           .map((item) => (
@@ -75,74 +82,32 @@ export default function Toolbar() {
               key={item.value}
               href={item.paths[0]}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-xl shadow-sm backdrop-blur-md bg-sand-4 hover:bg-sand-5 transition-all duration-200',
-                item.paths.includes(pathname) && 'bg-sand-6',
+                'relative',
+                'transition-colors duration-200 ease-out px-2 py-3.5',
+                item.paths.includes(pathname) ? 'text-gray-12' : 'text-gray-9',
+                'hover:text-gray-12',
                 item.disabled &&
-                  '!cursor-not-allowed *:!cursor-not-allowed !pointer-events-none opacity-50',
+                  'cursor-not-allowed! *:cursor-not-allowed! pointer-events-none! opacity-50',
               )}
             >
-              <span className="font-medium mr-4">{item.name}</span>
               {item.paths.includes(pathname) && (
-                <span className="text-sand-12 mr-2 absolute right-2">*</span>
+                <motion.div
+                  layoutId="nav-dot"
+                  layout="position"
+                  className="rounded-full bg-blue-9 size-1.5 shadow-xs"
+                  style={{
+                    position: 'absolute',
+                    bottom: 8,
+                    left: '50%',
+                    marginLeft: -3,
+                  }}
+                />
               )}
+              <span className="font-medium">{item.name}</span>
             </Link>
           ))}
         <ThemeToggle />
       </div>
-      <div className="row-start-3 rounded-xl px-4 py-4 shadow-sm backdrop-blur-md bg-sand-2 border border-sand-3 self-end mb-24 flex flex-col gap-2">
-        <span className="text-sand-10 font-bold text-xs">Legend</span>
-        <div className="space-y-1">
-          <div className="flex gap-2 items-center">
-            <BacklogStatusIcon />
-            <span>Backlog</span>
-          </div>
-          <div className="flex gap-2 items-center">
-            <InProgressStatusIcon />
-            <span>In Progress</span>
-          </div>
-          <div className="flex gap-2 items-center">
-            <DoneStatusIcon />
-            <span>Done</span>
-          </div>
-        </div>
-      </div>
     </div>
-  )
-}
-
-const ThemeToggle = () => {
-  const { setTheme, theme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  // useEffect only runs on the client, so now we can safely show the UI
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return (
-      <button
-        type="button"
-        className="mt-2 w-fit flex items-center gap-2 px-4 py-2 rounded-xl shadow-sm backdrop-blur-md bg-sand-4 hover:bg-sand-5 transition-all duration-200 select-none"
-        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      >
-        <LightbulbIcon className="size-4 inline-block dark:hidden" />
-        <LightbulbOffIcon className="size-4 hidden dark:inline-block" />
-      </button>
-    )
-  }
-
-  return (
-    <motion.button
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 1.2 }}
-      type="button"
-      className="mt-2 w-fit flex items-center gap-2 px-4 py-2 rounded-xl shadow-sm backdrop-blur-md bg-sand-4 hover:bg-sand-5 transition-all duration-200 select-none"
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-    >
-      {theme === 'light' && <LightbulbIcon className="size-4" />}
-      {theme === 'dark' && <LightbulbOffIcon className="size-4" />}
-      {theme === 'system' && <MonitorCogIcon className="size-4" />}
-    </motion.button>
   )
 }

@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
       permanent: false,
     },
   ],
+  images: {
+    remotePatterns: [new URL('https://bazza-dev.b-cdn.net/**')],
+  },
 }
 
 export default nextConfig

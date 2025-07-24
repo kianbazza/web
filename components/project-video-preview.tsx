@@ -1,14 +1,16 @@
 'use client'
 
-import { hoveredProjectRowItem } from '@/lib/atoms'
 import { useAtom } from 'jotai'
 import { animate } from 'motion'
 import { useEffect, useRef } from 'react'
+import { hoveredProjectRowItem } from '@/lib/atoms'
 import type { TProjectListItem } from './project-list-item'
 
 export default function ProjectVideoPreview({
   projects,
-}: { projects: TProjectListItem[] }) {
+}: {
+  projects: TProjectListItem[]
+}) {
   return (
     <div className="2xl:hidden">
       {projects.map((p) => (

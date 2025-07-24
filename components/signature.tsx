@@ -1,7 +1,7 @@
 'use client'
 
+import { motion, type SVGMotionProps, type Variants } from 'motion/react'
 import { cn } from '@/lib/utils'
-import { type SVGMotionProps, type Variants, motion } from 'motion/react'
 
 const draw: Variants = {
   initial: {
