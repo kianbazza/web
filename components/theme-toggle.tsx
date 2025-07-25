@@ -19,8 +19,8 @@ export const ThemeToggle = () => {
         className="pl-4"
         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       >
-        <LightbulbIcon className="size-4 inline-block dark:hidden" />
-        <LightbulbOffIcon className="size-4 hidden dark:inline-block" />
+        <LightbulbIcon className="size-4 inline-block dark:hidden stroke-[2.25px]" />
+        <LightbulbOffIcon className="size-4 hidden dark:inline-block stroke-[2.25px]" />
       </button>
     )
   }
@@ -33,9 +33,15 @@ export const ThemeToggle = () => {
       className="pl-4"
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
     >
-      {theme === 'light' && <LightbulbIcon className="size-4" />}
-      {theme === 'dark' && <LightbulbOffIcon className="size-4" />}
-      {theme === 'system' && <MonitorCogIcon className="size-4" />}
+      {theme === 'light' && (
+        <LightbulbIcon className="size-4 stroke-[2.25px]" />
+      )}
+      {theme === 'dark' && (
+        <LightbulbOffIcon className="size-4 stroke-[2.25px]" />
+      )}
+      {theme === 'system' && (
+        <MonitorCogIcon className="size-4 stroke-[2.25px]" />
+      )}
     </motion.button>
   )
 }
