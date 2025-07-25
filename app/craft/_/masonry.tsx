@@ -25,6 +25,7 @@ const itemVariants: Variants = {
 }
 
 interface CraftItem {
+  index: number
   src: string
   type: 'video' | 'image'
   title: string
@@ -68,7 +69,7 @@ const items: CraftItem[] = [
     date: 'May 2025',
     theme: 'dark',
   },
-]
+].map((item, index) => ({ ...item, index }) as CraftItem)
 
 export function CraftMasonry() {
   const [visibleItems, setVisibleItems] = useState<number>(0)
@@ -82,7 +83,7 @@ export function CraftMasonry() {
         clearInterval(timer)
         return prev
       })
-    }, 200) // Stagger delay of 150ms
+    }, 150) // Stagger delay of 150ms
 
     return () => clearInterval(timer)
   }, [])
@@ -96,12 +97,13 @@ export function CraftMasonry() {
         media: [640, 1000, 2000],
         useBalancedLayout: true,
       }}
-      render={(_item, index) => {
+      as={motion.div}
+      render={(_item) => {
         const item = _item as CraftItem
-        const shouldShow = index < visibleItems
+        const shouldShow = item.index < visibleItems
 
         return (
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {shouldShow && (
               <motion.div
                 variants={itemVariants}
