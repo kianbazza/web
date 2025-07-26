@@ -62,12 +62,19 @@ const items: CraftItem[] = [
     date: 'January 2024',
     theme: 'light',
   },
+  // {
+  //   src: 'https://bazza-dev.b-cdn.net/craft/bazzaui-boolean-columns-design-spec.png',
+  //   type: 'image',
+  //   title: 'Boolean column filtering',
+  //   date: 'May 2025',
+  //   theme: 'dark',
+  // },
   {
-    src: 'https://bazza-dev.b-cdn.net/craft/bazzaui-boolean-columns-design-spec.png',
-    type: 'image',
-    title: 'Boolean column filtering',
+    src: 'https://bazza-dev.b-cdn.net/craft/bazzaui-sticky-menu-options.mp4',
+    type: 'video',
+    title: 'Sticky menu options',
     date: 'May 2025',
-    theme: 'dark',
+    theme: 'light',
   },
 ].map((item, index) => ({ ...item, index }) as CraftItem)
 
