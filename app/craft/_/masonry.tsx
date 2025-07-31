@@ -31,6 +31,10 @@ interface CraftItem {
   title: string
   date: string
   theme: 'light' | 'dark'
+  dimensions: {
+    width: number
+    height: number
+  }
 }
 
 const items: CraftItem[] = [
@@ -40,6 +44,10 @@ const items: CraftItem[] = [
     title: 'Keyword analysis tool',
     date: 'July 2025',
     theme: 'light',
+    dimensions: {
+      width: 1844,
+      height: 1080,
+    },
   },
   {
     src: 'https://bazza-dev.b-cdn.net/craft/profound-fluid-search-bar.mp4',
@@ -47,6 +55,10 @@ const items: CraftItem[] = [
     title: 'Fluid, morphing search',
     date: 'June 2025',
     theme: 'light',
+    dimensions: {
+      width: 956,
+      height: 960,
+    },
   },
   {
     src: 'https://bazza-dev.b-cdn.net/craft/kianbazza-floating-navbar.mp4',
@@ -54,6 +66,10 @@ const items: CraftItem[] = [
     title: 'Floating navbar',
     date: 'July 2025',
     theme: 'light',
+    dimensions: {
+      width: 3840,
+      height: 1004,
+    },
   },
   {
     src: 'https://bazza-dev.b-cdn.net/craft/kianbazza-2024-typewriter.mp4',
@@ -61,6 +77,10 @@ const items: CraftItem[] = [
     title: 'Typewriter',
     date: 'January 2024',
     theme: 'light',
+    dimensions: {
+      width: 2394,
+      height: 674,
+    },
   },
   {
     src: 'https://bazza-dev.b-cdn.net/craft/bazzaui-boolean-columns-design-spec.png',
@@ -68,6 +88,10 @@ const items: CraftItem[] = [
     title: 'Boolean column filtering',
     date: 'May 2025',
     theme: 'dark',
+    dimensions: {
+      width: 2023,
+      height: 798,
+    },
   },
   {
     src: 'https://bazza-dev.b-cdn.net/craft/bazzaui-sticky-menu-options.mp4',
@@ -75,6 +99,10 @@ const items: CraftItem[] = [
     title: 'Sticky menu options',
     date: 'May 2025',
     theme: 'light',
+    dimensions: {
+      width: 1916,
+      height: 1080,
+    },
   },
 ].map((item, index) => ({ ...item, index }) as CraftItem)
 
