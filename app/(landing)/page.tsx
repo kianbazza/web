@@ -8,11 +8,13 @@ import { content } from './_/content'
 import { Header } from './_/header'
 import { Section } from './_/section'
 import { containerVariants } from './_/variants'
+import { MaybeLink } from '@/components/maybe-link'
+import { cn } from '@/lib/utils'
 
 const Divider = () => <motion.div className="h-px w-full bg-sand-6" />
 
 const SectionTitle = ({ children }: { children?: React.ReactNode }) => (
-  <h1 className="font-mono text-sm font-bold text-sand-8">{children}</h1>
+  <h1 className=" text-sm font-bold text-sand-8">{children}</h1>
 )
 
 export default function Home() {
@@ -28,24 +30,27 @@ export default function Home() {
         <Divider />
         <Section>
           <SectionTitle>Connect</SectionTitle>
-          <div className="flex flex-col gap-1.5 font-mono">
+          <div className="flex flex-col gap-1.5 ">
             {content.connect.map(({ key, value, href }) => (
-              <Link key={key} href={href}>
-                <div className="flex items-center gap-4 group">
-                  <span className="font-bold">{key}</span>
+              <MaybeLink
+                className="flex items-center gap-4 group hover-expand-1"
+                key={key}
+                href={href}
+              >
+                <span className="font-bold">{key}</span>
+                <div className="relative">
                   <span className="text-sand-10 font-medium">{value}</span>
-                  <span className="inline-flex items-center gap-2 invisible group-hover:visible font-bold ml-2">
-                    Open
-                    <ArrowRightIcon strokeWidth={2.5} className="size-4" />
-                  </span>
+                  {href && (
+                    <div className="h-[2px] w-0 absolute bottom-0 bg-text-quaternary rounded-full group-hover:w-full" />
+                  )}
                 </div>
-              </Link>
+              </MaybeLink>
             ))}
           </div>
         </Section>
         <Section>
           <SectionTitle>Career</SectionTitle>
-          <div className="flex flex-col gap-1.5 font-mono">
+          <div className="flex flex-col gap-1.5">
             {content.career.map(({ year, company, role }) => (
               <div
                 key={`${year}-${company}-${role}`}
@@ -64,7 +69,7 @@ export default function Home() {
           <div className="flex gap-4">
             <SectionTitle>Projects</SectionTitle>
             <Link
-              className="text-sm font-mono font-bold tracking-normal! text-blue-11 group-hover/section:opacity-100 group-hover/section:blur-none hover-expand hover:text-blue-12 transition-all ease-out inline-flex items-center gap-2 group/link"
+              className="text-sm font-bold tracking-normal! text-blue-11 group-hover/section:opacity-100 group-hover/section:blur-none hover-expand hover:text-blue-12 transition-all ease-out inline-flex items-center gap-2 group/link"
               href="/projects"
             >
               Browse{' '}
@@ -73,48 +78,49 @@ export default function Home() {
               </span>
             </Link>
           </div>
-          <div className="flex flex-col gap-2 font-mono">
-            {content.projects.map(({ year, title, description }) => (
-              <div key={title} className="flex items-center gap-6 w-full">
+          <div className="flex flex-col gap-2">
+            {content.projects.map(({ year, title, description, href }) => (
+              <MaybeLink
+                href={href}
+                key={title}
+                className="flex items-center gap-6 w-full group hover-expand-1"
+              >
                 <span className="font-bold">{year}</span>
-                <div className="inline-flex items-center gap-2">
+                <div className="inline-flex items-center gap-2 relative">
                   <span className="text-sand-10 font-medium">{title}</span>
+                  <div className="h-[2px] w-0 absolute bottom-0 bg-text-quaternary rounded-full group-hover:w-full" />
                 </div>
                 <span className="hidden sm:block">{description}</span>
-              </div>
+              </MaybeLink>
             ))}
           </div>
         </Section>
         <Section>
           <SectionTitle>Education</SectionTitle>
-          <div className="flex flex-col gap-1.5 font-mono">
+          <div className="flex flex-col gap-2">
             {content.education.map(
               ({ year, institution, description, href }) => (
-                <Link
+                <MaybeLink
                   key={`${year}-${institution}-${description}`}
-                  href={href ?? '#'}
+                  className="hover-expand-1 inline-flex items-center gap-6 group w-full"
+                  href={href}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <div className="inline-flex items-center gap-6 group">
-                    <div className="gap-x-6 grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content]">
-                      <span className="font-bold">{year}</span>
+                  <div className="gap-x-6 grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content]">
+                    <span className="font-bold">{year}</span>
+                    <div className="relative">
                       <span className="text-sand-10 font-medium">
                         {institution}
                       </span>
-                      <span className="sm:block hidden">{description}</span>
-                      <span className="col-start-2 sm:hidden">
-                        {description}
-                      </span>
+                      {href && (
+                        <div className="h-[2px] w-0 absolute bottom-0 bg-text-quaternary rounded-full group-hover:w-full" />
+                      )}
                     </div>
-                    {href && (
-                      <span className="group-hover:inline-flex hidden items-center gap-2 font-bold ml-2">
-                        View
-                        <ArrowRightIcon strokeWidth={2.5} className="size-4" />
-                      </span>
-                    )}
+
+                    <span className="sm:block hidden">{description}</span>
                   </div>
-                </Link>
+                </MaybeLink>
               ),
             )}
           </div>

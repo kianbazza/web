@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${berkeleyMono.variable} font-sans antialiased bg-background text-foreground min-h-svh w-svw flex flex-col no-scrollbar`}
+        className={`${inter.variable} ${berkeleyMono.variable} font-mono antialiased bg-background text-foreground min-h-svh w-svw flex flex-col no-scrollbar`}
       >
         <ThemeProvider
           attribute="class"
