@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/correctness/useUniqueElementIds: allowed */
+
 'use client'
 
 import { AnimatePresence, motion } from 'motion/react'

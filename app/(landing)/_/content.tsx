@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import {
   AvelinIcon,
   BazzaLabsIcon,
@@ -8,7 +9,6 @@ import {
   ProfoundIcon,
   XIcon,
 } from '@/lib/icons'
-import { JSX } from 'react'
 
 type ConnectSectionItem = {
   key: string
