@@ -1,15 +1,14 @@
 'use client'
 
-import { ArrowRightIcon } from 'lucide-react'
 import { motion } from 'motion/react'
 import Link from 'next/link'
+import { Fragment } from 'react'
+import { MaybeLink } from '@/components/maybe-link'
 import { WidthContainer } from '@/components/width-container'
 import { content } from './_/content'
 import { Header } from './_/header'
 import { Section } from './_/section'
 import { containerVariants } from './_/variants'
-import { MaybeLink } from '@/components/maybe-link'
-import { cn } from '@/lib/utils'
 
 const Divider = () => <motion.div className="h-px w-full bg-sand-6" />
 
@@ -17,11 +16,36 @@ const SectionTitle = ({ children }: { children?: React.ReactNode }) => (
   <h1 className=" text-sm font-bold text-sand-8">{children}</h1>
 )
 
+function formatDuration(start: Date, end?: Date, compact?: boolean): string {
+  const s = start
+  const e = end ?? new Date()
+  const months =
+    (e.getFullYear() - s.getFullYear()) * 12 + (e.getMonth() - s.getMonth())
+  const years = Math.floor(months / 12)
+  const remMonths = months % 12
+
+  if (!compact) {
+    return [
+      years > 0 ? `${years} year${years > 1 ? 's' : ''}` : null,
+      remMonths > 0 ? `${remMonths} month${remMonths > 1 ? 's' : ''}` : null,
+    ]
+      .filter(Boolean)
+      .join(', ')
+  } else {
+    return [
+      years > 0 ? `${years} yr${years > 1 ? 's' : ''}` : null,
+      remMonths > 0 ? `${remMonths} mo${remMonths > 1 ? 's' : ''}` : null,
+    ]
+      .filter(Boolean)
+      .join(' ')
+  }
+}
+
 export default function Home() {
   return (
     <WidthContainer>
       <motion.div
-        className="flex flex-col gap-6 select-none"
+        className="flex flex-col gap-8 select-none sm:mt-12"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -30,41 +54,139 @@ export default function Home() {
         <Divider />
         <Section>
           <SectionTitle>Connect</SectionTitle>
-          <div className="flex flex-col gap-1.5 ">
-            {content.connect.map(({ key, value, href }) => (
-              <MaybeLink
-                className="flex items-center gap-4 group hover-expand-1"
-                key={key}
-                href={href}
-              >
-                <span className="font-bold">{key}</span>
-                <div className="relative">
-                  <span className="text-sand-10 font-medium">{value}</span>
-                  {href && (
-                    <div className="h-[2px] w-0 absolute bottom-0 bg-text-quaternary rounded-full group-hover:w-full" />
+          <div className="flex items-center gap-6">
+            {/* <span className="font-medium">Socials</span> */}
+            <div className="flex items-center gap-2">
+              {content.connect.map(({ key, icon: Icon, href }, index) => (
+                <Fragment key={key}>
+                  <MaybeLink
+                    className="flex items-center gap-4 group hover-expand-3 relative"
+                    href={href}
+                  >
+                    {Icon ? (
+                      <div className="flex items-center h-7">
+                        <Icon className="size-3.5 fill-sand-12" />
+                      </div>
+                    ) : (
+                      <span className="font-[450] text-sand-12">{key}</span>
+                    )}
+                    {href && (
+                      <div className="h-[2px] w-0 absolute bottom-0 bg-text-quaternary rounded-full group-hover:w-full" />
+                    )}
+                  </MaybeLink>
+                  {index < content.connect.length - 1 && (
+                    <span className="text-sand-11">⋅</span>
                   )}
+                </Fragment>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sand-11">Let's find some time to chat.</span>
+            <MaybeLink
+              href="https://cal.com/bazza/30min"
+              className="group relative text-sand-12 font-medium"
+            >
+              Book a call.
+              <div className="h-[2px] w-0 absolute bottom-0 bg-text-quaternary rounded-full group-hover:w-full" />
+              <div className="overflow-hidden size-4 absolute -top-2 -right-4">
+                <div className="relative *:transition-all">
+                  <span className="absolute top-0 left-0 text-sand-11 group-hover:translate-x-4 group-hover:-translate-y-4">
+                    ↗
+                  </span>
+                  <span className="absolute top-0 left-0 text-sand-11 -translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:-translate-y-0">
+                    ↗
+                  </span>
                 </div>
-              </MaybeLink>
-            ))}
+              </div>
+            </MaybeLink>
           </div>
         </Section>
         <Section>
           <SectionTitle>Career</SectionTitle>
-          <div className="flex flex-col gap-1.5">
-            {content.career.map(({ year, company, role }) => (
-              <div
-                key={`${year}-${company}-${role}`}
-                className="gap-x-6 grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content]"
-              >
-                <span className="font-bold col-span-1">{year}</span>
-                <span className="text-sand-10 font-medium col-span-1">
-                  {company}
-                </span>
-                <span className="sm:col-span-1 col-start-2">{role}</span>
-              </div>
-            ))}
+          <div className="flex flex-col gap-3">
+            {content.career.map((organization) => {
+              const OrgIcon = organization.icon
+
+              return (
+                <div key={organization.name} className="flex flex-col gap-2">
+                  <div className="flex items-center gap-3">
+                    <OrgIcon className="fill-sand-11 size-4" />
+                    <span className="text-sand-12 font-medium">
+                      {organization.name}
+                    </span>
+                  </div>
+                  {organization.description && (
+                    <p className="text-sm text-sand-10 ml-7">
+                      {organization.description}
+                    </p>
+                  )}
+                  <ul
+                    className="relative text-sm font-[450]"
+                    style={
+                      {
+                        '--row-height': 'calc(var(--spacing) * 6',
+                      } as React.CSSProperties
+                    }
+                  >
+                    <div className="absolute left-0 top-0 w-[1.5px] h-[calc(100%-calc(var(--row-height)*0.75))] bg-gray-5 translate-x-2 rounded-full" />
+                    {organization.roles.map((role) => {
+                      const calculatedDiff = formatDuration(
+                        role.startDate,
+                        role.endDate,
+                      )
+                      const calculatedDiffCompact = formatDuration(
+                        role.startDate,
+                        role.endDate,
+                        true,
+                      )
+                      const duration = calculatedDiff
+                        ? calculatedDiff
+                        : '1 month'
+                      const durationCompact = calculatedDiffCompact
+                        ? calculatedDiffCompact
+                        : '1 mo'
+
+                      return (
+                        <li
+                          key={role.title}
+                          className="flex items-center gap-5 ml-7 relative h-6"
+                        >
+                          <div className="absolute -left-5 w-3.5 h-[1.5px] bg-gray-5 rotate-25 -translate-y-0.75 rounded-full" />
+                          <span className="text-sand-10">
+                            {role.startDate.getFullYear()}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            {role.icon && (
+                              <role.icon className="size-3.5 fill-sand-9" />
+                            )}
+                            <span className="text-sand-11">{role.title}</span>
+                          </div>
+                          <div className="flex sm:hidden items-center gap-[1ch]">
+                            {!role.endDate && (
+                              <span className="text-blue-10">Now ⋅</span>
+                            )}
+                            <span className="text-sand-9">
+                              {durationCompact}
+                            </span>
+                          </div>
+
+                          <div className="items-center gap-[1ch] hidden sm:flex">
+                            {!role.endDate && (
+                              <span className="text-blue-10">Now ⋅</span>
+                            )}
+                            <span className="text-sand-9">{duration}</span>
+                          </div>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </div>
+              )
+            })}
           </div>
         </Section>
+
         <Section className="group/section">
           <div className="flex gap-4">
             <SectionTitle>Projects</SectionTitle>
@@ -78,21 +200,28 @@ export default function Home() {
               </span>
             </Link>
           </div>
-          <div className="flex flex-col gap-2">
-            {content.projects.map(({ year, title, description, href }) => (
-              <MaybeLink
-                href={href}
-                key={title}
-                className="flex items-center gap-6 w-full group hover-expand-1"
-              >
-                <span className="font-bold">{year}</span>
-                <div className="inline-flex items-center gap-2 relative">
-                  <span className="text-sand-10 font-medium">{title}</span>
-                  <div className="h-[2px] w-0 absolute bottom-0 bg-text-quaternary rounded-full group-hover:w-full" />
-                </div>
-                <span className="hidden sm:block">{description}</span>
-              </MaybeLink>
-            ))}
+          <div className="flex flex-col gap-3">
+            {content.projects.map(
+              ({ icon: Icon, title, description, href }) => {
+                return (
+                  <MaybeLink
+                    href={href}
+                    key={title}
+                    className="flex-col sm:flex-row flex sm:items-center gap-x-6 gap-y-1 w-full group hover-expand-1"
+                  >
+                    {/* <span className="font-bold">{year}</span> */}
+                    <div className="inline-flex items-center gap-2 relative">
+                      <Icon className="size-4 fill-sand-9" />
+                      <span className="text-sand-12 font-[450]">{title}</span>
+                      <div className="h-[2px] w-0 absolute bottom-0 bg-text-quaternary rounded-full group-hover:w-full" />
+                    </div>
+                    <span className="text-sand-10 text-sm sm:text-base">
+                      {description}
+                    </span>
+                  </MaybeLink>
+                )
+              },
+            )}
           </div>
         </Section>
         <Section>
@@ -108,7 +237,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                 >
                   <div className="gap-x-6 grid grid-cols-[max-content_max-content] sm:grid-cols-[max-content_max-content_max-content]">
-                    <span className="font-bold">{year}</span>
+                    <span className="font-medium">{year}</span>
                     <div className="relative">
                       <span className="text-sand-10 font-medium">
                         {institution}

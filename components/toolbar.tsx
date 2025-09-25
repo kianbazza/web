@@ -83,7 +83,7 @@ export default function Toolbar() {
               href={item.paths[0]}
               className={cn(
                 'relative',
-                'transition-colors duration-200 ease-out px-2 py-3.5',
+                'transition-colors hover:transition-none duration-150 ease-out px-2 py-3.5',
                 item.paths.includes(pathname) ? 'text-gray-12' : 'text-gray-9',
                 'hover:text-gray-12',
                 item.disabled &&

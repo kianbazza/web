@@ -17,6 +17,7 @@
 
 @theme inline {
   --font-sans: var(--font-inter);
+  --font-serif: var(--font-newsreader);
   --font-mono: var(--font-berkeley-mono);
 }
 
@@ -161,6 +162,10 @@
     textarea,
     select {
       cursor: text;
+    }
+
+    a {
+      cursor: pointer;
     }
 
     /* A CSS media query to target mobile devices */

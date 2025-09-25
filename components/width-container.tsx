@@ -1,3 +1,5 @@
 export function WidthContainer({ children }: { children: React.ReactNode }) {
-  return <div className="w-full max-w-(--breakpoint-md) mx-auto">{children}</div>
+  return (
+    <div className="w-full max-w-(--breakpoint-sm) mx-auto">{children}</div>
+  )
 }
