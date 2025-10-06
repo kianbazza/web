@@ -17,6 +17,7 @@
     "@radix-ui/react-popover": "^1.1.14",
     "@radix-ui/react-scroll-area": "^1.2.9",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "jotai": "^2.11.3",
     "lucide-react": "^0.525.0",
     "motion": "^12.23.7",

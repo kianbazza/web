@@ -9,6 +9,7 @@ import { content } from './_/content'
 import { Header } from './_/header'
 import { Section } from './_/section'
 import { containerVariants } from './_/variants'
+import { interval, intervalToDuration } from 'date-fns'
 
 const Divider = () => <motion.div className="h-px w-full bg-sand-6" />
 
@@ -131,6 +132,15 @@ export default function Home() {
                   >
                     <div className="absolute left-0 top-0 w-[1.5px] h-[calc(100%-calc(var(--row-height)*0.75))] bg-gray-5 translate-x-2 rounded-full" />
                     {organization.roles.map((role) => {
+                      const isIncoming = role.startDate.getTime() > Date.now()
+
+                      const incomingInterval = interval(
+                        new Date(),
+                        role.startDate,
+                      )
+                      const incomingDiff =
+                        intervalToDuration(incomingInterval).days
+
                       const calculatedDiff = formatDuration(
                         role.startDate,
                         role.endDate,
@@ -143,6 +153,7 @@ export default function Home() {
                       const duration = calculatedDiff
                         ? calculatedDiff
                         : '1 month'
+
                       const durationCompact = calculatedDiffCompact
                         ? calculatedDiffCompact
                         : '1 mo'
@@ -162,21 +173,39 @@ export default function Home() {
                             )}
                             <span className="text-sand-11">{role.title}</span>
                           </div>
-                          <div className="flex sm:hidden items-center gap-[1ch]">
-                            {!role.endDate && (
-                              <span className="text-blue-10">Now ⋅</span>
-                            )}
-                            <span className="text-sand-9">
-                              {durationCompact}
-                            </span>
-                          </div>
+                          {isIncoming ? (
+                            <div className="flex sm:hidden items-center gap-[1ch]">
+                              <span className="text-plum-10">Incoming ⋅</span>
+                              <span className="text-sand-9">
+                                {incomingDiff} days
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="flex sm:hidden items-center gap-[1ch]">
+                              {!role.endDate && (
+                                <span className="text-blue-10">Now ⋅</span>
+                              )}
+                              <span className="text-sand-9">
+                                {durationCompact}
+                              </span>
+                            </div>
+                          )}
 
-                          <div className="items-center gap-[1ch] hidden sm:flex">
-                            {!role.endDate && (
-                              <span className="text-blue-10">Now ⋅</span>
-                            )}
-                            <span className="text-sand-9">{duration}</span>
-                          </div>
+                          {isIncoming ? (
+                            <div className="items-center gap-[1ch] hidden sm:flex">
+                              <span className="text-plum-10">Incoming ⋅</span>
+                              <span className="text-sand-9">
+                                {incomingDiff} days
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="items-center gap-[1ch] hidden sm:flex">
+                              {!role.endDate && (
+                                <span className="text-blue-10">Now ⋅</span>
+                              )}
+                              <span className="text-sand-9">{duration}</span>
+                            </div>
+                          )}
                         </li>
                       )
                     })}
@@ -207,7 +236,7 @@ export default function Home() {
                   <MaybeLink
                     href={href}
                     key={title}
-                    className="flex-col sm:flex-row flex sm:items-center gap-x-6 gap-y-1 w-full group hover-expand-1"
+                    className="flex-col sm:flex-row flex sm:items-center gap-x-6 gap-y-1 w-full group hover-expand-1 **:!cursor-pointer"
                   >
                     {/* <span className="font-bold">{year}</span> */}
                     <div className="inline-flex items-center gap-2 relative">
