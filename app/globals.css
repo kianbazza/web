@@ -123,7 +123,7 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
+    border-color: var(--color-sand-4, currentcolor);
   }
 }
 

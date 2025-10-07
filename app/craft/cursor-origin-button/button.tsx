@@ -27,7 +27,7 @@ export function OriginAwareButtonExperiment() {
       <div className="grid grid-cols-2 justify-items-center gap-8">
         <span className="text-sm">Normal</span>
         <span className="text-sm underline underline-offset-2">
-          Origin-aware
+          Cursor origin
         </span>
         <NormalButton />
         <OriginAwareButton />

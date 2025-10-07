@@ -5,31 +5,39 @@ import { cn } from '@/lib/utils'
 import { Media } from '../_/craft-media'
 import { OriginAwareButton, OriginAwareButtonExperiment } from './button'
 
+function BackToCraft({ className }: { className?: string }) {
+  return (
+    <a
+      href="/craft"
+      className={cn(
+        'flex items-center gap-2 text-sand-10 group hover:text-sand-12 transition-[color] duration-150 ease-out',
+        className,
+      )}
+    >
+      <div>
+        <div className="overflow-hidden size-4 absolute top-0 -left-3">
+          <div className="relative *:transition-all *:size-4">
+            <ArrowUpLeftIcon className="absolute top-0 left-0 group-hover:-translate-x-4 group-hover:-translate-y-4" />
+            <ArrowUpLeftIcon className="absolute top-0 left-0 translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:-translate-y-0" />
+          </div>
+        </div>
+      </div>
+      <span>Craft</span>
+    </a>
+  )
+}
+
 export default function Page() {
   return (
     <div className="grid grid-cols-[1fr_auto_1fr]">
       <div className="col-span-1 flex flex-col items-end">
-        <a
-          href="/craft"
-          className={cn(
-            'fixed top-36',
-            'mr-12',
-            'flex items-center gap-2 text-sand-10 group hover:text-sand-12 transition-[color] duration-150 ease-out',
-          )}
-        >
-          <div>
-            <div className="overflow-hidden size-4 absolute top-0 -left-3">
-              <div className="relative *:transition-all *:size-4">
-                <ArrowUpLeftIcon className="absolute top-0 left-0 group-hover:-translate-x-4 group-hover:-translate-y-4" />
-                <ArrowUpLeftIcon className="absolute top-0 left-0 translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:-translate-y-0" />
-              </div>
-            </div>
-          </div>
-          <span>Craft</span>
-        </a>
+        <BackToCraft className="fixed top-36 max-lg:hidden mr-16" />
       </div>
       <WidthContainer className="col-span-1 overflow-visible">
-        <div className="sm:mt-32 flex flex-col gap-12 relative">
+        <div className="mt-16 sm:mt-32 flex flex-col gap-12 relative">
+          <div className="lg:hidden translate-x-3">
+            <BackToCraft />
+          </div>
           <div className="font-[450]">
             <h1 className="text-xl">Cursor-origin background scale</h1>
             <span className="text-sand-10">October 2025</span>
@@ -76,6 +84,11 @@ export default function Page() {
               <i>"this looks pretty cool, I should try to recreate this."</i>
             </p>
             <p>
+              Fast forward a few days, and nothing happens. That post, which
+              once captivated my attention, is now out of mind. Another post
+              will take its place to restart the cycle.
+            </p>
+            <p>
               Unfortunately, balancing three jobs leads to these ideas of
               (seemingly) low ROI to get brushed to the waistline, amongst the
               mountain of more pressing work.
@@ -83,10 +96,14 @@ export default function Page() {
           </div>
           <div className="space-y-4 text-sand-11">
             <p>
-              Well today I said{' '}
-              <span className="font-semibold">enough is enough.</span>
+              Well today I said:{' '}
+              <span className="font-semibold">enough is enough.</span> Today is
+              the day.
             </p>
           </div>
+
+          <div className="h-px w-full bg-sand-5" />
+
           <div className="space-y-4 text-sand-11">
             <p>
               Try hovering the button to see the button's background appear.
