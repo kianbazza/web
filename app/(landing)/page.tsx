@@ -1,5 +1,6 @@
 'use client'
 
+import { interval, intervalToDuration } from 'date-fns'
 import { motion } from 'motion/react'
 import Link from 'next/link'
 import { Fragment } from 'react'
@@ -9,7 +10,6 @@ import { content } from './_/content'
 import { Header } from './_/header'
 import { Section } from './_/section'
 import { containerVariants } from './_/variants'
-import { interval, intervalToDuration } from 'date-fns'
 
 const Divider = () => <motion.div className="h-px w-full bg-sand-6" />
 
@@ -46,7 +46,7 @@ export default function Home() {
   return (
     <WidthContainer>
       <motion.div
-        className="flex flex-col gap-8 select-none sm:mt-12"
+        className="flex flex-col gap-12 select-none sm:mt-12"
         variants={containerVariants}
         initial="hidden"
         animate="visible"

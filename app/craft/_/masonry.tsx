@@ -4,7 +4,7 @@ import { AnimatePresence, motion, type Variants } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { Masonry } from 'react-plock'
 import { cn } from '@/lib/utils'
-import { CraftMedia } from './craft-media'
+import { Media } from './craft-media'
 
 const itemVariants: Variants = {
   hidden: {
@@ -28,6 +28,7 @@ const itemVariants: Variants = {
 interface CraftItem {
   index: number
   src: string
+  href?: string
   type: 'video' | 'image'
   title: string
   date: string
@@ -37,9 +38,34 @@ interface CraftItem {
     height: number
   }
   placeholder: string
+  className?: string
 }
 
 const items: CraftItem[] = [
+  {
+    src: 'https://bazza-dev.b-cdn.net/craft/kianbazza-2025-cursor-origin-button.mp4',
+    href: '/craft/cursor-origin-button',
+    type: 'video',
+    title: 'Cursor-aware button',
+    date: 'October 2025',
+    theme: 'light',
+    dimensions: {
+      width: 1652,
+      height: 944,
+    },
+  },
+  {
+    src: 'https://bazza-dev.b-cdn.net/craft/kianbazza-2025-book-a-call.mp4',
+    type: 'video',
+    title: 'Book a call',
+    theme: 'light',
+    date: 'October 2025',
+    className: 'mask-l-from-50% mask-l-to-98%',
+    dimensions: {
+      width: 1450,
+      height: 618,
+    },
+  },
   {
     src: 'https://bazza-dev.b-cdn.net/craft/profound-cve-keyword-analysis-tool.mp4',
     type: 'video',
@@ -76,28 +102,6 @@ const items: CraftItem[] = [
     },
   },
   {
-    src: 'https://bazza-dev.b-cdn.net/craft/kianbazza-2024-typewriter.mp4',
-    type: 'video',
-    title: 'Typewriter',
-    date: 'January 2024',
-    theme: 'light',
-    dimensions: {
-      width: 2394,
-      height: 674,
-    },
-  },
-  {
-    src: 'https://bazza-dev.b-cdn.net/craft/bazzaui-boolean-columns-design-spec.png',
-    type: 'image',
-    title: 'Boolean column filtering',
-    date: 'May 2025',
-    theme: 'dark',
-    dimensions: {
-      width: 2023,
-      height: 798,
-    },
-  },
-  {
     src: 'https://bazza-dev.b-cdn.net/craft/bazzaui-sticky-menu-options.mp4',
     type: 'video',
     title: 'Sticky menu options',
@@ -108,6 +112,28 @@ const items: CraftItem[] = [
       height: 1080,
     },
   },
+  {
+    src: 'https://bazza-dev.b-cdn.net/craft/kianbazza-2024-typewriter.mp4',
+    type: 'video',
+    title: 'Typewriter',
+    date: 'January 2024',
+    theme: 'light',
+    dimensions: {
+      width: 2394,
+      height: 674,
+    },
+  },
+  // {
+  //   src: 'https://bazza-dev.b-cdn.net/craft/bazzaui-boolean-columns-design-spec.png',
+  //   type: 'image',
+  //   title: 'Boolean column filtering',
+  //   date: 'May 2025',
+  //   theme: 'dark',
+  //   dimensions: {
+  //     width: 2023,
+  //     height: 798,
+  //   },
+  // },
 ].map((item, index) => ({ ...item, index }) as CraftItem)
 
 export function CraftMasonry() {
@@ -149,24 +175,55 @@ export function CraftMasonry() {
                 initial="hidden"
                 animate="visible"
                 key={item.src}
-                className="border border-gray-4 rounded-xl overflow-clip shadow-xs relative"
+                className="border border-sand-4 rounded-xl overflow-clip shadow-xs"
               >
-                <CraftMedia
+                <div className="flex items-center justify-between px-4 pt-2 pb-4 text-sm font-medium tracking-[-0.02em] bg-sand-2 -mb-2 -z-10">
+                  <span className="text-sand-11">{item.title}</span>
+                  <span className="text-sand-9">{item.date}</span>
+                </div>
+                <Media
                   src={item.src}
                   type={item.type}
                   alt={item.title}
                   theme={item.theme}
                   width={item.dimensions.width}
                   height={item.dimensions.height}
-                  className={cn(
+                  wrapperClassName={cn(
                     'z-10',
-                    item.theme === 'light' && 'border-b border-gray-6',
+                    'rounded-xl h-full w-full overflow-clip',
+                    item.theme === 'light' &&
+                      'border-t border-sand-4 bg-sand-1 dark:bg-sand-12 shadow-xs',
+                    item.theme === 'light' && item.href && 'border-y',
                   )}
+                  className={cn(item.className)}
                 />
-                <div className="flex items-center justify-between px-4 pb-2 pt-4 text-sm font-medium tracking-[-0.02em] bg-gray-2 -mt-2 -z-10">
-                  <span className="text-gray-11">{item.title}</span>
-                  <span className="text-gray-9">{item.date}</span>
-                </div>
+                {item.href && (
+                  <a
+                    href={item.href}
+                    type="button"
+                    className={cn(
+                      'px-4 group w-full flex items-center justify-center',
+                      'text-sm font-medium tracking-[-0.02em] bg-sand-4 hover:bg-sand-5 text-sand-11 hover:text-sand-12 hover:duration-0 transition-[color] duration-150 ease-out',
+                      'pb-2 pt-4 -mt-2 -z-10',
+                    )}
+                  >
+                    <div className="w-fit flex items-center justify-center gap-2 relative">
+                      <span>View</span>
+                      <div className="overflow-hidden size-4 absolute -top-1.5 -right-5">
+                        <div className="relative *:transition-all *:text-base">
+                          <span className="absolute top-0 left-0 group-hover:translate-x-4 group-hover:-translate-y-4">
+                            ↗
+                          </span>
+                          <span className="absolute top-0 left-0 -translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:-translate-y-0">
+                            ↗
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* <CornerRightUpIcon className="size-4" /> */}
+                  </a>
+                )}
               </motion.div>
             )}
           </AnimatePresence>

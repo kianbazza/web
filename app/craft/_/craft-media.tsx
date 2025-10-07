@@ -1,25 +1,30 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 type MediaProps = {
   src: string
+  href?: string
   type: 'image' | 'video'
   alt?: string
   theme?: 'light' | 'dark'
   width: number
   height: number
   className?: string
+  wrapperClassName?: string
   // Optional: poster for video; if not provided, we still show the skeleton
   poster?: string
 }
 
-export function CraftMedia({
+export function Media({
   src,
   type,
   alt = '',
   theme = 'light',
   width,
   height,
+  wrapperClassName,
   className,
   poster,
 }: MediaProps) {
@@ -37,19 +42,17 @@ export function CraftMedia({
   }, [type])
 
   const onImageLoad = () => setLoaded(true)
-  const onVideoReady = () => setLoaded(true)
+  const onVideoReady = () => {
+    console.log('video ready')
+    setLoaded(true)
+  }
 
   // Use aspect-ratio to reserve space and prevent layout shift
   const ratio = `${width} / ${height}`
 
   return (
     <div
-      className={cn(
-        'relative w-full overflow-hidden',
-        className,
-        // subtle rounded corners + border belong on the wrapper
-        'rounded-xl',
-      )}
+      className={cn('relative overflow-clip', wrapperClassName)}
       style={{ aspectRatio: ratio }}
     >
       {/* Skeleton / shimmer placeholder */}
@@ -58,7 +61,7 @@ export function CraftMedia({
         className={cn(
           'absolute inset-0',
           // base surface that fits your theme tokens
-          theme === 'light' ? 'bg-gray-3' : 'bg-gray-4',
+          theme === 'light' ? 'bg-sand-3' : 'bg-sand-4',
           // shimmer
           'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.2s_infinite]',
           'before:bg-gradient-to-r before:from-transparent',
@@ -79,6 +82,8 @@ export function CraftMedia({
             ? 'opacity-100 filter-none'
             : 'opacity-0 blur-[2px] translate-y-[2px]',
           'transition-all duration-300 will-change-transform will-change-filter will-change-opacity',
+          // theme === 'light' && 'bg-red-500',
+          className,
         )}
       >
         {type === 'image' ? (

@@ -22,7 +22,7 @@ export function ContainerProvider({ children }: { children: React.ReactNode }) {
               transition={{ duration: 0.5 }}
               background="var(--sand-1)"
               side="top"
-              blur="6px"
+              blur="4px"
               stop="25%"
               className={cn(
                 'absolute top-0 left-0 w-full h-[100px] sm:h-[150px]',
@@ -39,7 +39,7 @@ export function ContainerProvider({ children }: { children: React.ReactNode }) {
               transition={{ duration: 0.5 }}
               background="var(--sand-1)"
               side="bottom"
-              blur="6px"
+              blur="4px"
               stop="25%"
               className={cn(
                 'absolute bottom-0 left-0 w-full hidden sm:inline h-[150px]',

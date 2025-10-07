@@ -1,6 +1,6 @@
 import Container from '@/components/container'
 import { H } from '@/components/h'
-import { CraftMasonry } from './_/masonry'
+import { CraftMasonry } from '../_/masonry'
 
 export default function ExperimentsPage() {
   return (

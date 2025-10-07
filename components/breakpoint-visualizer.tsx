@@ -11,7 +11,7 @@ export default function BreakpointVisualizer() {
   if (process.env.NODE_ENV !== 'development') return null
 
   return (
-    <div className="fixed bottom-6 right-0 p-2 sm:p-4 md:p-8 font-mono text-sm z-50 hidden sm:inline">
+    <div className="fixed bottom-6 right-6 font-mono text-sm isolate z-[20000] hidden sm:inline">
       <div className="flex items-center gap-4 rounded-full bg-background border border-sand-4 px-4 py-1 font-mono drop-shadow-md">
         <Ruler className="size-4" />
         <span className="font-bold">{breakpoint}</span>
