@@ -51,7 +51,8 @@ export function OriginAwareButton() {
       )}
       ref={(el) => {
         if (!el) return
-        el?.addEventListener('mouseenter', (e) => {
+
+        function setCursorOrigin(el: HTMLElement, e: MouseEvent) {
           const { clientX, clientY } = e
 
           const { top, left, width, height } = el.getBoundingClientRect()
@@ -62,19 +63,10 @@ export function OriginAwareButton() {
           el.style.setProperty('--x', `${x}%`)
           el.style.setProperty('--y', `${y}%`)
           el.style.setProperty('--cursor-origin', `var(--x) var(--y)`)
-        })
+        }
 
-        el.addEventListener('mouseleave', (e) => {
-          const { clientX, clientY } = e
-          const { top, left, width, height } = el.getBoundingClientRect()
-
-          const x = ((clientX - left) / width) * 100
-          const y = ((clientY - top) / height) * 100
-
-          el.style.setProperty('--x', `${x}%`)
-          el.style.setProperty('--y', `${y}%`)
-          el.style.setProperty('--cursor-origin', `var(--x) var(--y)`)
-        })
+        el.addEventListener('mouseenter', (e) => setCursorOrigin(el, e))
+        el.addEventListener('mouseleave', (e) => setCursorOrigin(el, e))
       }}
     >
       <ListFilterPlusIcon data-slot="icon" className="size-4 stroke-[2.25px]" />

@@ -30,6 +30,9 @@ export function Media({
 }: MediaProps) {
   const [loaded, setLoaded] = useState(false)
   const ref = useRef<HTMLVideoElement | HTMLImageElement | null>(null)
+  const [videoSrc, setVideoSrc] = useState<string | undefined>(undefined)
+  const [posterSrc, setPosterSrc] = useState<string | undefined>(poster)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   // When media fires its load/ready event, flip the state
   useEffect(() => {
@@ -40,6 +43,24 @@ export function Media({
       if (img.complete && img.naturalWidth) setLoaded(true)
     }
   }, [type])
+
+  useEffect(() => {
+    if (type !== 'video') return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVideoSrc(src)
+          setPosterSrc(poster)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.1 },
+    )
+    if (containerRef.current) {
+      observer.observe(containerRef.current)
+    }
+    return () => observer.disconnect()
+  }, [type, src, poster])
 
   const onImageLoad = () => setLoaded(true)
   const onVideoReady = () => {
@@ -52,6 +73,7 @@ export function Media({
 
   return (
     <div
+      ref={containerRef}
       className={cn('relative overflow-clip', wrapperClassName)}
       style={{ aspectRatio: ratio }}
     >
@@ -104,13 +126,13 @@ export function Media({
           <video
             // biome-ignore lint/suspicious/noExplicitAny:allowed
             ref={ref as any}
-            src={src}
+            src={videoSrc}
             playsInline
             loop
             autoPlay
             muted
-            preload="metadata"
-            poster={poster}
+            preload="auto"
+            poster={posterSrc}
             className="h-full w-full object-cover"
             onLoadedData={onVideoReady}
             onCanPlayThrough={onVideoReady}
