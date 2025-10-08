@@ -52,25 +52,88 @@ export function OriginAwareButton() {
       ref={(el) => {
         if (!el) return
 
-        function setCursorOrigin(el: HTMLElement, e: MouseEvent) {
+        function setCursorOrigin(el: HTMLElement, e: PointerEvent) {
           const { clientX, clientY } = e
 
-          const { top, left, width, height } = el.getBoundingClientRect()
+          const { top, left } = el.getBoundingClientRect()
 
-          const x = ((clientX - left) / width) * 100
-          const y = ((clientY - top) / height) * 100
+          const x = clientX - left
+          const y = clientY - top
 
-          el.style.setProperty('--x', `${x}%`)
-          el.style.setProperty('--y', `${y}%`)
+          el.style.setProperty('--x', `${x}px`)
+          el.style.setProperty('--y', `${y}px`)
           el.style.setProperty('--cursor-origin', `var(--x) var(--y)`)
         }
 
-        el.addEventListener('mouseenter', (e) => setCursorOrigin(el, e))
-        el.addEventListener('mouseleave', (e) => setCursorOrigin(el, e))
+        el.addEventListener('pointerenter', (e) => setCursorOrigin(el, e))
+        el.addEventListener('pointerleave', (e) => setCursorOrigin(el, e))
       }}
     >
-      <ListFilterPlusIcon data-slot="icon" className="size-4 stroke-[2.25px]" />
-      <span data-slot="text">Add filter</span>
+      <ListFilterPlusIcon className="size-4 stroke-[2.25px]" />
+      <span>Add filter</span>
+    </button>
+  )
+}
+
+export function OriginAwareButton_Basic() {
+  return (
+    <button
+      type="button"
+      className={cn(
+        'font-sans font-[450] text-sm',
+        'flex items-center gap-2 h-9 px-3 rounded-xl',
+        'hover:bg-sand-3 text-sand-11 hover:text-sand-12',
+        'active:scale-97 active:bg-sand-4',
+        'transition-[color,background-color,scale] duration-150 ease-out',
+      )}
+    >
+      <ListFilterPlusIcon className="size-4 stroke-[2.25px]" />
+      <span>Add filter</span>
+    </button>
+  )
+}
+
+export function OriginAwareButton_BasicWithPseudo() {
+  return (
+    <button
+      type="button"
+      className={cn(
+        'font-sans font-[450] text-sm',
+        'relative flex items-center gap-2 h-9 px-3 rounded-xl',
+        'text-sand-11 hover:text-sand-12',
+        'active:scale-97 active:bg-sand-4',
+        'transition-[color,scale] duration-150 ease-out',
+        'before:absolute before:inset-0',
+        'before:rounded-xl before:bg-sand-3',
+        'before:opacity-0 hover:before:opacity-100',
+        'before:transition-[opacity,background-color] before:ease-out before:duration-150',
+      )}
+    >
+      <ListFilterPlusIcon className="size-4 stroke-[2.25px]" />
+      <span>Add filter</span>
+    </button>
+  )
+}
+
+export function OriginAwareButton_BasicWithPseudo_FixZIndex() {
+  return (
+    <button
+      type="button"
+      className={cn(
+        'font-sans font-[450] text-sm',
+        'relative flex items-center gap-2 h-9 px-3 rounded-xl',
+        '*:z-1',
+        'text-sand-11 hover:text-sand-12',
+        'active:scale-97 active:bg-sand-4',
+        'transition-[color,scale] duration-150 ease-out',
+        'before:absolute before:inset-0',
+        'before:rounded-xl before:bg-sand-3',
+        'before:opacity-0 hover:before:opacity-100',
+        'before:transition-[opacity,background-color] before:ease-out before:duration-150',
+      )}
+    >
+      <ListFilterPlusIcon className="size-4 stroke-[2.25px]" />
+      <span>Add filter</span>
     </button>
   )
 }

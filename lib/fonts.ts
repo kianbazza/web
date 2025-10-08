@@ -1,10 +1,18 @@
-import { Inter } from 'next/font/google'
+import { Inter, Newsreader } from 'next/font/google'
 import localFont from 'next/font/local'
 
 export const inter = Inter({
   subsets: ['latin'],
+  axes: ['opsz'],
   display: 'block',
   variable: '--font-inter',
+})
+
+export const newsreader = Newsreader({
+  subsets: ['latin'],
+  display: 'block',
+  variable: '--font-newsreader',
+  style: 'italic',
 })
 
 export const berkeleyMono = localFont({

@@ -8,7 +8,7 @@
       "name": "Comment",
       "scope": ["comment", "punctuation.definition.comment"],
       "settings": {
-        "foreground": "#46474F" // Dark gray for all code comments (// and /* */)
+        "foreground": "#BBBBBB" // Dark gray for all code comments (// and /* */)
       }
     },
     {
@@ -40,7 +40,7 @@
       "name": "Keyword, Storage",
       "scope": ["keyword", "storage.type", "storage.modifier"],
       "settings": {
-        "foreground": "#9099A1" // Grayish for keywords like const, let, var, function, class
+        "foreground": "#646464" // Grayish for keywords like const, let, var, function, class
       }
     },
     {
@@ -83,7 +83,7 @@
         "keyword.other.special-method"
       ],
       "settings": {
-        "foreground": "#E6E7A3" // Light yellow for function names and special methods
+        "foreground": "#FFBA18" // Light yellow for function names and special methods
       }
     },
     {
