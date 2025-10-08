@@ -8,7 +8,7 @@ export const Section = ({
   ...props
 }: HTMLMotionProps<'div'>) => (
   <motion.div
-    className={cn('space-y-2', className)}
+    className={cn('space-y-3', className)}
     variants={sectionVariants}
     {...props}
   >

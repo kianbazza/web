@@ -20,10 +20,15 @@ const draw: Variants = {
   },
 }
 
+interface SignatureProps extends SVGMotionProps<SVGSVGElement> {
+  isScrollTriggered?: boolean
+}
+
 export const Signature = ({
   className,
+  isScrollTriggered = false,
   ...props
-}: SVGMotionProps<SVGSVGElement>) => (
+}: SignatureProps) => (
   <motion.svg
     viewBox="0 0 646 226"
     fill="none"
@@ -31,7 +36,9 @@ export const Signature = ({
     className={cn('resize-x overflow-hidden h-auto drop-shadow-md', className)}
     variants={draw}
     initial="initial"
-    animate="animate"
+    {...(isScrollTriggered
+      ? { whileInView: 'animate' }
+      : { animate: 'animate' })}
     {...props}
   >
     <motion.path

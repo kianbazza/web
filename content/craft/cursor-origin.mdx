@@ -1,0 +1,248 @@
+---
+title: Cursor-origin background scale
+published_date: 2025-10-08
+---
+
+import { Media } from '../../app/craft/_/craft-media'
+import { cn } from '@/lib/utils'
+import Link from 'next/link'
+import { 
+  OriginAwareButton, 
+  OriginAwareButton_Basic, 
+  OriginAwareButton_BasicWithPseudo,
+  OriginAwareButton_BasicWithPseudo_FixZIndex, 
+} from '@/app/craft/2025/cursor-origin/button'
+import { Signature } from '@/components/signature'
+
+I saw [this post](https://x.com/merycodes/status/1957184627103375528) on my X timeline and was intrigued.
+
+<div className="flex flex-col gap-4 w-full">
+  <Media
+    theme="light"
+    src="https://bazza-dev.b-cdn.net/subtle-cursor-origin-background-scale-button.mp4"
+    type="video"
+    width={958}
+    height={540}
+    alt="Subtle cursor-origin background scale button"
+    wrapperClassName={cn(
+      'z-10',
+      'rounded-xl h-full w-full overflow-clip border',
+    )}
+  />
+  <span className="text-sm *:!text-sand-10 text-center w-full">
+    Subtle cursor-origin background scale by [@merycodes](https://x.com/merycodes).
+  </span>
+</div>
+
+I frequently see design posts like this and think to myself, *"this looks pretty cool, I should try to recreate this."*
+
+Fast forward a few days, and nothing happens. That post, which once captivated my attention, is now out of mind. Another post will take its place to restart the cycle.
+
+Well today I said: **enough is enough.** Today is the day.
+
+## Prototype
+
+<Frame className="[--duration:150ms]">
+  <OriginAwareButton />
+</Frame>
+
+
+Try hovering the button to see the button's background appear.
+
+When the button is hovered, the background originates from the cursor location. 
+
+I also extended the effect to the `pointerleave` event; when the button is un-hovered, the background "disappears" from the where the cursor left the button.
+
+## Code
+
+```tsx
+function setCursorOrigin(el: HTMLElement, e: PointerEvent) {
+  const { clientX, clientY } = e
+
+  const { top, left } = el.getBoundingClientRect()
+
+  const x = clientX - left
+  const y = clientY - top
+
+  el.style.setProperty('--x', `${x}px`)
+  el.style.setProperty('--y', `${y}px`)
+  el.style.setProperty('--cursor-origin', `var(--x) var(--y)`)
+}
+
+export const OriginAwareButton = () => {
+  return (
+    <button
+      type="button"
+      className={cn(
+        'text-sand-11 font-sans font-[450]text-sm',
+        'flex items-center gap-2 h-9 px-3',
+        'relative *:z-1',
+        'hover:text-sand-12',
+        'active:scale-97 active:before:bg-sand-4',
+        'before:absolute before:inset-0 before:z-0 before:rounded-xl before:bg-sand-3',
+        'before:origin-(--cursor-origin) before:transition-[scale,opacity,color,background-color] before:ease-out before:duration-(--duration)',
+        'before:scale-0 before:opacity-50',
+        'hover:before:scale-100 hover:before:opacity-100',
+      )}
+      ref={(el) => {
+        if (!el) return
+
+        el.addEventListener('pointerenter', (e) => setCursorOrigin(el, e))
+        el.addEventListener('pointerleave', (e) => setCursorOrigin(el, e))
+      }}
+    >
+      <ListFilterPlusIcon className="size-4 stroke-[2.25px]" />
+      <span>Add filter</span>
+    </button>
+  )
+}
+```
+
+## Breakdown
+
+First, we can create the basic `button` element with the appropriate styling and content.
+
+<Frame>
+  <OriginAwareButton_Basic />
+</Frame>
+
+```tsx
+<button
+  type="button"
+  className={cn(
+    'font-sans font-[450] text-sm',
+    'flex items-center gap-2 h-9 px-3 rounded-xl',
+    'bg-sand-3 hover:bg-sand-4 text-sand-11 hover:text-sand-12',
+    'active:scale-97 active:bg-sand-4',
+    'transition-[color,background-color] duration-150 ease-out',
+  )}
+>
+  <ListFilterPlusIcon className="size-4 stroke-[2.25px]" />
+  <span>Add filter</span>
+</button>
+```
+
+Next, the main problem - how we do we <span className='text-blue-11 font-medium'>(1)</span> scale the background and do this <span className='text-blue-11 font-medium'>(2)</span> from a specific origin?
+
+Initially, I naively applied `transform-origin` on the background transition, which didn't really work.
+
+It seems like we need to treat the element's background as a separate element entirely and not only apply `transform-origin`, but also scale this element.
+
+Enter the `::before` pseudo-element.
+
+Let's try to replicate the basic button with a slight modification to use a pseudo-element for the background.
+
+<Frame>
+  <OriginAwareButton_BasicWithPseudo />
+</Frame>
+
+Whoops, seems like the pseudo-element is appearing on top of the button's contents.
+
+We can fix this by applying `z-index: 1` to the button's children. This can be done quickly with a direct child selector `*:z-1`... nice!
+
+<Frame>
+  <OriginAwareButton_BasicWithPseudo_FixZIndex />
+</Frame>
+
+```tsx
+<button
+  type="button"
+  className={cn(
+    'font-sans font-[450] text-sm',
+    'relative flex items-center gap-2 h-9 px-3 rounded-xl',
+    '*:z-1',
+    'text-sand-11 hover:text-sand-12',
+    'active:scale-97 active:bg-sand-4',
+    'transition-[color,scale] duration-150 ease-out',
+    'before:absolute before:inset-0',
+    'before:rounded-xl before:bg-sand-3',
+    'before:opacity-0 hover:before:opacity-100',
+    'before:transition-[opacity,background-color] before:ease-out before:duration-150',
+  )}
+>
+  <ListFilterPlusIcon className="size-4 stroke-[2.25px]" />
+  <span>Add filter</span>
+</button>
+
+```
+
+Now that we have our background rendered via pseudo-element, we can scale it from the cursor's origin of entry/exit.
+
+Before diving in, let's take a moment to review how `transform-origin` works:
+
+> `transform-origin` accepts one to three values that define the point around which a transform is applied. 
+> The first two values are the `x` and `y` positions, and optionally a third `z` value in 3D transforms. 
+> These values are offsets relative to the element’s border box. 
+
+You can use keywords (`left`, `center`, `right`, `top`, `bottom`), lengths (e.g. `20px`, `1rem`), or percentages. For our purposes, we need to be more specific than just keywords, since the cursor origin is dynamic.
+
+Now we can get started. First, we need to be able to detect the cursor's origin:
+
+```ts
+function setCursorOrigin(el: HTMLElement, e: PointerEvent) {
+  const { clientX, clientY } = e
+}
+```
+
+Now, let's compute the cursor's origin *relative* to the element's bounding box. We can store these as CSS variables `--x` and `--y` on the element.
+
+```ts
+const { clientX, clientY } = e
+
+const { top, left } = el.getBoundingClientRect()
+
+const x = clientX - left
+const y = clientY - top
+
+el.style.setProperty('--x', `${x}px`)
+el.style.setProperty('--y', `${y}px`)
+```
+
+Now, we can set `transform-origin` as `var(--x) var(--y)`.
+We again set this as a CSS variable, `--cursor-origin`, then set the `transform-origin` value by referencing this variable. 
+
+This completes our `setCursorOrigin` helper function, which I've chosen to define outside our component:
+
+```ts
+function setCursorOrigin(el: HTMLElement, e: PointerEvent) {
+  const { clientX, clientY } = e
+
+  const { top, left } = el.getBoundingClientRect()
+
+  const x = clientX - left
+  const y = clientY - top
+
+  el.style.setProperty('--x', `${x}px`)
+  el.style.setProperty('--y', `${y}px`)
+
+  el.style.setProperty('--cursor-origin', `var(--x) var(--y)`) // [!code highlight]
+}
+```
+
+Next, we wire up our `setCursorOrigin` function to the `pointerenter` and `pointerleave` events.
+For this, we can use a [callback ref](https://tkdodo.eu/blog/avoiding-use-effect-with-callback-refs#callback-refs).
+
+We also set the `transform-origin` value by referencing our configured CSS variable.
+
+```tsx
+<button
+  className={cn(
+    // ...,
+    'before:origin-(--cursor-origin)', // [!code highlight]
+    // ...
+  )}
+  ref={(el) => {
+    if (!el) return
+    el.addEventListener('pointerenter', (e) => setCursorOrigin(el, e)) // [!code highlight]
+    el.addEventListener('pointerleave', (e) => setCursorOrigin(el, e)) // [!code highlight]
+  }}
+/>
+```
+
+---
+
+That's it. Hope you enjoyed.
+
+<Signature className="max-w-[300px] sm:max-w-[300px] pt-4 stroke-sand-12" isScrollTriggered />
+
+<div className='h-32 sm:h-64' />

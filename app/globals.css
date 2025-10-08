@@ -17,6 +17,7 @@
 
 @theme inline {
   --font-sans: var(--font-inter);
+  --font-serif: var(--font-newsreader);
   --font-mono: var(--font-berkeley-mono);
 }
 
@@ -122,7 +123,33 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
+    border-color: var(--color-sand-4, currentcolor);
+  }
+
+  *::selection {
+    @apply bg-sand-4;
+  }
+}
+
+@layer base {
+  html.light .shiki,
+  html.light .shiki span {
+    color: var(--shiki-light) !important;
+    /* background-color: var(--shiki-dark-bg) !important; */
+    /* Optional, if you also want font styles */
+    font-style: var(--shiki-light-font-style) !important;
+    font-weight: var(--shiki-light-font-weight) !important;
+    text-decoration: var(--shiki-light-text-decoration) !important;
+  }
+
+  html.dark .shiki,
+  html.dark .shiki span {
+    color: var(--shiki-dark) !important;
+    /* background-color: var(--shiki-dark-bg) !important; */
+    /* Optional, if you also want font styles */
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
   }
 }
 
@@ -161,6 +188,13 @@
     textarea,
     select {
       cursor: text;
+    }
+
+    a {
+      cursor: pointer;
+      & * {
+        cursor: pointer;
+      }
     }
 
     /* A CSS media query to target mobile devices */

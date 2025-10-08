@@ -5,7 +5,7 @@ export const H = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLSpanElement>) => (
-  <span className={cn('text-sand-12 font-bold', className)} {...props}>
+  <span className={cn('text-sand-12 font-semibold', className)} {...props}>
     {children}
   </span>
 )

@@ -9,8 +9,8 @@ import {
   type TProjectListItem,
 } from '@/components/project-list-item'
 import ProjectVideoPreview from '@/components/project-video-preview'
-import { hoveredProjectRowItem, isHoveringProjectsAtom } from '@/lib/atoms'
 import { WidthContainer } from '@/components/width-container'
+import { hoveredProjectRowItem, isHoveringProjectsAtom } from '@/lib/atoms'
 
 const projects: TProjectListItem[] = [
   {

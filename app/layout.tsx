@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { NextProvider } from 'fumadocs-core/framework/next'
 import BreakpointVisualizer from '@/components/breakpoint-visualizer'
 import { ThemeProvider } from '@/components/theme-provider'
 import Toolbar from '@/components/toolbar'
-import { berkeleyMono, inter } from '@/lib/fonts'
+import { berkeleyMono, inter, newsreader } from '@/lib/fonts'
 import { ContainerProvider } from '@/providers/container-provider'
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${berkeleyMono.variable} font-mono antialiased bg-background text-foreground min-h-svh w-svw flex flex-col no-scrollbar`}
+        className={`${inter.variable} ${newsreader.variable} ${berkeleyMono.variable} font-mono antialiased bg-background text-foreground min-h-svh w-svw flex flex-col no-scrollbar`}
       >
         <ThemeProvider
           attribute="class"
@@ -30,11 +31,13 @@ export default function RootLayout({
         >
           <Toolbar />
           <BreakpointVisualizer />
-          <ContainerProvider>
-            <main className="flex flex-col h-full sm:flex-1 px-4 w-full pt-4 pb-32">
-              {children}
-            </main>
-          </ContainerProvider>
+          <NextProvider>
+            <ContainerProvider>
+              <main className="flex flex-col h-full sm:flex-1 px-4 w-full pt-4 pb-32">
+                {children}
+              </main>
+            </ContainerProvider>
+          </NextProvider>
         </ThemeProvider>
       </body>
     </html>
