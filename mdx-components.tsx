@@ -2,7 +2,11 @@ import type { MDXComponents } from 'mdx/types'
 import { cn } from './lib/utils'
 
 const components = {
-  h2: ({ children }) => <h2 className="font-medium pt-8">{children}</h2>,
+  h2: ({ children, className, ...props }) => (
+    <h2 className={cn('font-medium pt-8', className)} {...props}>
+      {children}
+    </h2>
+  ),
   p: ({ children }) => (
     <p className="text-sand-12/80 !font-sans !tabular-nums leading-7 font-[420]">
       {children}
@@ -20,6 +24,17 @@ const components = {
     <blockquote className="border-l-2 pl-6 border-sand-6">
       {children}
     </blockquote>
+  ),
+  a: ({ children, className, ...props }) => (
+    <a
+      className={cn(
+        'underline underline-offset-2 hover:text-sand-12',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </a>
   ),
   pre: ({ children, className, ...props }) => (
     <pre

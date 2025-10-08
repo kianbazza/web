@@ -1,5 +1,6 @@
 ---
 title: Cursor-origin background scale
+published_date: 2025-10-08
 ---
 
 import { Media } from '../../app/craft/_/craft-media'
@@ -12,7 +13,7 @@ import {
   OriginAwareButton_BasicWithPseudo_FixZIndex, 
 } from '@/app/craft/cursor-origin-button/button'
 
-I saw this post on my X timeline and was intrigued.
+I saw [this post](https://x.com/merycodes/status/1957184627103375528) on my X timeline and was intrigued.
 
 <div className="flex flex-col gap-4 w-full">
   <Media
@@ -40,7 +41,7 @@ Unfortunately, balancing three jobs leads to these ideas of (seemingly) low ROI 
 
 Well today I said: **enough is enough.** Today is the day.
 
-## The Prototype
+## Prototype
 
 <Frame className="[--duration:150ms]">
   <OriginAwareButton />
@@ -216,13 +217,13 @@ function setCursorOrigin(el: HTMLElement, e: PointerEvent) {
 Next, we wire up our `setCursorOrigin` function to the `pointerenter` and `pointerleave` events.
 For this, we can use a [callback ref](https://tkdodo.eu/blog/avoiding-use-effect-with-callback-refs#callback-refs).
 
-Finally, we set the `transform-origin` value by referencing our configured CSS variable.
+We also set the `transform-origin` value by referencing our configured CSS variable.
 
 ```tsx
 <button
   className={cn(
     // ...,
-    'before:origin-(--cursor-origin)',
+    'before:origin-(--cursor-origin)', // [!code highlight]
     // ...
   )}
   ref={(el) => {

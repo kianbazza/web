@@ -77,35 +77,40 @@ export default function Toolbar() {
         </div>
         {toolbarItems
           .filter((item) => !item.hidden)
-          .map((item) => (
-            <Link
-              key={item.value}
-              href={item.paths[0]}
-              className={cn(
-                'relative',
-                'transition-colors hover:transition-none duration-150 ease-out px-2 py-3.5',
-                item.paths.includes(pathname) ? 'text-gray-12' : 'text-gray-9',
-                'hover:text-gray-12',
-                item.disabled &&
-                  'cursor-not-allowed! *:cursor-not-allowed! pointer-events-none! opacity-50',
-              )}
-            >
-              {item.paths.includes(pathname) && (
-                <motion.div
-                  layoutId="nav-dot"
-                  layout="position"
-                  className="rounded-full bg-blue-9 size-1.5 shadow-xs"
-                  style={{
-                    position: 'absolute',
-                    bottom: 8,
-                    left: '50%',
-                    marginLeft: -3,
-                  }}
-                />
-              )}
-              <span className="font-medium">{item.name}</span>
-            </Link>
-          ))}
+          .map((item) => {
+            const isActive = item.paths.find((path) =>
+              path === '/' ? pathname === path : pathname.startsWith(path),
+            )
+            return (
+              <Link
+                key={item.value}
+                href={item.paths[0]}
+                className={cn(
+                  'relative',
+                  'transition-colors hover:transition-none duration-150 ease-out px-2 py-3.5',
+                  isActive ? 'text-gray-12' : 'text-gray-9',
+                  'hover:text-gray-12',
+                  item.disabled &&
+                    'cursor-not-allowed! *:cursor-not-allowed! pointer-events-none! opacity-50',
+                )}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-dot"
+                    layout="position"
+                    className="rounded-full bg-blue-9 size-1.5 shadow-xs"
+                    style={{
+                      position: 'absolute',
+                      bottom: 8,
+                      left: '50%',
+                      marginLeft: -3,
+                    }}
+                  />
+                )}
+                <span className="font-medium">{item.name}</span>
+              </Link>
+            )
+          })}
         <ThemeToggle />
       </div>
     </div>

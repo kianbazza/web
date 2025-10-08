@@ -1,6 +1,11 @@
 // source.config.ts
 import { transformerNotationHighlight } from "@shikijs/transformers";
-import { defineConfig, defineDocs } from "fumadocs-mdx/config";
+import {
+  defineConfig,
+  defineDocs,
+  frontmatterSchema
+} from "fumadocs-mdx/config";
+import z from "zod";
 
 // lib/shiki/oscura-midnight.ts
 var OSCURA = {
@@ -1255,7 +1260,14 @@ var oscuraSunrise = {
 
 // source.config.ts
 var craft = defineDocs({
-  dir: "content/craft"
+  dir: "content/craft",
+  docs: {
+    schema: frontmatterSchema.extend({
+      published_date: z.coerce.string().transform((str) => {
+        return str;
+      })
+    })
+  }
 });
 var source_config_default = defineConfig({
   mdxOptions: {
