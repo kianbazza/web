@@ -125,7 +125,29 @@
   ::file-selector-button {
     border-color: var(--color-sand-4, currentcolor);
   }
+
+  *::selection {
+    @apply bg-sand-4;
+  }
 }
+
+/* @layer base { */
+/*   html.light { */
+/*     code[data-theme], */
+/*     code[data-theme] span { */
+/*       color: var(--shiki-light); */
+/*       background-color: var(--shiki-light-bg); */
+/*     } */
+/*   } */
+/**/
+/*   html.dark { */
+/*     code[data-theme]:not([data-highlighted-line]), */
+/*     code[data-theme]:not([data-highlighted-line]) span { */
+/*       color: var(--shiki-dark); */
+/*       background-color: var(--shiki-dark-bg); */
+/*     } */
+/*   } */
+/* } */
 
 /* This utility extends the hover/click area on all sides */
 @utility hover-expand-* {

@@ -1,6 +1,11 @@
+// import { readFileSync } from 'node:fs'
+// import { parse as parseJSONC } from 'jsonc-parser'
+// import { rehypeCode } from 'fumadocs-core/mdx-plugins'
+import { createMDX } from 'fumadocs-mdx/next'
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -16,4 +21,14 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default nextConfig
+// const oscuraSunrise = parseJSONC(
+//   readFileSync('./lib/shiki/oscura-sunrise.jsonc', 'utf-8'),
+// )
+//
+// const oscuraMidnight = parseJSONC(
+//   readFileSync('./lib/shiki/oscura-midnight.jsonc', 'utf-8'),
+// )
+
+const withMDX = createMDX({})
+
+export default withMDX(nextConfig)

@@ -202,12 +202,12 @@ export function CraftMasonry() {
                     href={item.href}
                     type="button"
                     className={cn(
-                      'px-4 group w-full flex items-center justify-center',
+                      'px-4 group w-full flex items-center justify-center group/link',
                       'text-sm font-medium tracking-[-0.02em] bg-sand-4 hover:bg-sand-5 text-sand-11 hover:text-sand-12 hover:duration-0 transition-[color] duration-150 ease-out',
                       'pb-2 pt-4 -mt-2 -z-10',
                     )}
                   >
-                    <div className="w-fit flex items-center justify-center gap-2 relative">
+                    <div className="w-fit flex items-center justify-center gap-2 relative group-active/link:scale-97">
                       <span>View</span>
                       <div className="overflow-hidden size-4 absolute -top-1.5 -right-5">
                         <div className="relative *:transition-all *:text-base">

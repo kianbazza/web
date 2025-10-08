@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import Toolbar from '@/components/toolbar'
 import { berkeleyMono, inter } from '@/lib/fonts'
 import { ContainerProvider } from '@/providers/container-provider'
+import { NextProvider } from 'fumadocs-core/framework/next'
 
 export const metadata: Metadata = {
   title: 'Kian Bazarjani',
@@ -30,11 +31,13 @@ export default function RootLayout({
         >
           <Toolbar />
           <BreakpointVisualizer />
-          <ContainerProvider>
-            <main className="flex flex-col h-full sm:flex-1 px-4 w-full pt-4 pb-32">
-              {children}
-            </main>
-          </ContainerProvider>
+          <NextProvider>
+            <ContainerProvider>
+              <main className="flex flex-col h-full sm:flex-1 px-4 w-full pt-4 pb-32">
+                {children}
+              </main>
+            </ContainerProvider>
+          </NextProvider>
         </ThemeProvider>
       </body>
     </html>
