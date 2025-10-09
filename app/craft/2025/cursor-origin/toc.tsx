@@ -86,7 +86,7 @@ function useActiveHeadingStable(toc: TOCItemType[], topOffsetPx = 164) {
 }
 
 export function TableOfContents({ toc }: { toc: TOCItemType[] }) {
-  const activeId = useActiveHeadingStable(toc, 164)
+  const activeId = useActiveHeadingStable(toc, 114)
 
   console.log('activeId:', activeId)
 
@@ -106,7 +106,7 @@ export function TableOfContents({ toc }: { toc: TOCItemType[] }) {
                 e.preventDefault()
                 const el = document.getElementById(id)
                 if (!el) return
-                const y = el.getBoundingClientRect().top + window.scrollY - 164
+                const y = el.getBoundingClientRect().top + window.scrollY - 114
                 const reduced = window.matchMedia(
                   '(prefers-reduced-motion: reduce)',
                 ).matches
