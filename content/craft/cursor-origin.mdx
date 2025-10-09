@@ -63,51 +63,6 @@ When the button is hovered, the background originates from the cursor location.
 
 I also extended the effect to the `pointerleave` event; when the button is un-hovered, the background "disappears" from the where the cursor left the button.
 
-## Code
-
-```tsx
-function setCursorOrigin(el: HTMLElement, e: PointerEvent) {
-  const { clientX, clientY } = e
-
-  const { top, left } = el.getBoundingClientRect()
-
-  const x = clientX - left
-  const y = clientY - top
-
-  el.style.setProperty('--x', `${x}px`)
-  el.style.setProperty('--y', `${y}px`)
-  el.style.setProperty('--cursor-origin', `var(--x) var(--y)`)
-}
-
-export const OriginAwareButton = () => {
-  return (
-    <button
-      type="button"
-      className={cn(
-        'text-sand-11 font-sans font-[450] text-sm',
-        'flex items-center gap-2 h-9 px-3',
-        'relative *:z-1',
-        'hover:text-sand-12',
-        'active:scale-97 active:before:bg-sand-4',
-        'before:absolute before:inset-0 before:z-0 before:rounded-xl before:bg-sand-3',
-        'before:origin-(--cursor-origin) before:transition-[scale,opacity,color,background-color] before:ease-out before:duration-(--duration)',
-        'before:scale-0 before:opacity-50',
-        'hover:before:scale-100 hover:before:opacity-100',
-      )}
-      ref={(el) => {
-        if (!el) return
-
-        el.addEventListener('pointerenter', (e) => setCursorOrigin(el, e))
-        el.addEventListener('pointerleave', (e) => setCursorOrigin(el, e))
-      }}
-    >
-      <ListFilterPlusIcon className="size-4 stroke-[2.25px]" />
-      <span>Add filter</span>
-    </button>
-  )
-}
-```
-
 ## Breakdown
 
 First, we can create the basic `button` element with the appropriate styling and content.
@@ -278,6 +233,52 @@ We also set the `transform-origin` value by referencing our configured CSS varia
   }}
 />
 ```
+
+## Code
+
+```tsx
+function setCursorOrigin(el: HTMLElement, e: PointerEvent) {
+  const { clientX, clientY } = e
+
+  const { top, left } = el.getBoundingClientRect()
+
+  const x = clientX - left
+  const y = clientY - top
+
+  el.style.setProperty('--x', `${x}px`)
+  el.style.setProperty('--y', `${y}px`)
+  el.style.setProperty('--cursor-origin', `var(--x) var(--y)`)
+}
+
+export const OriginAwareButton = () => {
+  return (
+    <button
+      type="button"
+      className={cn(
+        'text-sand-11 font-sans font-[450] text-sm',
+        'flex items-center gap-2 h-9 px-3',
+        'relative *:z-1',
+        'hover:text-sand-12',
+        'active:scale-97 active:before:bg-sand-4',
+        'before:absolute before:inset-0 before:z-0 before:rounded-xl before:bg-sand-3',
+        'before:origin-(--cursor-origin) before:transition-[scale,opacity,color,background-color] before:ease-out before:duration-(--duration)',
+        'before:scale-0 before:opacity-50',
+        'hover:before:scale-100 hover:before:opacity-100',
+      )}
+      ref={(el) => {
+        if (!el) return
+
+        el.addEventListener('pointerenter', (e) => setCursorOrigin(el, e))
+        el.addEventListener('pointerleave', (e) => setCursorOrigin(el, e))
+      }}
+    >
+      <ListFilterPlusIcon className="size-4 stroke-[2.25px]" />
+      <span>Add filter</span>
+    </button>
+  )
+}
+```
+
 
 ---
 
