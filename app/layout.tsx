@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import Toolbar from '@/components/toolbar'
 import { berkeleyMono, inter, newsreader } from '@/lib/fonts'
 import { ContainerProvider } from '@/providers/container-provider'
+import OneDollarStatsScript from './stats'
 
 export const metadata: Metadata = {
   title: 'Kian Bazarjani',
@@ -20,6 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <OneDollarStatsScript />
       <body
         className={`${inter.variable} ${newsreader.variable} ${berkeleyMono.variable} font-mono antialiased bg-background text-foreground min-h-svh w-svw flex flex-col no-scrollbar`}
       >
