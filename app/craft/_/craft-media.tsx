@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useTheme } from 'next-themes'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
 
-type MediaProps = {
-  src: string
+export type MediaProps = {
+  src: string | { light: string; dark: string }
   href?: string
   type: 'image' | 'video'
   alt?: string
@@ -28,6 +29,16 @@ export function Media({
   className,
   poster,
 }: MediaProps) {
+  const { resolvedTheme } = useTheme()
+  const resolvedSrc = useMemo(
+    () =>
+      typeof src === 'string'
+        ? src
+        : resolvedTheme === 'light'
+          ? src.light
+          : src.dark,
+    [src, resolvedTheme],
+  )
   const [loaded, setLoaded] = useState(false)
   const ref = useRef<HTMLVideoElement | HTMLImageElement | null>(null)
   const [videoSrc, setVideoSrc] = useState<string | undefined>(undefined)
@@ -49,7 +60,7 @@ export function Media({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVideoSrc(src)
+          setVideoSrc(resolvedSrc)
           setPosterSrc(poster)
           observer.disconnect()
         }
@@ -60,11 +71,10 @@ export function Media({
       observer.observe(containerRef.current)
     }
     return () => observer.disconnect()
-  }, [type, src, poster])
+  }, [type, resolvedSrc, poster])
 
   const onImageLoad = () => setLoaded(true)
   const onVideoReady = () => {
-    console.log('video ready')
     setLoaded(true)
   }
 
@@ -113,7 +123,7 @@ export function Media({
           <img
             // biome-ignore lint/suspicious/noExplicitAny:allowed
             ref={ref as any}
-            src={src}
+            src={resolvedSrc}
             alt={alt}
             loading="lazy"
             decoding="async"

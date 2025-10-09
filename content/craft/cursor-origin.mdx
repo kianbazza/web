@@ -42,10 +42,20 @@ Well today I said: **enough is enough.** Today is the day.
 
 ## Prototype
 
-<Frame className="[--duration:150ms]">
+<Frame 
+  className="[--duration:150ms]"
+  mediaProps={{
+    src: { 
+      light: "https://bazza-dev.b-cdn.net/craft/2025/cursor-origin/craft-2025-cursor-origin--prototype-demo.mp4",
+      dark: "https://bazza-dev.b-cdn.net/craft/2025/cursor-origin/craft-2025-cursor-origin--prototype-demo-dark.mp4"
+    },
+    type: "video",
+    width: 2212,
+    height: 516,
+  }}
+>
   <OriginAwareButton />
 </Frame>
-
 
 Try hovering the button to see the button's background appear.
 
@@ -102,7 +112,17 @@ export const OriginAwareButton = () => {
 
 First, we can create the basic `button` element with the appropriate styling and content.
 
-<Frame>
+<Frame
+  mediaProps={{
+    src: { 
+      light: "https://bazza-dev.b-cdn.net/craft/2025/cursor-origin/craft-2025-cursor-origin--breakdown-basic-demo-light.mp4",
+      dark: "https://bazza-dev.b-cdn.net/craft/2025/cursor-origin/craft-2025-cursor-origin--breakdown-basic-demo-dark.mp4"
+    },
+    type: "video",
+    width: 2212,
+    height: 516,
+  }}
+>
   <OriginAwareButton_Basic />
 </Frame>
 
@@ -132,7 +152,17 @@ Enter the `::before` pseudo-element.
 
 Let's try to replicate the basic button with a slight modification to use a pseudo-element for the background.
 
-<Frame>
+<Frame
+  mediaProps={{
+    src: { 
+      light: "https://bazza-dev.b-cdn.net/craft/2025/cursor-origin/craft-2025-cursor-origin--breakdown-pseudo-demo-light.mp4",
+      dark: "https://bazza-dev.b-cdn.net/craft/2025/cursor-origin/craft-2025-cursor-origin--breakdown-pseudo-demo-dark.mp4"
+    },
+    type: "video",
+    width: 2212,
+    height: 516,
+  }}
+>
   <OriginAwareButton_BasicWithPseudo />
 </Frame>
 
@@ -140,7 +170,17 @@ Whoops, seems like the pseudo-element is appearing on top of the button's conten
 
 We can fix this by applying `z-index: 1` to the button's children. This can be done quickly with a direct child selector `*:z-1`... nice!
 
-<Frame>
+<Frame
+  mediaProps={{
+    src: { 
+      light: "https://bazza-dev.b-cdn.net/craft/2025/cursor-origin/craft-2025-cursor-origin--breakdown-basic-demo-light.mp4",
+      dark: "https://bazza-dev.b-cdn.net/craft/2025/cursor-origin/craft-2025-cursor-origin--breakdown-basic-demo-dark.mp4"
+    },
+    type: "video",
+    width: 2212,
+    height: 516,
+  }}
+>
   <OriginAwareButton_BasicWithPseudo_FixZIndex />
 </Frame>
 

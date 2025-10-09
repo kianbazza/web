@@ -1,5 +1,8 @@
 import type { MDXComponents } from 'mdx/types'
 import { cn } from './lib/utils'
+import { MediaProps } from './app/craft/_/craft-media'
+import { useMediaQuery } from './hooks/use-media-query'
+import { Frame } from './components/frame'
 
 const components = {
   h2: ({ children, className, ...props }) => (
@@ -62,16 +65,7 @@ const components = {
       {children}
     </code>
   ),
-  Frame: ({ className, children }) => (
-    <div
-      className={cn(
-        'w-full max-w-(--breakpoint-sm) h-40 flex flex-col justify-center items-center bg-white dark:bg-sand-2 border border-sand-5 rounded-xl gap-12 relative',
-        className,
-      )}
-    >
-      {children}
-    </div>
-  ),
+  Frame,
 } satisfies MDXComponents
 
 export function useMDXComponents(): MDXComponents {
