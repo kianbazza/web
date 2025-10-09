@@ -54,7 +54,7 @@ export function OriginAwareButton() {
     <button
       type="button"
       className={cn(
-        'text-sand-11 font-sans font-[450]text-sm',
+        'text-sand-11 font-sans font-[450] text-sm',
         'flex items-center gap-2 h-9 px-3',
         'relative *:z-1',
         'hover:text-sand-12',
