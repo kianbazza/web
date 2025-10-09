@@ -1,9 +1,56 @@
 import { format } from 'date-fns'
+import type { Metadata } from 'next'
 import { WidthContainer } from '@/components/width-container'
+import { env } from '@/lib/env'
 import { craftSource } from '@/lib/source'
 import { useMDXComponents } from '@/mdx-components'
 import { BackToCraft } from '../../_/back-to-craft'
 import { TableOfContents } from './toc'
+
+const title = 'Cursor-origin background scale'
+
+export const metadata: Metadata = {
+  title,
+  description:
+    'A prototype of a button with a cursor-origin background scaling animation.',
+  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
+  keywords: [
+    'React',
+    'shadcn/ui',
+    'Next.js',
+    'Tailwind CSS',
+    'TypeScript',
+    'Radix UI',
+  ],
+  authors: [
+    {
+      name: 'Kian Bazza',
+      url: 'https://bazza.dev',
+    },
+  ],
+  creator: 'Kian Bazza',
+  openGraph: {
+    images: [
+      {
+        url: `/og?title=${encodeURIComponent(title)}`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: [
+      {
+        url: `/og?title=${encodeURIComponent(title)}`,
+      },
+    ],
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: `https://bazza.dev/site.webmanifest`,
+}
 
 export default function Page() {
   const page = craftSource.getPage(['cursor-origin'])
