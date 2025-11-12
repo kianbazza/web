@@ -62,7 +62,7 @@ export const career: Array<Organization> = [
     roles: [
       {
         title: 'Design Engineer',
-        startDate: new Date(2025, 11, 20),
+        startDate: new Date(2025, 9, 20),
       },
     ],
   },
