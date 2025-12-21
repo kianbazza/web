@@ -3,13 +3,28 @@ title: Video player
 published_date: 2025-12-19
 ---
 
-import { VideoPlayer } from '@/app/craft/2025/video-player/video-player'
-import { VideoPlayer_v2 } from '@/app/craft/2025/video-player/video-player-v2'
+import { VideoPlayer_v2 } from '@/app/craft/2025/video-player/examples/linear/video-player-v2'
+import { VideoPlayer_Motion } from '@/app/craft/2025/video-player/examples/linear/video-player-motion'
+import { YouTubePlayer } from '@/app/craft/2025/video-player/examples/youtube/youtube-player'
 
-<VideoPlayer_v2
-    src="/craft/video-player/linear-quality-ep02.mp4"
+Here's a video player I made. The design is heavily inspired by Linear, with a focus on simplicity and ease of use.
+
+## YouTube
+
+<YouTubePlayer
+    src="https://static.linear.app/assets/web/quality/karri-full.AF713586-8D7A-49BE-BB38-07CBF0A9C0F9.mp4"
 />
 
-<VideoPlayer
+## Linear
+
+### via Motion
+
+<VideoPlayer_Motion
+    src="https://static.linear.app/assets/web/quality/karri-full.AF713586-8D7A-49BE-BB38-07CBF0A9C0F9.mp4"
+/>
+
+### via CSS transitions
+
+<VideoPlayer_v2
     src="https://static.linear.app/assets/web/quality/karri-full.AF713586-8D7A-49BE-BB38-07CBF0A9C0F9.mp4"
 />

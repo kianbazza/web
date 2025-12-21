@@ -1,9 +1,9 @@
 'use client'
 
-import * as React from 'react'
-import * as Primitive from './component/index.parts'
-import { cn } from '@/lib/utils'
 import { AnimatePresence, motion, useDragControls } from 'motion/react'
+import * as React from 'react'
+import * as Primitive from '@/app/craft/2025/video-player/component/index.parts'
+import { cn } from '@/lib/utils'
 
 export interface VideoPlayerProps {
   src: string
@@ -42,11 +42,16 @@ export function VideoPlayer({ src, poster }: VideoPlayerProps) {
         src={src}
         className="group-data-[fullscreen]:w-full group-data-[fullscreen]:h-auto"
       />
-      {poster && <Primitive.Poster src={poster} />}
+      {poster && (
+        <Primitive.Poster className="absolute inset-0">
+          <img src={poster} alt="" className="w-full h-full object-cover" />
+        </Primitive.Poster>
+      )}
       <AnimatePresence>
         {!idle && (
           <>
             <Overlay
+              keepMounted
               key="overlay"
               className="absolute top-0 left-0 h-full w-full bg-black/30"
               initial={{ opacity: 0 }}
@@ -54,6 +59,7 @@ export function VideoPlayer({ src, poster }: VideoPlayerProps) {
               exit={{ opacity: 0 }}
             />
             <Controls
+              keepMounted
               key="controls"
               className={cn(
                 'absolute bottom-0 left-1/2 -translate-x-1/2',

@@ -33,6 +33,7 @@ export interface VideoPlayerState {
   ended: boolean
   waiting: boolean
   seeking: boolean
+  canPlay: boolean
 
   // Time
   currentTime: number
@@ -99,6 +100,7 @@ export interface VideoPlayerActions {
 // ============================================================================
 
 export interface VideoPlayerInternalHandlers {
+  // Video element handlers
   onTimeUpdate: () => void
   onDurationChange: () => void
   onProgress: () => void
@@ -111,6 +113,8 @@ export interface VideoPlayerInternalHandlers {
   onSeeked: () => void
   onVolumeChange: () => void
   onLoadedMetadata: () => void
+  // Root element handlers
+  onRootMouseLeave: () => void
 }
 
 // ============================================================================
@@ -119,6 +123,21 @@ export interface VideoPlayerInternalHandlers {
 
 export interface VideoPlayerContextValue extends VideoPlayerState, VideoPlayerActions {
   _handlers: VideoPlayerInternalHandlers
+}
+
+// ============================================================================
+// External Actions Ref (Base UI pattern)
+// ============================================================================
+
+/**
+ * Actions exposed via actionsRef for programmatic control.
+ * Follows the Base UI actionsRef pattern.
+ */
+export interface VideoPlayerExternalActions {
+  toggle: () => Promise<void>
+  seek: (time: number) => void
+  setVolume: (volume: number) => void
+  toggleFullscreen: () => Promise<void>
 }
 
 // ============================================================================
@@ -132,6 +151,21 @@ type DivPropsWithoutConflicts = Omit<
 >
 
 export interface VideoPlayerRootProps extends DivPropsWithoutConflicts {
+  /**
+   * Ref to expose programmatic control actions.
+   * Follows the Base UI actionsRef pattern.
+   */
+  actionsRef?: React.RefObject<VideoPlayerExternalActions | null>
+
+  /**
+   * Keyboard shortcuts scope.
+   * - 'focused': shortcuts work when player is focused (default)
+   * - 'global': shortcuts work anywhere on the page
+   * - 'none': disable keyboard shortcuts
+   * @default 'focused'
+   */
+  keyboardShortcuts?: 'focused' | 'global' | 'none'
+
   // Uncontrolled defaults
   defaultPlaying?: boolean
   defaultVolume?: number
@@ -178,4 +212,12 @@ export interface VideoPlayerRootProps extends DivPropsWithoutConflicts {
 // Render Prop Pattern
 // ============================================================================
 
-export type RenderProp<State> = (state: State) => React.ReactElement
+/**
+ * Render prop pattern following Base UI's approach.
+ * @param props - Props to spread on the rendered element (includes ref, handlers, aria attrs)
+ * @param state - Component state for conditional rendering
+ */
+export type RenderProp<
+  Props = Record<string, unknown>,
+  State = Record<string, unknown>,
+> = (props: Props, state: State) => React.ReactElement

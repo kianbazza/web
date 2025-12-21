@@ -3,13 +3,21 @@
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp } from '../types'
+import { CaptionsMenuDataAttributes, CaptionsMenuItemDataAttributes } from './captions-menu.data-attributes'
 
 // ============================================================================
 // CaptionsMenu Props
 // ============================================================================
 
 export interface CaptionsMenuProps extends React.ComponentPropsWithRef<'div'> {
-  render?: RenderProp<CaptionsMenuState>
+  render?: RenderProp<CaptionsMenuRenderProps, CaptionsMenuState>
+}
+
+export interface CaptionsMenuRenderProps {
+  ref: React.Ref<any>
+  role: 'menu'
+  'aria-label': string
+  [CaptionsMenuDataAttributes.active]?: boolean
 }
 
 export interface CaptionsMenuState {
@@ -31,22 +39,21 @@ export const CaptionsMenu = React.forwardRef<HTMLDivElement, CaptionsMenuProps>(
       activeTextTrack: context.activeTextTrack,
     }
 
-    // Data attributes
-    const dataAttributes = {
-      'data-active': context.activeTextTrack !== null || undefined,
+    const renderProps: CaptionsMenuRenderProps = {
+      ref: forwardedRef,
+      role: 'menu',
+      'aria-label': 'Captions',
+      [CaptionsMenuDataAttributes.active]: context.activeTextTrack !== null || undefined,
     }
 
     if (render) {
-      return render(state)
+      return render(renderProps, state)
     }
 
     // Default render: list of track options with "Off" option
     return (
       <div
-        ref={forwardedRef}
-        role="menu"
-        aria-label="Captions"
-        {...dataAttributes}
+        {...renderProps}
         {...divProps}
       >
         {children ?? (
@@ -95,7 +102,7 @@ export const CaptionsMenuItem = React.forwardRef<HTMLButtonElement, CaptionsMenu
         type="button"
         role="menuitemradio"
         aria-checked={isActive}
-        data-active={isActive || undefined}
+        {...{ [CaptionsMenuItemDataAttributes.active]: isActive || undefined }}
         {...buttonProps}
         onClick={handleClick}
       >

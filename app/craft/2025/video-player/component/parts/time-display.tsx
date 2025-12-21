@@ -30,7 +30,13 @@ export interface TimeDisplayProps extends React.ComponentPropsWithRef<'span'> {
    * @default 'left'
    */
   align?: 'left' | 'center' | 'right'
-  render?: RenderProp<TimeDisplayState>
+  render?: RenderProp<TimeDisplayRenderProps, TimeDisplayState>
+}
+
+export interface TimeDisplayRenderProps {
+  ref: React.Ref<any>
+  style: React.CSSProperties
+  [TimeDisplayDataAttributes.hovering]?: boolean
 }
 
 export interface TimeDisplayState {
@@ -54,12 +60,20 @@ export const TimeDisplay = React.forwardRef<HTMLSpanElement, TimeDisplayProps>(
     const { format = 'current / duration', fixedWidth = true, align = 'left', render, ...spanProps } = props
     const context = useVideoPlayerContext('TimeDisplay')
 
+    // Preserve last hover time for exit animations
+    const lastHoverTimeRef = React.useRef<number>(0)
+    if (context.hoverTime !== null) {
+      lastHoverTimeRef.current = context.hoverTime
+    }
+
     const remaining = context.duration - context.currentTime
     const formattedCurrent = formatTime(context.currentTime)
     const formattedDuration = formatTime(context.duration)
     const formattedRemaining = formatTime(remaining)
     const formattedHover =
-      context.hoverTime !== null ? formatTime(context.hoverTime) : null
+      context.hoverTime !== null
+        ? formatTime(context.hoverTime)
+        : formatTime(lastHoverTimeRef.current)
 
     const state: TimeDisplayState = {
       currentTime: context.currentTime,
@@ -86,7 +100,7 @@ export const TimeDisplay = React.forwardRef<HTMLSpanElement, TimeDisplayProps>(
         case 'current / remaining':
           return `${formattedCurrent} / -${formattedRemaining}`
         case 'hover':
-          return formattedHover ?? formattedCurrent
+          return formattedHover
         default:
           return `${formattedCurrent} / ${formattedDuration}`
       }
@@ -111,8 +125,19 @@ export const TimeDisplay = React.forwardRef<HTMLSpanElement, TimeDisplayProps>(
       }
     }
 
+    const renderProps: TimeDisplayRenderProps = {
+      ref: forwardedRef,
+      style: {
+        position: fixedWidth ? 'relative' : undefined,
+        userSelect: 'none',
+        fontVariantNumeric: 'tabular-nums',
+        ...spanProps.style,
+      },
+      [TimeDisplayDataAttributes.hovering]: state.hovering || undefined,
+    }
+
     if (render) {
-      return render(state)
+      return render(renderProps, state)
     }
 
     return (

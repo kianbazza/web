@@ -3,13 +3,26 @@
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp } from '../types'
+import { PlayButtonDataAttributes } from './play-button.data-attributes'
 
 // ============================================================================
 // PlayButton Props
 // ============================================================================
 
-export interface PlayButtonProps extends React.ComponentPropsWithRef<'button'> {
-  render?: RenderProp<PlayButtonState>
+export interface PlayButtonProps
+  extends Omit<React.ComponentPropsWithRef<'button'>, 'children'> {
+  render?: RenderProp<PlayButtonRenderProps, PlayButtonState>
+  children?: React.ReactNode
+}
+
+export interface PlayButtonRenderProps {
+  ref: React.Ref<HTMLButtonElement>
+  type: 'button'
+  'aria-label': string
+  [PlayButtonDataAttributes.playing]?: boolean
+  [PlayButtonDataAttributes.paused]?: boolean
+  [PlayButtonDataAttributes.ended]?: boolean
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export interface PlayButtonState {
@@ -24,14 +37,8 @@ export interface PlayButtonState {
 
 export const PlayButton = React.forwardRef<HTMLButtonElement, PlayButtonProps>(
   function PlayButton(props, forwardedRef) {
-    const { render, onClick, ...buttonProps } = props
+    const { render, onClick, children, ...buttonProps } = props
     const context = useVideoPlayerContext('PlayButton')
-
-    const state: PlayButtonState = {
-      playing: context.playing,
-      paused: context.paused,
-      ended: context.ended,
-    }
 
     const handleClick = React.useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -40,31 +47,35 @@ export const PlayButton = React.forwardRef<HTMLButtonElement, PlayButtonProps>(
           context.toggle()
         }
       },
-      [onClick, context]
+      [onClick, context],
     )
 
-    // Data attributes
-    const dataAttributes = {
-      'data-playing': context.playing || undefined,
-      'data-paused': context.paused || undefined,
-      'data-ended': context.ended || undefined,
+    const state: PlayButtonState = {
+      playing: context.playing,
+      paused: context.paused,
+      ended: context.ended,
+    }
+
+    const renderProps: PlayButtonRenderProps = {
+      ref: forwardedRef,
+      type: 'button',
+      'aria-label': context.playing ? 'Pause' : 'Play',
+      [PlayButtonDataAttributes.playing]: context.playing || undefined,
+      [PlayButtonDataAttributes.paused]: context.paused || undefined,
+      [PlayButtonDataAttributes.ended]: context.ended || undefined,
+      onClick: handleClick,
     }
 
     if (render) {
-      return render(state)
+      return render(renderProps, state)
     }
 
     return (
-      <button
-        ref={forwardedRef}
-        type="button"
-        aria-label={context.playing ? 'Pause' : 'Play'}
-        {...dataAttributes}
-        {...buttonProps}
-        onClick={handleClick}
-      />
+      <button {...renderProps} {...buttonProps}>
+        {children}
+      </button>
     )
-  }
+  },
 )
 
 // ============================================================================
@@ -74,4 +85,5 @@ export const PlayButton = React.forwardRef<HTMLButtonElement, PlayButtonProps>(
 export namespace PlayButton {
   export type Props = PlayButtonProps
   export type State = PlayButtonState
+  export type RenderProps = PlayButtonRenderProps
 }

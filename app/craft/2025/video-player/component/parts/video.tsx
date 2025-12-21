@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
+import { VideoDataAttributes } from './video.data-attributes'
 
 // ============================================================================
 // Video Props
@@ -59,12 +60,21 @@ export const Video = React.forwardRef<HTMLVideoElement, VideoProps>(
         }
         ;(context.videoRef as React.MutableRefObject<HTMLVideoElement | null>).current = node
 
-        // Handle race condition: metadata may have loaded before handlers attached
+        // Handle race condition: metadata/canplay may have loaded before handlers attached
         // Only check once to avoid infinite loops
-        if (node && !hasCheckedMetadata.current && node.readyState >= 1 && node.duration) {
+        if (node && !hasCheckedMetadata.current) {
           hasCheckedMetadata.current = true
-          context._handlers.onLoadedMetadata()
-          context._handlers.onDurationChange()
+
+          if (node.readyState >= 1 && node.duration) {
+            context._handlers.onLoadedMetadata()
+            context._handlers.onDurationChange()
+          }
+
+          // readyState >= 3 means HAVE_FUTURE_DATA (canplay)
+          // readyState >= 4 means HAVE_ENOUGH_DATA (canplaythrough)
+          if (node.readyState >= 3) {
+            context._handlers.onCanPlay()
+          }
         }
       },
       [forwardedRef, context.videoRef, context._handlers],
@@ -82,11 +92,11 @@ export const Video = React.forwardRef<HTMLVideoElement, VideoProps>(
 
     // Data attributes
     const dataAttributes = {
-      'data-playing': context.playing || undefined,
-      'data-paused': context.paused || undefined,
-      'data-ended': context.ended || undefined,
-      'data-waiting': context.waiting || undefined,
-      'data-seeking': context.seeking || undefined,
+      [VideoDataAttributes.playing]: context.playing || undefined,
+      [VideoDataAttributes.paused]: context.paused || undefined,
+      [VideoDataAttributes.ended]: context.ended || undefined,
+      [VideoDataAttributes.waiting]: context.waiting || undefined,
+      [VideoDataAttributes.seeking]: context.seeking || undefined,
     }
 
     return (

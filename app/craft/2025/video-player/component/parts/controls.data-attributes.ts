@@ -9,4 +9,8 @@ export enum ControlsDataAttributes {
   playing = 'data-playing',
   /** Applied when the video is paused. */
   paused = 'data-paused',
+  /** Applied on the first frame when entering. Use for CSS enter animations. */
+  startingStyle = 'data-starting-style',
+  /** Applied during exit animation. Use for CSS exit animations. */
+  endingStyle = 'data-ending-style',
 }

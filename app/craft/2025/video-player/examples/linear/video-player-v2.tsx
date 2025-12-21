@@ -1,17 +1,42 @@
+import { VideoPlayer } from '@/app/craft/2025/video-player/component'
 import { cn } from '@/lib/utils'
-import { VideoPlayer } from './component'
 import type { VideoPlayerProps } from './video-player'
 
-export function VideoPlayer_v2({ src, poster }: VideoPlayerProps) {
+export function VideoPlayer_v2({ src }: VideoPlayerProps) {
   return (
-    <VideoPlayer.Root className="relative" preventIdleWhenPaused>
-      <VideoPlayer.Video src={src} />
-      {poster && <VideoPlayer.Poster src={poster} />}
-      <VideoPlayer.Overlay className="absolute w-full h-full top-0 left-0 data-[open]:bg-black/20 data-[closed]:bg-transparent" />
+    <VideoPlayer.Root
+      className={cn(
+        '[--duration:300ms]',
+        'group relative rounded-xl overflow-hidden',
+        'shadow-[inset_0px_0px_0px_2px_rgba(255,255,255,0.5)]',
+        'aspect-video w-full h-auto',
+        'data-[fullscreen]:flex data-[fullscreen]:items-center data-[fullscreen]:justify-center',
+        'data-[fullscreen]:bg-black data-[fullscreen]:rounded-none data-[fullscreen]:h-full data-[fullscreen]:w-full',
+        'data-[fullscreen]:border-0 data-[fullscreen]:shadow-none',
+      )}
+    >
+      <VideoPlayer.Poster
+        className={cn(
+          'absolute inset-0 bg-gray-4',
+          'transition-opacity duration-(--duration) ease-out',
+          'data-[starting-style]:opacity-100 data-[ending-style]:opacity-0',
+        )}
+      />
+      <VideoPlayer.Video
+        src={src}
+        className={cn(
+          'w-full h-auto',
+          'group-data-[fullscreen]:w-full group-data-[fullscreen]:h-auto',
+        )}
+      />
+      <VideoPlayer.Overlay className="absolute w-full h-full top-0 left-0 bg-black/20 data-[starting-style]:bg-transparent data-[ending-style]:bg-transparent transition-[background-color] duration-(--duration) ease-out" />
       <VideoPlayer.Controls
         className={cn(
-          'absolute bottom-2 left-1/2 -translate-x-1/2 h-fit w-[80%] data-[closed]:hidden',
+          'absolute bottom-2 left-1/2 -translate-x-1/2 h-fit w-[80%]',
           'flex items-center gap-4',
+          'opacity-100 translate-y-0 blur-none transition-[opacity,filter,translate] duration-(--duration) ease-out',
+          'data-[starting-style]:opacity-0 data-[starting-style]:translate-y-2.5 data-[starting-style]:blur-xs',
+          'data-[ending-style]:opacity-0 data-[ending-style]:translate-y-2.5 data-[ending-style]:blur-xs',
         )}
       >
         <VideoPlayer.PlayButton className={cn(buttonClassName, 'group')}>
@@ -26,27 +51,37 @@ export function VideoPlayer_v2({ src, poster }: VideoPlayerProps) {
         />
 
         <VideoPlayer.SeekSlider className="flex items-center w-full h-12 select-none touch-none group/seek cursor-crosshair! **:cursor-crosshair!">
-          <VideoPlayer.SeekSliderTrack className="relative h-1 w-full rounded-[9999999px] bg-white/20 group-data-[pressing]/seek:h-1.5 transition-[height] duration-150 ease-in-out">
-            <VideoPlayer.SeekSliderBuffered
-              className="absolute h-full rounded-[9999999px]
-          bg-white/30"
-            />
-            <VideoPlayer.SeekSliderProgress className="absolute h-full rounded-[9999999px] bg-white" />
+          <VideoPlayer.SeekSliderTrack className="relative h-1 w-full overflow-hidden rounded-[9999999px] bg-white/20 group-data-[pressing]/seek:h-1.5 transition-[height] duration-150 ease-in-out">
+            <VideoPlayer.SeekSliderBuffered className="absolute h-full bg-white/30" />
+            <VideoPlayer.SeekSliderProgress className="absolute h-full bg-white" />
           </VideoPlayer.SeekSliderTrack>
           <VideoPlayer.SeekSliderPreviewThumb
             className={cn(
-              'h-8 w-px bg-white/50 shadow-md relative',
-              'hidden group-hover/seek:block',
+              'h-8 w-px shadow-md relative group/thumb',
               'group-data-[pressing]/seek:h-10',
-              'group-data-[pressing]/seek:bg-white',
-              'transition-[height,background-color] duration-150 ease-in-out',
+              'transition-[height] duration-150 ease-in-out',
             )}
           >
             <div
               className={cn(
+                'absolute bottom-0 left-0 bg-white/50 w-px',
+                'group-data-[pressing]/seek:bg-white',
+                'opacity-100 h-full blur-none',
+                'transition-[height,opacity,filter] duration-150 ease-out',
+                'group-data-[starting-style]/thumb:opacity-0 group-data-[starting-style]/thumb:h-0 group-data-[starting-style]/thumb:blur-xs',
+                'group-data-[ending-style]/thumb:opacity-0 group-data-[ending-style]/thumb:h-0 group-data-[ending-style]/thumb:blur-xs',
+              )}
+            />
+            <div
+              key="thumb-time"
+              className={cn(
                 'absolute bottom-full mb-2 left-1/2 -translate-x-1/2',
                 'flex items-center gap-1 text-[13px]',
-                'group-data-[pressing]/seek:text-sm transition-[font-size] duration-150 ease-in-out',
+                'group-data-[pressing]/seek:text-sm',
+                'opacity-100 translate-y-0 blur-none',
+                'transition-[opacity,filter,translate,font-size] duration-150 ease-in-out',
+                'group-data-[starting-style]/thumb:opacity-0 group-data-[starting-style]/thumb:translate-y-2.5 group-data-[starting-style]/thumb:blur-xs',
+                'group-data-[ending-style]/thumb:opacity-0 group-data-[ending-style]/thumb:translate-y-2.5 group-data-[ending-style]/thumb:blur-xs',
               )}
             >
               <VideoPlayer.TimeDisplay
