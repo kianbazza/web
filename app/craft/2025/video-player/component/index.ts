@@ -25,6 +25,7 @@ export type {
   VideoPlayerContextValue,
   VideoPlayerState,
   VideoPlayerActions,
+  VideoPlayerExternalActions,
   VideoPlayerRootProps,
   VideoQuality,
   VideoTextTrack,

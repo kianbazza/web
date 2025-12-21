@@ -3,13 +3,25 @@
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp } from '../types'
+import { PictureInPictureButtonDataAttributes } from './picture-in-picture-button.data-attributes'
 
 // ============================================================================
 // PictureInPictureButton Props
 // ============================================================================
 
 export interface PictureInPictureButtonProps extends React.ComponentPropsWithRef<'button'> {
-  render?: RenderProp<PictureInPictureButtonState>
+  render?: RenderProp<PictureInPictureButtonRenderProps, PictureInPictureButtonState>
+}
+
+export interface PictureInPictureButtonRenderProps {
+  ref: React.Ref<any>
+  type: 'button'
+  'aria-label': string
+  'aria-pressed': boolean
+  disabled: boolean
+  [PictureInPictureButtonDataAttributes.pip]?: boolean
+  [PictureInPictureButtonDataAttributes.supported]?: boolean
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export interface PictureInPictureButtonState {
@@ -47,26 +59,25 @@ export const PictureInPictureButton = React.forwardRef<HTMLButtonElement, Pictur
       [onClick, context]
     )
 
-    // Data attributes
-    const dataAttributes = {
-      'data-pip': context.pictureInPicture || undefined,
-      'data-supported': supported || undefined,
+    const renderProps: PictureInPictureButtonRenderProps = {
+      ref: forwardedRef,
+      type: 'button',
+      'aria-label': context.pictureInPicture ? 'Exit picture-in-picture' : 'Enter picture-in-picture',
+      'aria-pressed': context.pictureInPicture,
+      disabled: !supported,
+      [PictureInPictureButtonDataAttributes.pip]: context.pictureInPicture || undefined,
+      [PictureInPictureButtonDataAttributes.supported]: supported || undefined,
+      onClick: handleClick,
     }
 
     if (render) {
-      return render(state)
+      return render(renderProps, state)
     }
 
     return (
       <button
-        ref={forwardedRef}
-        type="button"
-        aria-label={context.pictureInPicture ? 'Exit picture-in-picture' : 'Enter picture-in-picture'}
-        aria-pressed={context.pictureInPicture}
-        disabled={!supported}
-        {...dataAttributes}
+        {...renderProps}
         {...buttonProps}
-        onClick={handleClick}
       />
     )
   }

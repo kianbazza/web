@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
+import { useTransitionStatus } from '../use-transition-status'
 import type { RenderProp } from '../types'
 import { ControlsDataAttributes } from './controls.data-attributes'
 
@@ -9,14 +10,35 @@ import { ControlsDataAttributes } from './controls.data-attributes'
 // Controls Props
 // ============================================================================
 
-export interface ControlsProps extends React.ComponentPropsWithRef<'div'> {
+export interface ControlsProps
+  extends Omit<React.ComponentPropsWithRef<'div'>, 'children'> {
   /**
    * Delay before hiding after player becomes idle (ms).
    * Defaults to Root's idleTimeout. Set to 0 to disable auto-hide.
    */
   idleTimeout?: number
 
-  render?: RenderProp<ControlsState>
+  /**
+   * Keep the element always mounted in the DOM, even when closed.
+   * Only needed for JavaScript animation libraries (e.g., Framer Motion).
+   * CSS transitions and animations work automatically without this.
+   * @default false
+   */
+  keepMounted?: boolean
+
+  render?: RenderProp<ControlsRenderProps, ControlsState>
+  children?: React.ReactNode
+}
+
+export interface ControlsRenderProps {
+  ref: React.Ref<HTMLDivElement>
+  [ControlsDataAttributes.open]?: boolean
+  [ControlsDataAttributes.closed]?: boolean
+  [ControlsDataAttributes.idle]?: boolean
+  [ControlsDataAttributes.playing]?: boolean
+  [ControlsDataAttributes.paused]?: boolean
+  [ControlsDataAttributes.startingStyle]?: boolean
+  [ControlsDataAttributes.endingStyle]?: boolean
 }
 
 export interface ControlsState {
@@ -33,7 +55,13 @@ export interface ControlsState {
 
 export const Controls = React.forwardRef<HTMLDivElement, ControlsProps>(
   function Controls(props, forwardedRef) {
-    const { idleTimeout: idleTimeoutProp, render, ...divProps } = props
+    const {
+      idleTimeout: idleTimeoutProp,
+      keepMounted = false,
+      render,
+      children,
+      ...divProps
+    } = props
 
     const context = useVideoPlayerContext('Controls')
 
@@ -45,6 +73,26 @@ export const Controls = React.forwardRef<HTMLDivElement, ControlsProps>(
     // - Open when not idle
     const open = effectiveIdleTimeout === 0 || !context.idle
 
+    // Handle transition status for animations
+    const { mounted, transitionStatus, elementRef } = useTransitionStatus({
+      open,
+      keepMounted,
+    })
+
+    // Compose refs
+    const composedRef = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        ;(elementRef as React.MutableRefObject<HTMLElement | null>).current =
+          node
+        if (typeof forwardedRef === 'function') {
+          forwardedRef(node)
+        } else if (forwardedRef) {
+          forwardedRef.current = node
+        }
+      },
+      [forwardedRef, elementRef],
+    )
+
     const state: ControlsState = {
       open,
       idle: context.idle,
@@ -52,20 +100,32 @@ export const Controls = React.forwardRef<HTMLDivElement, ControlsProps>(
       paused: context.paused,
     }
 
-    // Data attributes
-    const dataAttributes = {
+    const renderProps: ControlsRenderProps = {
+      ref: composedRef,
       [ControlsDataAttributes.open]: open || undefined,
       [ControlsDataAttributes.closed]: !open || undefined,
       [ControlsDataAttributes.idle]: context.idle || undefined,
       [ControlsDataAttributes.playing]: context.playing || undefined,
       [ControlsDataAttributes.paused]: context.paused || undefined,
+      [ControlsDataAttributes.startingStyle]:
+        transitionStatus === 'starting' || undefined,
+      [ControlsDataAttributes.endingStyle]:
+        transitionStatus === 'ending' || undefined,
+    }
+
+    if (!mounted) {
+      return null
     }
 
     if (render) {
-      return render(state)
+      return render(renderProps, state)
     }
 
-    return <div ref={forwardedRef} {...dataAttributes} {...divProps} />
+    return (
+      <div {...renderProps} {...divProps}>
+        {children}
+      </div>
+    )
   },
 )
 
@@ -76,4 +136,5 @@ export const Controls = React.forwardRef<HTMLDivElement, ControlsProps>(
 export namespace Controls {
   export type Props = ControlsProps
   export type State = ControlsState
+  export type RenderProps = ControlsRenderProps
 }

@@ -4,10 +4,13 @@ import * as React from 'react'
 import { VideoPlayerContext } from './context'
 import type {
   VideoPlayerContextValue,
+  VideoPlayerExternalActions,
   VideoPlayerRootProps,
   VideoPlayerState,
   VideoQuality,
 } from './types'
+import { useKeyboardShortcuts } from './use-keyboard-shortcuts'
+import { useVideoPlayer } from './use-video-player'
 import { RootDataAttributes } from './parts/root.data-attributes'
 
 // ============================================================================
@@ -51,6 +54,7 @@ export interface VideoPlayerRootState {
   ended: boolean
   waiting: boolean
   seeking: boolean
+  canPlay: boolean
   fullscreen: boolean
   pictureInPicture: boolean
   muted: boolean
@@ -63,62 +67,59 @@ export interface VideoPlayerRootState {
 }
 
 // ============================================================================
-// Root Component
+// Provider Component (internal - wraps Root with context)
 // ============================================================================
 
-export const VideoPlayerRoot = React.forwardRef<
-  HTMLDivElement,
-  VideoPlayerRootProps
->(function VideoPlayerRoot(props, forwardedRef) {
-  const {
-    // Uncontrolled defaults
-    defaultPlaying = false,
-    defaultVolume = 1,
-    defaultMuted = false,
-    defaultPlaybackRate = 1,
+interface VideoPlayerProviderProps extends VideoPlayerRootProps {
+  rootRef: React.RefObject<HTMLDivElement | null>
+  videoRef: React.RefObject<HTMLVideoElement | null>
+}
 
-    // Controlled values
-    playing: controlledPlaying,
-    onPlayingChange,
-    volume: controlledVolume,
-    onVolumeChange,
-    muted: controlledMuted,
-    onMutedChange,
-    playbackRate: controlledPlaybackRate,
-    onPlaybackRateChange,
-    currentTime: controlledCurrentTime,
-    onCurrentTimeChange,
+function VideoPlayerProvider({
+  // Refs from Root
+  rootRef,
+  videoRef,
 
-    // Idle detection
-    idleTimeout = 3000,
-    preventIdleWhenPaused = false,
-    idle: controlledIdle,
-    onIdleChange,
+  // Actions ref
+  actionsRef,
 
-    // Events
-    onEnded,
-    onWaiting,
-    onSeeking,
-    onSeeked,
-    onFullscreenChange,
-    onPictureInPictureChange,
+  // Uncontrolled defaults
+  defaultPlaying = false,
+  defaultVolume = 1,
+  defaultMuted = false,
+  defaultPlaybackRate = 1,
 
-    // Native events we need to intercept
-    onMouseMove,
-    onMouseEnter,
-    onMouseLeave,
-    onClick,
+  // Controlled values
+  playing: controlledPlaying,
+  onPlayingChange,
+  volume: controlledVolume,
+  onVolumeChange,
+  muted: controlledMuted,
+  onMutedChange,
+  playbackRate: controlledPlaybackRate,
+  onPlaybackRateChange,
+  currentTime: controlledCurrentTime,
+  onCurrentTimeChange,
 
-    // Rest
-    children,
-    ...rootProps
-  } = props
+  // Idle detection
+  idleTimeout = 3000,
+  preventIdleWhenPaused = false,
+  idle: controlledIdle,
+  onIdleChange,
 
+  // Events
+  onEnded,
+  onWaiting,
+  onSeeking,
+  onSeeked,
+  onFullscreenChange,
+  onPictureInPictureChange,
+
+  // Children
+  children,
+}: VideoPlayerProviderProps) {
   // Refs
-  const rootRef = React.useRef<HTMLDivElement>(null)
-  const videoRef = React.useRef<HTMLVideoElement>(null)
   const previousVolumeRef = React.useRef(1)
-  const composedRef = useComposedRef(forwardedRef, rootRef)
 
   // Controllable state
   const [playing, setPlaying] = useControllableState(
@@ -149,7 +150,6 @@ export const VideoPlayerRoot = React.forwardRef<
 
   // Idle timeout ref
   const idleTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
-  const lastMousePosition = React.useRef<{ x: number; y: number } | null>(null)
 
   const clearIdleTimeout = React.useCallback(() => {
     if (idleTimeoutRef.current) {
@@ -172,52 +172,10 @@ export const VideoPlayerRoot = React.forwardRef<
     startIdleTimeout()
   }, [setIdle, startIdleTimeout])
 
-  const handleMouseMove = React.useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      onMouseMove?.(event)
-      // Track position and only reset idle if mouse actually moved
-      const { clientX, clientY } = event
-      const last = lastMousePosition.current
-      if (last && last.x === clientX && last.y === clientY) {
-        return
-      }
-      lastMousePosition.current = { x: clientX, y: clientY }
-      resetIdle()
-    },
-    [onMouseMove, resetIdle],
-  )
-
-  const handleMouseEnter = React.useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      onMouseEnter?.(event)
-      // Only reset idle if mouse actually moved (prevents false triggers when controls disappear)
-      const { clientX, clientY } = event
-      const last = lastMousePosition.current
-      if (last && last.x === clientX && last.y === clientY) {
-        return
-      }
-      lastMousePosition.current = { x: clientX, y: clientY }
-      resetIdle()
-    },
-    [onMouseEnter, resetIdle],
-  )
-
-  const handleMouseLeave = React.useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      onMouseLeave?.(event)
-      clearIdleTimeout()
-      setIdle(true)
-    },
-    [onMouseLeave, clearIdleTimeout, setIdle],
-  )
-
-  const handleClick = React.useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      onClick?.(event)
-      resetIdle()
-    },
-    [onClick, resetIdle],
-  )
+  const handleRootMouseLeave = React.useCallback(() => {
+    clearIdleTimeout()
+    setIdle(true)
+  }, [clearIdleTimeout, setIdle])
 
   // Start idle timeout on mount, cleanup on unmount
   React.useEffect(() => {
@@ -234,12 +192,9 @@ export const VideoPlayerRoot = React.forwardRef<
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Reset idle when paused if preventIdleWhenPaused is enabled
-  React.useEffect(() => {
-    if (!playing && preventIdleWhenPaused) {
-      resetIdle()
-    }
-  }, [playing, preventIdleWhenPaused, resetIdle])
+  // Compute effective idle state synchronously to prevent flicker
+  // When preventIdleWhenPaused is enabled and video is paused, never be idle
+  const effectiveIdle = preventIdleWhenPaused && !playing ? false : idle
 
   // Internal state (not controllable)
   const [currentTime, setCurrentTime] = React.useState(0)
@@ -248,6 +203,7 @@ export const VideoPlayerRoot = React.forwardRef<
   const [hoverTime, setHoverTime] = React.useState<number | null>(null)
   const [ended, setEnded] = React.useState(false)
   const [waiting, setWaiting] = React.useState(false)
+  const [canPlay, setCanPlay] = React.useState(false)
   const [seeking, setSeeking] = React.useState(false)
   const [fullscreen, setFullscreen] = React.useState(false)
   const [pictureInPicture, setPictureInPicture] = React.useState(false)
@@ -264,7 +220,7 @@ export const VideoPlayerRoot = React.forwardRef<
     if (controlledCurrentTime !== undefined && videoRef.current) {
       videoRef.current.currentTime = controlledCurrentTime
     }
-  }, [controlledCurrentTime])
+  }, [controlledCurrentTime, videoRef])
 
   // Fullscreen change listener
   React.useEffect(() => {
@@ -277,7 +233,7 @@ export const VideoPlayerRoot = React.forwardRef<
     document.addEventListener('fullscreenchange', handleFullscreenChange)
     return () =>
       document.removeEventListener('fullscreenchange', handleFullscreenChange)
-  }, [onFullscreenChange])
+  }, [onFullscreenChange, rootRef])
 
   // PiP change listener
   React.useEffect(() => {
@@ -299,7 +255,7 @@ export const VideoPlayerRoot = React.forwardRef<
       video.removeEventListener('enterpictureinpicture', handlePiPEnter)
       video.removeEventListener('leavepictureinpicture', handlePiPLeave)
     }
-  }, [onPictureInPictureChange])
+  }, [onPictureInPictureChange, videoRef])
 
   // Actions
   const play = React.useCallback(async () => {
@@ -308,14 +264,14 @@ export const VideoPlayerRoot = React.forwardRef<
       setPlaying(true)
       setEnded(false)
     }
-  }, [setPlaying])
+  }, [setPlaying, videoRef])
 
   const pause = React.useCallback(() => {
     if (videoRef.current) {
       videoRef.current.pause()
       setPlaying(false)
     }
-  }, [setPlaying])
+  }, [setPlaying, videoRef])
 
   const toggle = React.useCallback(async () => {
     if (playing) {
@@ -333,7 +289,7 @@ export const VideoPlayerRoot = React.forwardRef<
         onCurrentTimeChange?.(time)
       }
     },
-    [onCurrentTimeChange],
+    [onCurrentTimeChange, videoRef],
   )
 
   const handleSetVolume = React.useCallback(
@@ -344,7 +300,7 @@ export const VideoPlayerRoot = React.forwardRef<
       }
       setVolume(clampedVolume)
     },
-    [setVolume],
+    [setVolume, videoRef],
   )
 
   const toggleMute = React.useCallback(() => {
@@ -363,13 +319,13 @@ export const VideoPlayerRoot = React.forwardRef<
       videoRef.current.muted = !muted
     }
     setMuted(!muted)
-  }, [muted, volume, setMuted, setVolume])
+  }, [muted, volume, setMuted, setVolume, videoRef])
 
   const enterFullscreen = React.useCallback(async () => {
     if (rootRef.current?.requestFullscreen) {
       await rootRef.current.requestFullscreen()
     }
-  }, [])
+  }, [rootRef])
 
   const exitFullscreen = React.useCallback(async () => {
     if (document.exitFullscreen) {
@@ -389,7 +345,7 @@ export const VideoPlayerRoot = React.forwardRef<
     if (videoRef.current?.requestPictureInPicture) {
       await videoRef.current.requestPictureInPicture()
     }
-  }, [])
+  }, [videoRef])
 
   const exitPictureInPicture = React.useCallback(async () => {
     if (document.pictureInPictureElement) {
@@ -412,28 +368,43 @@ export const VideoPlayerRoot = React.forwardRef<
       }
       setPlaybackRateState(rate)
     },
-    [setPlaybackRateState],
+    [setPlaybackRateState, videoRef],
   )
 
-  const setTextTrack = React.useCallback((track: TextTrack | null) => {
-    // Disable all tracks first
-    if (videoRef.current) {
-      for (let i = 0; i < videoRef.current.textTracks.length; i++) {
-        videoRef.current.textTracks[i].mode = 'disabled'
+  const setTextTrack = React.useCallback(
+    (track: TextTrack | null) => {
+      // Disable all tracks first
+      if (videoRef.current) {
+        for (let i = 0; i < videoRef.current.textTracks.length; i++) {
+          videoRef.current.textTracks[i].mode = 'disabled'
+        }
+        // Enable selected track
+        if (track) {
+          track.mode = 'showing'
+        }
       }
-      // Enable selected track
-      if (track) {
-        track.mode = 'showing'
-      }
-    }
-    setActiveTextTrack(track)
-  }, [])
+      setActiveTextTrack(track)
+    },
+    [videoRef],
+  )
 
   const setQuality = React.useCallback((quality: VideoQuality) => {
     // Quality switching requires HLS/DASH library integration
     // This is a placeholder for the action
     setActiveQuality(quality)
   }, [])
+
+  // Populate actionsRef for external control (Base UI pattern)
+  React.useImperativeHandle(
+    actionsRef,
+    () => ({
+      toggle,
+      seek,
+      setVolume: handleSetVolume,
+      toggleFullscreen,
+    }),
+    [toggle, seek, handleSetVolume, toggleFullscreen],
+  )
 
   // Video event handlers (to be called by Video component)
   const handleTimeUpdate = React.useCallback(() => {
@@ -442,19 +413,19 @@ export const VideoPlayerRoot = React.forwardRef<
       setCurrentTime(time)
       onCurrentTimeChange?.(time)
     }
-  }, [onCurrentTimeChange])
+  }, [onCurrentTimeChange, videoRef])
 
   const handleDurationChange = React.useCallback(() => {
     if (videoRef.current) {
       setDuration(videoRef.current.duration)
     }
-  }, [])
+  }, [videoRef])
 
   const handleProgress = React.useCallback(() => {
     if (videoRef.current) {
       setBuffered(videoRef.current.buffered)
     }
-  }, [])
+  }, [videoRef])
 
   const handlePlay = React.useCallback(() => {
     setPlaying(true)
@@ -478,6 +449,7 @@ export const VideoPlayerRoot = React.forwardRef<
 
   const handleCanPlay = React.useCallback(() => {
     setWaiting(false)
+    setCanPlay(true)
   }, [])
 
   const handleSeeking = React.useCallback(() => {
@@ -495,7 +467,7 @@ export const VideoPlayerRoot = React.forwardRef<
       setVolume(videoRef.current.volume)
       setMuted(videoRef.current.muted)
     }
-  }, [setVolume, setMuted])
+  }, [setVolume, setMuted, videoRef])
 
   const handleLoadedMetadata = React.useCallback(() => {
     if (videoRef.current) {
@@ -507,7 +479,7 @@ export const VideoPlayerRoot = React.forwardRef<
       }
       setTextTracks(tracks)
     }
-  }, [])
+  }, [videoRef])
 
   // Context value
   const contextValue = React.useMemo<VideoPlayerContextValue>(
@@ -518,6 +490,7 @@ export const VideoPlayerRoot = React.forwardRef<
       ended,
       waiting,
       seeking,
+      canPlay,
       currentTime,
       duration,
       buffered,
@@ -530,7 +503,7 @@ export const VideoPlayerRoot = React.forwardRef<
       muted,
       fullscreen,
       pictureInPicture,
-      idle,
+      idle: effectiveIdle,
       idleTimeout,
       preventIdleWhenPaused,
       textTracks,
@@ -560,8 +533,9 @@ export const VideoPlayerRoot = React.forwardRef<
       resetIdle,
       setHoverTime,
 
-      // Internal event handlers (for Video component)
+      // Internal event handlers
       _handlers: {
+        // Video element handlers
         onTimeUpdate: handleTimeUpdate,
         onDurationChange: handleDurationChange,
         onProgress: handleProgress,
@@ -574,6 +548,8 @@ export const VideoPlayerRoot = React.forwardRef<
         onSeeked: handleSeeked,
         onVolumeChange: handleVolumeChange,
         onLoadedMetadata: handleLoadedMetadata,
+        // Root element handlers
+        onRootMouseLeave: handleRootMouseLeave,
       },
     }),
     [
@@ -581,6 +557,7 @@ export const VideoPlayerRoot = React.forwardRef<
       ended,
       waiting,
       seeking,
+      canPlay,
       currentTime,
       duration,
       buffered,
@@ -589,7 +566,7 @@ export const VideoPlayerRoot = React.forwardRef<
       muted,
       fullscreen,
       pictureInPicture,
-      idle,
+      effectiveIdle,
       idleTimeout,
       preventIdleWhenPaused,
       textTracks,
@@ -597,6 +574,8 @@ export const VideoPlayerRoot = React.forwardRef<
       playbackRate,
       qualities,
       activeQuality,
+      videoRef,
+      rootRef,
       play,
       pause,
       toggle,
@@ -626,36 +605,201 @@ export const VideoPlayerRoot = React.forwardRef<
       handleSeeked,
       handleVolumeChange,
       handleLoadedMetadata,
+      handleRootMouseLeave,
     ],
   )
 
+  return (
+    <VideoPlayerContext.Provider value={contextValue}>
+      {children}
+    </VideoPlayerContext.Provider>
+  )
+}
+
+// ============================================================================
+// Root Component
+// ============================================================================
+
+export const VideoPlayerRoot = React.forwardRef<
+  HTMLDivElement,
+  VideoPlayerRootProps
+>(function VideoPlayerRoot(props, forwardedRef) {
+  const {
+    // Actions ref
+    actionsRef,
+    keyboardShortcuts = 'focused',
+
+    // Uncontrolled defaults
+    defaultPlaying,
+    defaultVolume,
+    defaultMuted,
+    defaultPlaybackRate,
+
+    // Controlled values
+    playing,
+    onPlayingChange,
+    volume,
+    onVolumeChange,
+    muted,
+    onMutedChange,
+    playbackRate,
+    onPlaybackRateChange,
+    currentTime,
+    onCurrentTimeChange,
+
+    // Idle detection
+    idleTimeout,
+    preventIdleWhenPaused,
+    idle,
+    onIdleChange,
+
+    // Events
+    onEnded,
+    onWaiting,
+    onSeeking,
+    onSeeked,
+    onFullscreenChange,
+    onPictureInPictureChange,
+
+    // Rest goes to the div
+    children,
+    ...rootDivProps
+  } = props
+
+  // Refs need to be created here and passed to Provider
+  const rootRef = React.useRef<HTMLDivElement>(null)
+  const videoRef = React.useRef<HTMLVideoElement>(null)
+
+  return (
+    <VideoPlayerProvider
+      actionsRef={actionsRef}
+      defaultPlaying={defaultPlaying}
+      defaultVolume={defaultVolume}
+      defaultMuted={defaultMuted}
+      defaultPlaybackRate={defaultPlaybackRate}
+      playing={playing}
+      onPlayingChange={onPlayingChange}
+      volume={volume}
+      onVolumeChange={onVolumeChange}
+      muted={muted}
+      onMutedChange={onMutedChange}
+      playbackRate={playbackRate}
+      onPlaybackRateChange={onPlaybackRateChange}
+      currentTime={currentTime}
+      onCurrentTimeChange={onCurrentTimeChange}
+      idleTimeout={idleTimeout}
+      preventIdleWhenPaused={preventIdleWhenPaused}
+      idle={idle}
+      onIdleChange={onIdleChange}
+      onEnded={onEnded}
+      onWaiting={onWaiting}
+      onSeeking={onSeeking}
+      onSeeked={onSeeked}
+      onFullscreenChange={onFullscreenChange}
+      onPictureInPictureChange={onPictureInPictureChange}
+      rootRef={rootRef}
+      videoRef={videoRef}
+    >
+      <VideoPlayerRootImpl
+        ref={forwardedRef}
+        rootRef={rootRef}
+        keyboardShortcuts={keyboardShortcuts}
+        {...rootDivProps}
+      >
+        {children}
+      </VideoPlayerRootImpl>
+    </VideoPlayerProvider>
+  )
+})
+
+// ============================================================================
+// Root Implementation (inside Provider, can use useVideoPlayer)
+// ============================================================================
+
+interface VideoPlayerRootImplProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'children'> {
+  rootRef: React.RefObject<HTMLDivElement | null>
+  keyboardShortcuts: 'focused' | 'global' | 'none'
+  children: React.ReactNode
+}
+
+const VideoPlayerRootImpl = React.forwardRef<
+  HTMLDivElement,
+  VideoPlayerRootImplProps
+>(function VideoPlayerRootImpl(
+  { rootRef, keyboardShortcuts, children, className, style, ...divProps },
+  forwardedRef,
+) {
+  const context = useVideoPlayer()
+  const composedRef = useComposedRef(forwardedRef, rootRef)
+  const lastMousePosition = React.useRef<{ x: number; y: number } | null>(null)
+
+  // Keyboard shortcuts
+  useKeyboardShortcuts(rootRef, keyboardShortcuts)
+
+  // Mouse handlers for idle detection
+  const handleMouseMove = React.useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      const { clientX, clientY } = event
+      const last = lastMousePosition.current
+      if (last && last.x === clientX && last.y === clientY) {
+        return
+      }
+      lastMousePosition.current = { x: clientX, y: clientY }
+      context.resetIdle()
+    },
+    [context],
+  )
+
+  const handleMouseEnter = React.useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      const { clientX, clientY } = event
+      const last = lastMousePosition.current
+      if (last && last.x === clientX && last.y === clientY) {
+        return
+      }
+      lastMousePosition.current = { x: clientX, y: clientY }
+      context.resetIdle()
+    },
+    [context],
+  )
+
+  const handleMouseLeave = React.useCallback(() => {
+    context._handlers.onRootMouseLeave()
+  }, [context._handlers])
+
+  const handleClick = React.useCallback(() => {
+    context.resetIdle()
+  }, [context])
+
   // Data attributes for styling
   const dataAttributes = {
-    [RootDataAttributes.playing]: playing || undefined,
-    [RootDataAttributes.paused]: !playing || undefined,
-    [RootDataAttributes.ended]: ended || undefined,
-    [RootDataAttributes.waiting]: waiting || undefined,
-    [RootDataAttributes.seeking]: seeking || undefined,
-    [RootDataAttributes.fullscreen]: fullscreen || undefined,
-    [RootDataAttributes.pip]: pictureInPicture || undefined,
-    [RootDataAttributes.muted]: muted || undefined,
-    [RootDataAttributes.idle]: idle,
+    [RootDataAttributes.playing]: context.playing || undefined,
+    [RootDataAttributes.paused]: context.paused || undefined,
+    [RootDataAttributes.ended]: context.ended || undefined,
+    [RootDataAttributes.waiting]: context.waiting || undefined,
+    [RootDataAttributes.seeking]: context.seeking || undefined,
+    [RootDataAttributes.fullscreen]: context.fullscreen || undefined,
+    [RootDataAttributes.pip]: context.pictureInPicture || undefined,
+    [RootDataAttributes.muted]: context.muted || undefined,
+    [RootDataAttributes.idle]: context.idle,
   }
 
   return (
-    <VideoPlayerContext.Provider value={contextValue}>
-      <div
-        ref={composedRef}
-        {...dataAttributes}
-        {...rootProps}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={handleClick}
-      >
-        {children}
-      </div>
-    </VideoPlayerContext.Provider>
+    <div
+      ref={composedRef}
+      tabIndex={keyboardShortcuts === 'focused' ? 0 : undefined}
+      className={className}
+      style={style}
+      {...dataAttributes}
+      {...divProps}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
+    >
+      {children}
+    </div>
   )
 })
 

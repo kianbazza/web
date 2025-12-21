@@ -16,7 +16,13 @@ export interface VolumeSliderProps
     React.ComponentPropsWithRef<typeof SliderPrimitive.Root>,
     'value' | 'onValueChange' | 'min' | 'max' | 'step'
   > {
-  render?: RenderProp<VolumeSliderState>
+  render?: RenderProp<VolumeSliderRenderProps, VolumeSliderState>
+}
+
+export interface VolumeSliderRenderProps {
+  [VolumeSliderDataAttributes.muted]?: boolean
+  [VolumeSliderDataAttributes.volume]: number
+  style: React.CSSProperties
 }
 
 export interface VolumeSliderState {
@@ -65,9 +71,15 @@ export const VolumeSlider = React.forwardRef<
     ...sliderProps.style,
   } as React.CSSProperties
 
+  const renderProps: VolumeSliderRenderProps = {
+    [VolumeSliderDataAttributes.muted]: context.muted || undefined,
+    [VolumeSliderDataAttributes.volume]: context.volume,
+    style,
+  }
+
   // Render prop takes full control
   if (render) {
-    return render(state)
+    return render(renderProps, state)
   }
 
   // Composition pattern: if children provided, use them; otherwise use default structure

@@ -17,4 +17,8 @@ export enum OverlayDataAttributes {
   fullscreen = 'data-fullscreen',
   /** Applied when the video is in picture-in-picture mode. */
   pip = 'data-pip',
+  /** Applied on the first frame when entering. Use for CSS enter animations. */
+  startingStyle = 'data-starting-style',
+  /** Applied during exit animation. Use for CSS exit animations. */
+  endingStyle = 'data-ending-style',
 }

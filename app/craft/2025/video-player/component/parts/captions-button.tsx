@@ -3,13 +3,25 @@
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp } from '../types'
+import { CaptionsButtonDataAttributes } from './captions-button.data-attributes'
 
 // ============================================================================
 // CaptionsButton Props
 // ============================================================================
 
 export interface CaptionsButtonProps extends React.ComponentPropsWithRef<'button'> {
-  render?: RenderProp<CaptionsButtonState>
+  render?: RenderProp<CaptionsButtonRenderProps, CaptionsButtonState>
+}
+
+export interface CaptionsButtonRenderProps {
+  ref: React.Ref<any>
+  type: 'button'
+  'aria-label': string
+  'aria-pressed': boolean
+  disabled: boolean
+  [CaptionsButtonDataAttributes.active]?: boolean
+  [CaptionsButtonDataAttributes.available]?: boolean
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export interface CaptionsButtonState {
@@ -52,26 +64,25 @@ export const CaptionsButton = React.forwardRef<HTMLButtonElement, CaptionsButton
       [onClick, context, active]
     )
 
-    // Data attributes
-    const dataAttributes = {
-      'data-active': active || undefined,
-      'data-available': available || undefined,
+    const renderProps: CaptionsButtonRenderProps = {
+      ref: forwardedRef,
+      type: 'button',
+      'aria-label': active ? 'Disable captions' : 'Enable captions',
+      'aria-pressed': active,
+      disabled: !available,
+      [CaptionsButtonDataAttributes.active]: active || undefined,
+      [CaptionsButtonDataAttributes.available]: available || undefined,
+      onClick: handleClick,
     }
 
     if (render) {
-      return render(state)
+      return render(renderProps, state)
     }
 
     return (
       <button
-        ref={forwardedRef}
-        type="button"
-        aria-label={active ? 'Disable captions' : 'Enable captions'}
-        aria-pressed={active}
-        disabled={!available}
-        {...dataAttributes}
+        {...renderProps}
         {...buttonProps}
-        onClick={handleClick}
       />
     )
   }

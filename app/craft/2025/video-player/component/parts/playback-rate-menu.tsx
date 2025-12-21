@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp } from '../types'
+import { PlaybackRateMenuDataAttributes, PlaybackRateMenuItemDataAttributes } from './playback-rate-menu.data-attributes'
 
 // ============================================================================
 // PlaybackRateMenu Props
@@ -17,7 +18,14 @@ export interface PlaybackRateMenuProps extends React.ComponentPropsWithRef<'div'
    */
   rates?: readonly number[]
 
-  render?: RenderProp<PlaybackRateMenuState>
+  render?: RenderProp<PlaybackRateMenuRenderProps, PlaybackRateMenuState>
+}
+
+export interface PlaybackRateMenuRenderProps {
+  ref: React.Ref<any>
+  role: 'menu'
+  'aria-label': string
+  [PlaybackRateMenuDataAttributes.rate]: number
 }
 
 export interface PlaybackRateMenuState {
@@ -39,22 +47,21 @@ export const PlaybackRateMenu = React.forwardRef<HTMLDivElement, PlaybackRateMen
       rates,
     }
 
-    // Data attributes
-    const dataAttributes = {
-      'data-rate': context.playbackRate,
+    const renderProps: PlaybackRateMenuRenderProps = {
+      ref: forwardedRef,
+      role: 'menu',
+      'aria-label': 'Playback speed',
+      [PlaybackRateMenuDataAttributes.rate]: context.playbackRate,
     }
 
     if (render) {
-      return render(state)
+      return render(renderProps, state)
     }
 
     // Default render: simple list of rate options
     return (
       <div
-        ref={forwardedRef}
-        role="menu"
-        aria-label="Playback speed"
-        {...dataAttributes}
+        {...renderProps}
         {...divProps}
       >
         {children ?? rates.map((rate) => (
@@ -96,7 +103,7 @@ export const PlaybackRateMenuItem = React.forwardRef<HTMLButtonElement, Playback
         type="button"
         role="menuitemradio"
         aria-checked={isActive}
-        data-active={isActive || undefined}
+        {...{ [PlaybackRateMenuItemDataAttributes.active]: isActive || undefined }}
         {...buttonProps}
         onClick={handleClick}
       >

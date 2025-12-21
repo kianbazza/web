@@ -9,7 +9,13 @@ import type { RenderProp } from '../types'
 // ============================================================================
 
 export interface BufferedIndicatorProps extends React.ComponentPropsWithRef<'div'> {
-  render?: RenderProp<BufferedIndicatorState>
+  render?: RenderProp<BufferedIndicatorRenderProps, BufferedIndicatorState>
+}
+
+export interface BufferedIndicatorRenderProps {
+  ref: React.Ref<any>
+  style: React.CSSProperties
+  'aria-hidden': true
 }
 
 export interface BufferedIndicatorState {
@@ -64,8 +70,14 @@ export const BufferedIndicator = React.forwardRef<HTMLDivElement, BufferedIndica
       ...divProps.style,
     } as React.CSSProperties
 
+    const renderProps: BufferedIndicatorRenderProps = {
+      ref: forwardedRef,
+      style,
+      'aria-hidden': true,
+    }
+
     if (render) {
-      return render(state)
+      return render(renderProps, state)
     }
 
     return (

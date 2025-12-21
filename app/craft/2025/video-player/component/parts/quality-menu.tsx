@@ -3,13 +3,21 @@
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp, VideoQuality } from '../types'
+import { QualityMenuDataAttributes, QualityMenuItemDataAttributes } from './quality-menu.data-attributes'
 
 // ============================================================================
 // QualityMenu Props
 // ============================================================================
 
 export interface QualityMenuProps extends React.ComponentPropsWithRef<'div'> {
-  render?: RenderProp<QualityMenuState>
+  render?: RenderProp<QualityMenuRenderProps, QualityMenuState>
+}
+
+export interface QualityMenuRenderProps {
+  ref: React.Ref<any>
+  role: 'menu'
+  'aria-label': string
+  [QualityMenuDataAttributes.quality]?: string
 }
 
 export interface QualityMenuState {
@@ -31,22 +39,21 @@ export const QualityMenu = React.forwardRef<HTMLDivElement, QualityMenuProps>(
       activeQuality: context.activeQuality,
     }
 
-    // Data attributes
-    const dataAttributes = {
-      'data-quality': context.activeQuality?.label ?? undefined,
+    const renderProps: QualityMenuRenderProps = {
+      ref: forwardedRef,
+      role: 'menu',
+      'aria-label': 'Video quality',
+      [QualityMenuDataAttributes.quality]: context.activeQuality?.label ?? undefined,
     }
 
     if (render) {
-      return render(state)
+      return render(renderProps, state)
     }
 
     // Default render: list of quality options
     return (
       <div
-        ref={forwardedRef}
-        role="menu"
-        aria-label="Video quality"
-        {...dataAttributes}
+        {...renderProps}
         {...divProps}
       >
         {children ?? context.qualities.map((quality) => (
@@ -90,7 +97,7 @@ export const QualityMenuItem = React.forwardRef<HTMLButtonElement, QualityMenuIt
         type="button"
         role="menuitemradio"
         aria-checked={isActive}
-        data-active={isActive || undefined}
+        {...{ [QualityMenuItemDataAttributes.active]: isActive || undefined }}
         {...buttonProps}
         onClick={handleClick}
       >

@@ -3,13 +3,23 @@
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp } from '../types'
+import { MuteButtonDataAttributes } from './mute-button.data-attributes'
 
 // ============================================================================
 // MuteButton Props
 // ============================================================================
 
 export interface MuteButtonProps extends React.ComponentPropsWithRef<'button'> {
-  render?: RenderProp<MuteButtonState>
+  render?: RenderProp<MuteButtonRenderProps, MuteButtonState>
+}
+
+export interface MuteButtonRenderProps {
+  ref: React.Ref<any>
+  type: 'button'
+  'aria-label': string
+  'aria-pressed': boolean
+  [MuteButtonDataAttributes.muted]?: boolean
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export interface MuteButtonState {
@@ -41,24 +51,23 @@ export const MuteButton = React.forwardRef<HTMLButtonElement, MuteButtonProps>(
       [onClick, context]
     )
 
-    // Data attributes
-    const dataAttributes = {
-      'data-muted': context.muted || undefined,
+    const renderProps: MuteButtonRenderProps = {
+      ref: forwardedRef,
+      type: 'button',
+      'aria-label': context.muted ? 'Unmute' : 'Mute',
+      'aria-pressed': context.muted,
+      [MuteButtonDataAttributes.muted]: context.muted || undefined,
+      onClick: handleClick,
     }
 
     if (render) {
-      return render(state)
+      return render(renderProps, state)
     }
 
     return (
       <button
-        ref={forwardedRef}
-        type="button"
-        aria-label={context.muted ? 'Unmute' : 'Mute'}
-        aria-pressed={context.muted}
-        {...dataAttributes}
+        {...renderProps}
         {...buttonProps}
-        onClick={handleClick}
       />
     )
   }

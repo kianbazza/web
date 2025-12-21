@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp } from '../types'
+import { PlaybackRateButtonDataAttributes } from './playback-rate-button.data-attributes'
 
 // ============================================================================
 // PlaybackRateButton Props
@@ -17,7 +18,15 @@ export interface PlaybackRateButtonProps extends React.ComponentPropsWithRef<'bu
    */
   rates?: readonly number[]
 
-  render?: RenderProp<PlaybackRateButtonState>
+  render?: RenderProp<PlaybackRateButtonRenderProps, PlaybackRateButtonState>
+}
+
+export interface PlaybackRateButtonRenderProps {
+  ref: React.Ref<any>
+  type: 'button'
+  'aria-label': string
+  [PlaybackRateButtonDataAttributes.rate]: number
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export interface PlaybackRateButtonState {
@@ -52,23 +61,22 @@ export const PlaybackRateButton = React.forwardRef<HTMLButtonElement, PlaybackRa
       [onClick, context, rates]
     )
 
-    // Data attributes
-    const dataAttributes = {
-      'data-rate': context.playbackRate,
+    const renderProps: PlaybackRateButtonRenderProps = {
+      ref: forwardedRef,
+      type: 'button',
+      'aria-label': `Playback speed: ${context.playbackRate}x`,
+      [PlaybackRateButtonDataAttributes.rate]: context.playbackRate,
+      onClick: handleClick,
     }
 
     if (render) {
-      return render(state)
+      return render(renderProps, state)
     }
 
     return (
       <button
-        ref={forwardedRef}
-        type="button"
-        aria-label={`Playback speed: ${context.playbackRate}x`}
-        {...dataAttributes}
+        {...renderProps}
         {...buttonProps}
-        onClick={handleClick}
       >
         {children ?? `${context.playbackRate}x`}
       </button>
