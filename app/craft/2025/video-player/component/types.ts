@@ -38,6 +38,8 @@ export interface VideoPlayerState {
   currentTime: number
   duration: number
   buffered: TimeRanges | null
+  hoverTime: number | null
+  hoverProgress: number | null
 
   // Audio
   volume: number
@@ -47,6 +49,8 @@ export interface VideoPlayerState {
   fullscreen: boolean
   pictureInPicture: boolean
   idle: boolean
+  idleTimeout: number
+  preventIdleWhenPaused: boolean
 
   // Captions
   textTracks: TextTrack[]
@@ -84,6 +88,10 @@ export interface VideoPlayerActions {
   setPlaybackRate: (rate: number) => void
   setTextTrack: (track: TextTrack | null) => void
   setQuality: (quality: VideoQuality) => void
+  /** Reset idle state and restart idle timeout */
+  resetIdle: () => void
+  /** Set hover time for seek preview (null to clear) */
+  setHoverTime: (time: number | null) => void
 }
 
 // ============================================================================
@@ -148,7 +156,12 @@ export interface VideoPlayerRootProps extends DivPropsWithoutConflicts {
    * Set to 0 to disable idle detection.
    * @default 3000
    */
-  idleTimeoutMs?: number
+  idleTimeout?: number
+  /**
+   * When true, prevents the player from going idle while paused.
+   * @default false
+   */
+  preventIdleWhenPaused?: boolean
   idle?: boolean
   onIdleChange?: (idle: boolean) => void
 

@@ -48,7 +48,7 @@ export function VideoPlayer({ src, poster }: VideoPlayerProps) {
           <>
             <Overlay
               key="overlay"
-              className="absolute top-0 left-0 h-full w-full bg-black/25"
+              className="absolute top-0 left-0 h-full w-full bg-black/30"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -69,21 +69,28 @@ export function VideoPlayer({ src, poster }: VideoPlayerProps) {
                   'group size-8 min-h-8 min-w-8 rounded-[10px] flex items-center justify-center',
                   'border border-transparent',
                   'hover:border-gray-1/10 hover:bg-white/10 hover:backdrop-blur-sm',
-                  '*:size-4 *:fill-sand-1 *:stroke-0',
+                  '*:size-4 *:fill-white *:stroke-0',
                 )}
               >
                 <PlayIcon className="group-data-[playing]:hidden" />
                 <PauseIcon className="group-data-[paused]:hidden" />
               </Primitive.PlayButton>
+              {/*<Primitive.VolumeSlider />*/}
+              <Primitive.TimeDisplay
+                format="current"
+                className="text-white text-[13px]"
+              />
               <SeekSlider />
-              {/*<Primitive.SeekSlider />*/}
-              {/*<Primitive.TimeDisplay format="current / duration" />*/}
+              <Primitive.TimeDisplay
+                format="remaining"
+                className="text-white text-[13px]"
+              />
               <Primitive.FullscreenButton
                 className={cn(
                   'group size-8 min-h-8 min-w-8 rounded-[10px] flex items-center justify-center',
                   'border border-transparent',
-                  'hover:border-gray-1/10 hover:bg-white/10 hover:backdrop-blur-sm',
-                  '*:size-4 *:fill-sand-1 *:stroke-0',
+                  'hover:border-white/10 hover:bg-white/10 hover:backdrop-blur-sm',
+                  '*:size-4 *:fill-white *:stroke-0',
                 )}
               >
                 <FullscreenIcon />
@@ -124,7 +131,10 @@ function SeekSlider() {
     const handlePointerMove = (e: PointerEvent) => {
       if (!containerRef.current) return
       const rect = containerRef.current.getBoundingClientRect()
-      const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+      const percent = Math.max(
+        0,
+        Math.min(1, (e.clientX - rect.left) / rect.width),
+      )
       setHoverPercent(percent * 100)
       seek(percent * duration)
     }
@@ -179,18 +189,18 @@ function SeekSlider() {
     >
       <motion.div
         key="track"
-        className="bg-gray-1/20 rounded-full w-full relative"
+        className="bg-white/20 rounded-full w-full relative"
         animate={{ height: isActive ? 6 : 4 }}
         transition={{ duration: 0.15 }}
       >
         <motion.div
           key="progress"
-          className="absolute left-0 top-0 h-full bg-gray-1 rounded-full"
+          className="absolute left-0 top-0 h-full bg-white rounded-full"
           style={{ width: `${progress}%` }}
         />
         <motion.div
           key="buffered"
-          className="absolute left-0 top-0 h-full bg-gray-1/25 rounded-full"
+          className="absolute left-0 top-0 h-full bg-white/25 rounded-full"
           style={{ width: `${bufferedPercent}%` }}
         />
         {/* Hover cursor */}
@@ -198,14 +208,15 @@ function SeekSlider() {
           {isHovering && (
             <motion.div
               key="hover-cursor"
-              className="absolute top-1/2 -translate-y-1/2 w-px pointer-events-none select-none"
+              className="absolute top-1/2 -translate-y-1/2 w-px pointer-events-none select-none bg-white"
               draggable="false"
               style={{ left: `${hoverPercent}%` }}
               initial={{ opacity: 0 }}
               animate={{
                 opacity: 1,
+                // opacity: isActive ? 1 : 0.8,
                 height: isActive ? 32 : 28,
-                backgroundColor: `color(from var(--color-gray-1) display-p3 r g b / ${isActive ? '100%' : '50%'})`,
+                backgroundColor: `color(from white display-p3 r g b / ${isActive ? '100%' : '50%'})`,
               }}
               exit={{ opacity: 0 }}
             >
@@ -222,11 +233,13 @@ function SeekSlider() {
                 >
                   <motion.span
                     draggable={false}
-                    className="whitespace-nowrap"
+                    className="whitespace-nowrap text-white"
                     animate={{
-                      color: isActive
-                        ? 'color(from var(--color-gray-1) display-p3 r g b / 100%)'
-                        : 'color(from var(--color-gray-1) display-p3 r g b / 80%)',
+                      opacity: isActive ? 1 : 0.8,
+
+                      // color: isActive
+                      //   ? 'color(from var(--color-gray-1) display-p3 r g b / 100%)'
+                      //   : 'color(from var(--color-gray-1) display-p3 r g b / 80%)',
                       fontWeight: isActive ? 500 : 450,
                     }}
                   >
@@ -234,9 +247,9 @@ function SeekSlider() {
                   </motion.span>
                   <span
                     draggable={false}
-                    className="text-gray-1/50 whitespace-nowrap ml-1"
+                    className="text-white/50 whitespace-nowrap ml-1"
                   >
-                    / {formatDuration(duration)}
+                    / <Primitive.TimeDisplay format="duration" />
                   </span>
                 </motion.div>
               </div>

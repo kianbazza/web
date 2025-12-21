@@ -8,6 +8,7 @@ import type {
   VideoPlayerState,
   VideoQuality,
 } from './types'
+import { RootDataAttributes } from './parts/root.data-attributes'
 
 // ============================================================================
 // Hook: useControllableState
@@ -58,6 +59,7 @@ export interface VideoPlayerRootState {
   duration: number
   playbackRate: number
   idle: boolean
+  idleTimeout: number
 }
 
 // ============================================================================
@@ -88,7 +90,8 @@ export const VideoPlayerRoot = React.forwardRef<
     onCurrentTimeChange,
 
     // Idle detection
-    idleTimeoutMs = 3000,
+    idleTimeout = 3000,
+    preventIdleWhenPaused = false,
     idle: controlledIdle,
     onIdleChange,
 
@@ -114,6 +117,7 @@ export const VideoPlayerRoot = React.forwardRef<
   // Refs
   const rootRef = React.useRef<HTMLDivElement>(null)
   const videoRef = React.useRef<HTMLVideoElement>(null)
+  const previousVolumeRef = React.useRef(1)
   const composedRef = useComposedRef(forwardedRef, rootRef)
 
   // Controllable state
@@ -139,7 +143,7 @@ export const VideoPlayerRoot = React.forwardRef<
   )
   const [idle, setIdle] = useControllableState(
     controlledIdle,
-    false, // Start not idle
+    true, // Start idle (controls hidden until interaction)
     onIdleChange,
   )
 
@@ -155,13 +159,13 @@ export const VideoPlayerRoot = React.forwardRef<
   }, [])
 
   const startIdleTimeout = React.useCallback(() => {
-    if (idleTimeoutMs === 0) return
+    if (idleTimeout === 0) return
 
     clearIdleTimeout()
     idleTimeoutRef.current = setTimeout(() => {
       setIdle(true)
-    }, idleTimeoutMs)
-  }, [idleTimeoutMs, clearIdleTimeout, setIdle])
+    }, idleTimeout)
+  }, [idleTimeout, clearIdleTimeout, setIdle])
 
   const resetIdle = React.useCallback(() => {
     setIdle(false)
@@ -217,10 +221,10 @@ export const VideoPlayerRoot = React.forwardRef<
 
   // Start idle timeout on mount, cleanup on unmount
   React.useEffect(() => {
-    if (idleTimeoutMs > 0) {
+    if (idleTimeout > 0) {
       idleTimeoutRef.current = setTimeout(() => {
         setIdle(true)
-      }, idleTimeoutMs)
+      }, idleTimeout)
     }
     return () => {
       if (idleTimeoutRef.current) {
@@ -230,10 +234,18 @@ export const VideoPlayerRoot = React.forwardRef<
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // Reset idle when paused if preventIdleWhenPaused is enabled
+  React.useEffect(() => {
+    if (!playing && preventIdleWhenPaused) {
+      resetIdle()
+    }
+  }, [playing, preventIdleWhenPaused, resetIdle])
+
   // Internal state (not controllable)
   const [currentTime, setCurrentTime] = React.useState(0)
   const [duration, setDuration] = React.useState(0)
   const [buffered, setBuffered] = React.useState<TimeRanges | null>(null)
+  const [hoverTime, setHoverTime] = React.useState<number | null>(null)
   const [ended, setEnded] = React.useState(false)
   const [waiting, setWaiting] = React.useState(false)
   const [seeking, setSeeking] = React.useState(false)
@@ -336,11 +348,22 @@ export const VideoPlayerRoot = React.forwardRef<
   )
 
   const toggleMute = React.useCallback(() => {
+    if (!muted) {
+      // Muting - save current volume for restoration
+      previousVolumeRef.current = volume
+    } else {
+      // Unmuting - restore previous volume
+      if (videoRef.current) {
+        videoRef.current.volume = previousVolumeRef.current
+      }
+      setVolume(previousVolumeRef.current)
+    }
+    // Toggle mute state
     if (videoRef.current) {
       videoRef.current.muted = !muted
     }
     setMuted(!muted)
-  }, [muted, setMuted])
+  }, [muted, volume, setMuted, setVolume])
 
   const enterFullscreen = React.useCallback(async () => {
     if (rootRef.current?.requestFullscreen) {
@@ -498,11 +521,18 @@ export const VideoPlayerRoot = React.forwardRef<
       currentTime,
       duration,
       buffered,
+      hoverTime,
+      hoverProgress:
+        hoverTime !== null && duration > 0
+          ? (hoverTime / duration) * 100
+          : null,
       volume,
       muted,
       fullscreen,
       pictureInPicture,
       idle,
+      idleTimeout,
+      preventIdleWhenPaused,
       textTracks,
       activeTextTrack,
       playbackRate,
@@ -527,6 +557,8 @@ export const VideoPlayerRoot = React.forwardRef<
       setPlaybackRate,
       setTextTrack,
       setQuality,
+      resetIdle,
+      setHoverTime,
 
       // Internal event handlers (for Video component)
       _handlers: {
@@ -552,11 +584,14 @@ export const VideoPlayerRoot = React.forwardRef<
       currentTime,
       duration,
       buffered,
+      hoverTime,
       volume,
       muted,
       fullscreen,
       pictureInPicture,
       idle,
+      idleTimeout,
+      preventIdleWhenPaused,
       textTracks,
       activeTextTrack,
       playbackRate,
@@ -577,6 +612,8 @@ export const VideoPlayerRoot = React.forwardRef<
       setPlaybackRate,
       setTextTrack,
       setQuality,
+      resetIdle,
+      setHoverTime,
       handleTimeUpdate,
       handleDurationChange,
       handleProgress,
@@ -594,15 +631,15 @@ export const VideoPlayerRoot = React.forwardRef<
 
   // Data attributes for styling
   const dataAttributes = {
-    'data-playing': playing || undefined,
-    'data-paused': !playing || undefined,
-    'data-ended': ended || undefined,
-    'data-waiting': waiting || undefined,
-    'data-seeking': seeking || undefined,
-    'data-fullscreen': fullscreen || undefined,
-    'data-pip': pictureInPicture || undefined,
-    'data-muted': muted || undefined,
-    'data-idle': idle,
+    [RootDataAttributes.playing]: playing || undefined,
+    [RootDataAttributes.paused]: !playing || undefined,
+    [RootDataAttributes.ended]: ended || undefined,
+    [RootDataAttributes.waiting]: waiting || undefined,
+    [RootDataAttributes.seeking]: seeking || undefined,
+    [RootDataAttributes.fullscreen]: fullscreen || undefined,
+    [RootDataAttributes.pip]: pictureInPicture || undefined,
+    [RootDataAttributes.muted]: muted || undefined,
+    [RootDataAttributes.idle]: idle,
   }
 
   return (

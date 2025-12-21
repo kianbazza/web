@@ -7,12 +7,12 @@ import { useMDXComponents } from '@/mdx-components'
 import { BackToCraft } from '../../_/back-to-craft'
 import { TableOfContents } from '../cursor-origin/toc'
 
-const title = 'Cursor-origin background scale'
+const title = 'Video player'
 
 export const metadata: Metadata = {
   title,
   description:
-    'A prototype of a button with a cursor-origin background scaling animation.',
+    'A prototype of a video player with a timeless, modern interface.',
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   keywords: [
     'React',
@@ -77,7 +77,7 @@ export default function Page() {
             <h1 className="text-xl">{page!.data.title}</h1>
             <span className="text-sand-10">{formattedDate}</span>
           </div>
-          <div className="space-y-12">
+          <div className="space-y-12 -mx-12">
             <MDX components={useMDXComponents()} />
           </div>
         </div>
