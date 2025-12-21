@@ -3,12 +3,18 @@
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp } from '../types'
+import { OverlayDataAttributes } from './overlay.data-attributes'
 
 // ============================================================================
 // Overlay Props
 // ============================================================================
 
 export interface OverlayProps extends React.ComponentPropsWithRef<'div'> {
+  /**
+   * Delay before hiding after player becomes idle (ms).
+   * Defaults to Root's idleTimeout. Set to 0 to disable auto-hide.
+   */
+  idleTimeout?: number
   render?: RenderProp<OverlayState>
 }
 
@@ -20,6 +26,8 @@ export interface OverlayState {
   seeking: boolean
   fullscreen: boolean
   pictureInPicture: boolean
+  /** Whether the overlay is currently visible (opposite of idle) */
+  open: boolean
 }
 
 // ============================================================================
@@ -28,8 +36,14 @@ export interface OverlayState {
 
 export const Overlay = React.forwardRef<HTMLDivElement, OverlayProps>(
   function Overlay(props, forwardedRef) {
-    const { render, onClick, ...divProps } = props
+    const { idleTimeout: idleTimeoutProp, render, onClick, ...divProps } = props
     const context = useVideoPlayerContext('Overlay')
+
+    // Use component's idleTimeout if set, otherwise use context's
+    const effectiveIdleTimeout = idleTimeoutProp ?? context.idleTimeout
+
+    // Determine visibility: open when not idle, or when idleTimeout is 0 (disabled)
+    const open = effectiveIdleTimeout === 0 || !context.idle
 
     const state: OverlayState = {
       playing: context.playing,
@@ -39,6 +53,7 @@ export const Overlay = React.forwardRef<HTMLDivElement, OverlayProps>(
       seeking: context.seeking,
       fullscreen: context.fullscreen,
       pictureInPicture: context.pictureInPicture,
+      open,
     }
 
     const handleClick = React.useCallback(
@@ -48,18 +63,20 @@ export const Overlay = React.forwardRef<HTMLDivElement, OverlayProps>(
           context.toggle()
         }
       },
-      [onClick, context]
+      [onClick, context],
     )
 
     // Data attributes
     const dataAttributes = {
-      'data-playing': context.playing || undefined,
-      'data-paused': context.paused || undefined,
-      'data-ended': context.ended || undefined,
-      'data-waiting': context.waiting || undefined,
-      'data-seeking': context.seeking || undefined,
-      'data-fullscreen': context.fullscreen || undefined,
-      'data-pip': context.pictureInPicture || undefined,
+      [OverlayDataAttributes.playing]: context.playing || undefined,
+      [OverlayDataAttributes.paused]: context.paused || undefined,
+      [OverlayDataAttributes.ended]: context.ended || undefined,
+      [OverlayDataAttributes.waiting]: context.waiting || undefined,
+      [OverlayDataAttributes.seeking]: context.seeking || undefined,
+      [OverlayDataAttributes.fullscreen]: context.fullscreen || undefined,
+      [OverlayDataAttributes.pip]: context.pictureInPicture || undefined,
+      [OverlayDataAttributes.open]: open || undefined,
+      [OverlayDataAttributes.closed]: !open || undefined,
     }
 
     if (render) {
@@ -74,7 +91,7 @@ export const Overlay = React.forwardRef<HTMLDivElement, OverlayProps>(
         onClick={handleClick}
       />
     )
-  }
+  },
 )
 
 // ============================================================================

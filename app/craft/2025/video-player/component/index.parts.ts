@@ -23,12 +23,24 @@ export { Overlay } from './parts/overlay'
 
 // Playback Controls
 export { PlayButton } from './parts/play-button'
-export { SeekSlider } from './parts/seek-slider'
+export {
+  SeekSlider,
+  SeekSliderTrack,
+  SeekSliderProgress,
+  SeekSliderBuffered,
+  SeekSliderThumb,
+  SeekSliderPreviewThumb,
+} from './parts/seek-slider'
 export { TimeDisplay } from './parts/time-display'
 export { BufferedIndicator } from './parts/buffered-indicator'
 
 // Audio Controls
-export { VolumeSlider } from './parts/volume-slider'
+export {
+  VolumeSlider,
+  VolumeSliderTrack,
+  VolumeSliderRange,
+  VolumeSliderThumb,
+} from './parts/volume-slider'
 export { MuteButton } from './parts/mute-button'
 
 // Display Controls
@@ -63,3 +75,13 @@ export type {
   VideoTextTrack,
   RenderProp,
 } from './types'
+
+// Data Attributes & CSS Variables
+export { RootDataAttributes } from './parts/root.data-attributes'
+export { SeekSliderDataAttributes } from './parts/seek-slider.data-attributes'
+export { SeekSliderCssVars } from './parts/seek-slider.css-vars'
+export { VolumeSliderDataAttributes } from './parts/volume-slider.data-attributes'
+export { VolumeSliderCssVars } from './parts/volume-slider.css-vars'
+export { ControlsDataAttributes } from './parts/controls.data-attributes'
+export { OverlayDataAttributes } from './parts/overlay.data-attributes'
+export { TimeDisplayDataAttributes } from './parts/time-display.data-attributes'

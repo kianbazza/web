@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp } from '../types'
+import { ControlsDataAttributes } from './controls.data-attributes'
 
 // ============================================================================
 // Controls Props
@@ -10,23 +11,17 @@ import type { RenderProp } from '../types'
 
 export interface ControlsProps extends React.ComponentPropsWithRef<'div'> {
   /**
-   * Time in milliseconds before controls auto-hide after inactivity.
-   * Set to 0 to disable auto-hide.
-   * @default 3000
+   * Delay before hiding after player becomes idle (ms).
+   * Defaults to Root's idleTimeout. Set to 0 to disable auto-hide.
    */
-  hideDelay?: number
-
-  /**
-   * Whether to show controls when video is paused.
-   * @default true
-   */
-  showWhenPaused?: boolean
+  idleTimeout?: number
 
   render?: RenderProp<ControlsState>
 }
 
 export interface ControlsState {
-  visible: boolean
+  /** Whether the controls are currently visible */
+  open: boolean
   idle: boolean
   playing: boolean
   paused: boolean
@@ -38,128 +33,40 @@ export interface ControlsState {
 
 export const Controls = React.forwardRef<HTMLDivElement, ControlsProps>(
   function Controls(props, forwardedRef) {
-    const {
-      hideDelay = 3000,
-      showWhenPaused = true,
-      render,
-      onMouseMove,
-      onMouseLeave,
-      onFocus,
-      ...divProps
-    } = props
+    const { idleTimeout: idleTimeoutProp, render, ...divProps } = props
 
     const context = useVideoPlayerContext('Controls')
-    const [userActive, setUserActive] = React.useState(true)
-    const [hasFocus, setHasFocus] = React.useState(false)
-    const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
 
-    const clearHideTimeout = React.useCallback(() => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-        timeoutRef.current = null
-      }
-    }, [])
+    // Use component's idleTimeout if set, otherwise use context's
+    const effectiveIdleTimeout = idleTimeoutProp ?? context.idleTimeout
 
-    const startHideTimeout = React.useCallback(() => {
-      if (hideDelay === 0) return
-
-      clearHideTimeout()
-      timeoutRef.current = setTimeout(() => {
-        setUserActive(false)
-      }, hideDelay)
-    }, [hideDelay, clearHideTimeout])
-
-    const showControls = React.useCallback(() => {
-      setUserActive(true)
-      startHideTimeout()
-    }, [startHideTimeout])
-
-    // Auto-hide logic
-    React.useEffect(() => {
-      if (context.paused && showWhenPaused) {
-        setUserActive(true)
-        clearHideTimeout()
-      } else if (context.playing) {
-        startHideTimeout()
-      }
-    }, [context.playing, context.paused, showWhenPaused, startHideTimeout, clearHideTimeout])
-
-    // Cleanup
-    React.useEffect(() => {
-      return () => {
-        clearHideTimeout()
-      }
-    }, [clearHideTimeout])
-
-    const handleMouseMove = React.useCallback(
-      (event: React.MouseEvent<HTMLDivElement>) => {
-        onMouseMove?.(event)
-        showControls()
-      },
-      [onMouseMove, showControls]
-    )
-
-    const handleMouseLeave = React.useCallback(
-      (event: React.MouseEvent<HTMLDivElement>) => {
-        onMouseLeave?.(event)
-        if (context.playing && !hasFocus) {
-          startHideTimeout()
-        }
-      },
-      [onMouseLeave, context.playing, hasFocus, startHideTimeout]
-    )
-
-    const handleFocus = React.useCallback(
-      (event: React.FocusEvent<HTMLDivElement>) => {
-        onFocus?.(event)
-        setHasFocus(true)
-        showControls()
-      },
-      [onFocus, showControls]
-    )
-
-    const handleBlur = React.useCallback(() => {
-      setHasFocus(false)
-      if (context.playing) {
-        startHideTimeout()
-      }
-    }, [context.playing, startHideTimeout])
-
-    // Calculate visibility
-    const visible = userActive || (context.paused && showWhenPaused) || hasFocus
-    const idle = !visible
+    // Calculate visibility:
+    // - Open when idleTimeout is 0 (disabled)
+    // - Open when not idle
+    const open = effectiveIdleTimeout === 0 || !context.idle
 
     const state: ControlsState = {
-      visible,
-      idle,
+      open,
+      idle: context.idle,
       playing: context.playing,
       paused: context.paused,
     }
 
     // Data attributes
     const dataAttributes = {
-      'data-visible': visible || undefined,
-      'data-idle': idle || undefined,
-      'data-playing': context.playing || undefined,
-      'data-paused': context.paused || undefined,
+      [ControlsDataAttributes.open]: open || undefined,
+      [ControlsDataAttributes.closed]: !open || undefined,
+      [ControlsDataAttributes.idle]: context.idle || undefined,
+      [ControlsDataAttributes.playing]: context.playing || undefined,
+      [ControlsDataAttributes.paused]: context.paused || undefined,
     }
 
     if (render) {
       return render(state)
     }
 
-    return (
-      <div
-        ref={forwardedRef}
-        {...dataAttributes}
-        {...divProps}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-      />
-    )
-  }
+    return <div ref={forwardedRef} {...dataAttributes} {...divProps} />
+  },
 )
 
 // ============================================================================

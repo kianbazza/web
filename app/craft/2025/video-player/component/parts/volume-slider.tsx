@@ -1,14 +1,21 @@
 'use client'
 
 import * as React from 'react'
+import * as SliderPrimitive from '@radix-ui/react-slider'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp } from '../types'
+import { VolumeSliderDataAttributes } from './volume-slider.data-attributes'
+import { VolumeSliderCssVars } from './volume-slider.css-vars'
 
 // ============================================================================
 // VolumeSlider Props
 // ============================================================================
 
-export interface VolumeSliderProps extends Omit<React.ComponentPropsWithRef<'input'>, 'type' | 'min' | 'max' | 'value' | 'onChange'> {
+export interface VolumeSliderProps
+  extends Omit<
+    React.ComponentPropsWithRef<typeof SliderPrimitive.Root>,
+    'value' | 'onValueChange' | 'min' | 'max' | 'step'
+  > {
   render?: RenderProp<VolumeSliderState>
 }
 
@@ -22,65 +29,80 @@ export interface VolumeSliderState {
 // VolumeSlider Component
 // ============================================================================
 
-export const VolumeSlider = React.forwardRef<HTMLInputElement, VolumeSliderProps>(
-  function VolumeSlider(props, forwardedRef) {
-    const { render, ...inputProps } = props
-    const context = useVideoPlayerContext('VolumeSlider')
+export const VolumeSlider = React.forwardRef<
+  React.ComponentRef<typeof SliderPrimitive.Root>,
+  VolumeSliderProps
+>(function VolumeSlider(props, forwardedRef) {
+  const { render, children, ...sliderProps } = props
+  const context = useVideoPlayerContext('VolumeSlider')
 
-    const percentage = context.volume * 100
+  const percentage = context.volume * 100
 
-    const state: VolumeSliderState = {
-      volume: context.volume,
-      muted: context.muted,
-      percentage,
-    }
-
-    const handleChange = React.useCallback(
-      (event: React.ChangeEvent<HTMLInputElement>) => {
-        const volume = parseFloat(event.target.value)
-        context.setVolume(volume)
-      },
-      [context]
-    )
-
-    // Data attributes
-    const dataAttributes = {
-      'data-muted': context.muted || undefined,
-      'data-volume': context.volume,
-    }
-
-    // CSS custom properties for styling
-    const style = {
-      '--volume': context.volume,
-      '--volume-percentage': `${percentage}%`,
-      ...inputProps.style,
-    } as React.CSSProperties
-
-    if (render) {
-      return render(state)
-    }
-
-    return (
-      <input
-        ref={forwardedRef}
-        type="range"
-        min={0}
-        max={1}
-        step={0.01}
-        value={context.muted ? 0 : context.volume}
-        aria-label="Volume"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={Math.round(percentage)}
-        aria-valuetext={`${Math.round(percentage)}%`}
-        {...dataAttributes}
-        {...inputProps}
-        style={style}
-        onChange={handleChange}
-      />
-    )
+  const state: VolumeSliderState = {
+    volume: context.volume,
+    muted: context.muted,
+    percentage,
   }
-)
+
+  const handleValueChange = React.useCallback(
+    (value: number[]) => {
+      context.setVolume(value[0])
+      context.resetIdle() // Keep player active while adjusting volume
+    },
+    [context],
+  )
+
+  // Data attributes
+  const dataAttributes = {
+    [VolumeSliderDataAttributes.muted]: context.muted || undefined,
+    [VolumeSliderDataAttributes.volume]: context.volume,
+  }
+
+  // CSS custom properties for styling
+  const style = {
+    [VolumeSliderCssVars.volume]: context.volume,
+    [VolumeSliderCssVars.volumePercentage]: `${percentage}%`,
+    ...sliderProps.style,
+  } as React.CSSProperties
+
+  // Render prop takes full control
+  if (render) {
+    return render(state)
+  }
+
+  // Composition pattern: if children provided, use them; otherwise use default structure
+  return (
+    <SliderPrimitive.Root
+      ref={forwardedRef}
+      min={0}
+      max={1}
+      step={0.01}
+      value={[context.muted ? 0 : context.volume]}
+      onValueChange={handleValueChange}
+      aria-label="Volume"
+      {...dataAttributes}
+      {...sliderProps}
+      style={style}
+    >
+      {children ?? (
+        <>
+          <SliderPrimitive.Track>
+            <SliderPrimitive.Range />
+          </SliderPrimitive.Track>
+          <SliderPrimitive.Thumb />
+        </>
+      )}
+    </SliderPrimitive.Root>
+  )
+})
+
+// ============================================================================
+// Sub-components for custom composition
+// ============================================================================
+
+export const VolumeSliderTrack = SliderPrimitive.Track
+export const VolumeSliderRange = SliderPrimitive.Range
+export const VolumeSliderThumb = SliderPrimitive.Thumb
 
 // ============================================================================
 // Namespace
