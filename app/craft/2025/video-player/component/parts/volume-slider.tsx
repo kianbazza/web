@@ -52,6 +52,15 @@ export const VolumeSlider = React.forwardRef<
 
   const handleValueChange = React.useCallback(
     (value: number[]) => {
+      // If muted and user drags slider, unmute (without restoring previous volume)
+      if (context.muted) {
+        // Directly set muted to false on the video element and update state
+        // by calling toggleMute would restore previous volume, so we need a different approach
+        const video = context.videoRef.current
+        if (video) {
+          video.muted = false
+        }
+      }
       context.setVolume(value[0])
       context.resetIdle() // Keep player active while adjusting volume
     },
@@ -66,6 +75,7 @@ export const VolumeSlider = React.forwardRef<
 
   // CSS custom properties for styling
   const style = {
+    position: 'relative' as const,
     [VolumeSliderCssVars.volume]: context.volume,
     [VolumeSliderCssVars.volumePercentage]: `${percentage}%`,
     ...sliderProps.style,

@@ -19,6 +19,11 @@ export interface MuteButtonRenderProps {
   'aria-label': string
   'aria-pressed': boolean
   [MuteButtonDataAttributes.muted]?: boolean
+  [MuteButtonDataAttributes.volumeOff]?: boolean
+  [MuteButtonDataAttributes.volumeOn]?: boolean
+  [MuteButtonDataAttributes.volumeLow]?: boolean
+  [MuteButtonDataAttributes.volumeHalf]?: boolean
+  [MuteButtonDataAttributes.volumeHigh]?: boolean
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
@@ -51,12 +56,24 @@ export const MuteButton = React.forwardRef<HTMLButtonElement, MuteButtonProps>(
       [onClick, context]
     )
 
+    const volume = context.volume
+    const volumeOff = volume === 0
+    const volumeOn = volume > 0 && !context.muted
+    const volumeLow = volume > 0 && volume < 0.5
+    const volumeHalf = volume >= 0.5
+    const volumeHigh = volume > 0.66
+
     const renderProps: MuteButtonRenderProps = {
       ref: forwardedRef,
       type: 'button',
       'aria-label': context.muted ? 'Unmute' : 'Mute',
       'aria-pressed': context.muted,
       [MuteButtonDataAttributes.muted]: context.muted || undefined,
+      [MuteButtonDataAttributes.volumeOff]: volumeOff || undefined,
+      [MuteButtonDataAttributes.volumeOn]: volumeOn || undefined,
+      [MuteButtonDataAttributes.volumeLow]: volumeLow || undefined,
+      [MuteButtonDataAttributes.volumeHalf]: volumeHalf || undefined,
+      [MuteButtonDataAttributes.volumeHigh]: volumeHigh || undefined,
       onClick: handleClick,
     }
 

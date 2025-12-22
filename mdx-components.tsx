@@ -6,9 +6,19 @@ import { Frame } from './components/frame'
 
 const components = {
   h2: ({ children, className, ...props }) => (
-    <h2 className={cn('font-medium pt-8', className)} {...props}>
+    <h2 className={cn('text-2xl font-medium pt-8', className)} {...props}>
       {children}
     </h2>
+  ),
+  h3: ({ children, className, ...props }) => (
+    <h3 className={cn('text-xl font-medium pt-7', className)} {...props}>
+      {children}
+    </h3>
+  ),
+  h4: ({ children, className, ...props }) => (
+    <h4 className={cn('text-lg font-medium pt-6', className)} {...props}>
+      {children}
+    </h4>
   ),
   p: ({ children }) => (
     <p className="text-sand-12/80 !font-sans !tabular-nums leading-7 font-[420]">
