@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { VideoPlayer } from '@/app/craft/2025/video-player/component'
 import { cn } from '@/lib/utils'
 
@@ -40,38 +41,18 @@ export function YouTubePlayer({ src, poster }: YouTubePlayerProps) {
         )}
       />
 
-      {/* Clickable overlay with center play button */}
+      {/* Clickable overlay */}
       <VideoPlayer.Overlay
         className={cn(
           'absolute inset-0 flex items-center justify-center',
-          'transition-opacity duration-(--duration) ease-out',
-          'data-[starting-style]:opacity-0 data-[ending-style]:opacity-0',
+          'opacity-100 scale-100',
+          'transition-[opacity,scale] duration-(--duration) ease-out',
+          'data-[starting-style]:opacity-0 data-[starting-style]:scale-95 data-[ending-style]:opacity-0 data-[ending-style]:scale-95',
         )}
       >
-        {/* Center play button - only visible when paused */}
-        <button
-          type="button"
-          className={cn(
-            'size-16 md:size-20 rounded-full flex items-center justify-center',
-            'bg-black/60 hover:bg-black/70 transition-colors',
-            'group-data-[playing]:opacity-0 group-data-[playing]:pointer-events-none',
-            'transition-opacity duration-(--duration)',
-          )}
-          aria-label="Play video"
-        >
-          <PlayIcon className="size-8 md:size-10 fill-white ml-1" />
-        </button>
+        {/* Center play/pause indicator - shows briefly on toggle */}
+        <CenterPlayPauseIndicator />
       </VideoPlayer.Overlay>
-
-      {/* Bottom gradient for controls visibility */}
-      <div
-        className={cn(
-          'absolute bottom-0 left-0 w-full h-28 pointer-events-none',
-          'bg-gradient-to-t from-black/80 via-black/40 to-transparent',
-          'opacity-100 transition-opacity duration-(--duration)',
-          'group-data-[idle]:opacity-0',
-        )}
-      />
 
       {/* Controls container */}
       <VideoPlayer.Controls
@@ -162,19 +143,19 @@ export function YouTubePlayer({ src, poster }: YouTubePlayerProps) {
             <VideoPlayer.MuteButton
               className={cn(buttonClassName, 'group/mute')}
             >
-              <VolumeHighIcon className="group-data-[muted]/mute:hidden" />
-              <VolumeMutedIcon className="hidden group-data-[muted]/mute:block" />
+              <VolumeHighIcon className="hidden group-data-[volume-on]/mute:block" />
+              <VolumeMutedIcon className="hidden group-data-[volume-off]/mute:block group-data-[muted]/mute:block" />
             </VideoPlayer.MuteButton>
 
-            <div className="w-0 group-hover/volume:w-16 overflow-hidden transition-[width] duration-200 ease-out">
+            <div className="w-0 group-hover/volume:w-16 group-hover/volume:overflow-visible overflow-hidden transition-[width] duration-200 ease-out">
               <VideoPlayer.VolumeSlider
-                className="flex items-center h-10 w-16 px-1"
+                className="flex items-center h-10 w-16"
                 orientation="horizontal"
               >
                 <VideoPlayer.VolumeSliderTrack className="relative h-1 w-full bg-white/30 rounded-full">
                   <VideoPlayer.VolumeSliderRange className="absolute h-full bg-white rounded-full" />
                 </VideoPlayer.VolumeSliderTrack>
-                {/*<VideoPlayer.VolumeSliderThumb className="block size-3 bg-white rounded-full shadow-sm" />*/}
+                <VideoPlayer.VolumeSliderThumb className="block size-3 bg-white rounded-full shadow-sm" />
               </VideoPlayer.VolumeSlider>
             </div>
           </div>
@@ -222,6 +203,60 @@ export function YouTubePlayer({ src, poster }: YouTubePlayerProps) {
   )
 }
 
+// Center play/pause indicator that shows briefly on toggle
+function CenterPlayPauseIndicator() {
+  const { playing } = VideoPlayer.useVideoPlayer()
+  const [visible, setVisible] = React.useState(false)
+  const [icon, setIcon] = React.useState<'play' | 'pause'>('play')
+  const prevPlayingRef = React.useRef(playing)
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
+
+  React.useEffect(() => {
+    // Detect play/pause toggle
+    if (prevPlayingRef.current !== playing) {
+      // Clear any existing timeout
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+
+      // Set the icon based on the new state
+      setIcon(playing ? 'play' : 'pause')
+      setVisible(true)
+
+      // Hide after 1 second
+      timeoutRef.current = setTimeout(() => {
+        setVisible(false)
+      }, 1000)
+
+      prevPlayingRef.current = playing
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [playing])
+
+  return (
+    <div
+      className={cn(
+        'size-16 md:size-20 rounded-full flex items-center justify-center',
+        'bg-black/60',
+        'transition-opacity duration-200 ease-out',
+        visible ? 'opacity-100' : 'opacity-0 pointer-events-none',
+      )}
+      aria-hidden="true"
+    >
+      {icon === 'play' ? (
+        <PlayIcon className="size-8 md:size-10 fill-white ml-1" />
+      ) : (
+        <PauseIcon className="size-8 md:size-10 fill-white" />
+      )}
+    </div>
+  )
+}
+
 // Button styles
 const buttonClassName = cn(
   'size-10 flex items-center justify-center rounded-sm',
@@ -232,12 +267,14 @@ const buttonClassName = cn(
 // Icons
 const PlayIcon = (props: React.ComponentProps<'svg'>) => (
   <svg
-    viewBox="0 0 24 24"
-    fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    height="36"
+    viewBox="0 0 36 36"
+    width="36"
     {...props}
   >
-    <path d="M8 5.14v14l11-7-11-7z" />
+    <path d="M 17 8.6 L 10.89 4.99 C 9.39 4.11 7.5 5.19 7.5 6.93 C 7.5 6.93 7.5 6.93 7.5 6.93 L 7.5 29.06 C 7.5 30.8 9.39 31.88 10.89 31 C 10.89 31 10.89 31 10.89 31 L 17 27.4 C 17 27.4 17 27.4 17 27.4 C 17 27.4 17 27.4 17 27.4 L 17 8.6 C 17 8.6 17 8.6 17 8.6 C 17 8.6 17 8.6 17 8.6 Z M 17 8.6 L 17 8.6 C 17 8.6 17 8.6 17 8.6 C 17 8.6 17 8.6 17 8.6 V 27.4 C 17 27.4 17 27.4 17 27.4 C 17 27.4 17 27.4 17 27.4 L 33 18 C 33 18 33 18 33 18 C 33 18 33 18 33 18 V 18 L 17 8.6 C 17 8.6 17 8.6 17 8.6 C 17 8.6 17 8.6 17 8.6 Z" />
   </svg>
 )
 
@@ -254,23 +291,41 @@ const PauseIcon = (props: React.ComponentProps<'svg'>) => (
 
 const VolumeHighIcon = (props: React.ComponentProps<'svg'>) => (
   <svg
-    viewBox="0 0 24 24"
-    fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    height="24"
+    width="24"
     {...props}
   >
-    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+    <path
+      d="M 11.60 2.08 L 11.48 2.14 L 3.91 6.68 C 3.02 7.21 2.28 7.97 1.77 8.87 C 1.26 9.77 1.00 10.79 1 11.83 V 12.16 L 1.01 12.56 C 1.07 13.52 1.37 14.46 1.87 15.29 C 2.38 16.12 3.08 16.81 3.91 17.31 L 11.48 21.85 C 11.63 21.94 11.80 21.99 11.98 21.99 C 12.16 22.00 12.33 21.95 12.49 21.87 C 12.64 21.78 12.77 21.65 12.86 21.50 C 12.95 21.35 13 21.17 13 21 V 3 C 12.99 2.83 12.95 2.67 12.87 2.52 C 12.80 2.37 12.68 2.25 12.54 2.16 C 12.41 2.07 12.25 2.01 12.08 2.00 C 11.92 1.98 11.75 2.01 11.60 2.08 Z"
+      fill="currentColor"
+    ></path>
+    <path
+      d=" M 15.53 7.05 C 15.35 7.22 15.25 7.45 15.24 7.70 C 15.23 7.95 15.31 8.19 15.46 8.38 L 15.53 8.46 L 15.70 8.64 C 16.09 9.06 16.39 9.55 16.61 10.08 L 16.70 10.31 C 16.90 10.85 17 11.42 17 12 L 16.99 12.24 C 16.96 12.73 16.87 13.22 16.70 13.68 L 16.61 13.91 C 16.36 14.51 15.99 15.07 15.53 15.53 C 15.35 15.72 15.25 15.97 15.26 16.23 C 15.26 16.49 15.37 16.74 15.55 16.92 C 15.73 17.11 15.98 17.21 16.24 17.22 C 16.50 17.22 16.76 17.12 16.95 16.95 C 17.6 16.29 18.11 15.52 18.46 14.67 L 18.59 14.35 C 18.82 13.71 18.95 13.03 18.99 12.34 L 19 12 C 18.99 11.19 18.86 10.39 18.59 9.64 L 18.46 9.32 C 18.15 8.57 17.72 7.89 17.18 7.3 L 16.95 7.05 L 16.87 6.98 C 16.68 6.82 16.43 6.74 16.19 6.75 C 15.94 6.77 15.71 6.87 15.53 7.05"
+      fill="currentColor"
+      transform="translate(18, 12) scale(1) translate(-18,-12)"
+    ></path>
+    <path
+      d="M18.36 4.22C18.18 4.39 18.08 4.62 18.07 4.87C18.05 5.12 18.13 5.36 18.29 5.56L18.36 5.63L18.66 5.95C19.36 6.72 19.91 7.60 20.31 8.55L20.47 8.96C20.82 9.94 21 10.96 21 11.99L20.98 12.44C20.94 13.32 20.77 14.19 20.47 15.03L20.31 15.44C19.86 16.53 19.19 17.52 18.36 18.36C18.17 18.55 18.07 18.80 18.07 19.07C18.07 19.33 18.17 19.59 18.36 19.77C18.55 19.96 18.80 20.07 19.07 20.07C19.33 20.07 19.59 19.96 19.77 19.77C20.79 18.75 21.61 17.54 22.16 16.20L22.35 15.70C22.72 14.68 22.93 13.62 22.98 12.54L23 12C22.99 10.73 22.78 9.48 22.35 8.29L22.16 7.79C21.67 6.62 20.99 5.54 20.15 4.61L19.77 4.22L19.70 4.15C19.51 3.99 19.26 3.91 19.02 3.93C18.77 3.94 18.53 4.04 18.36 4.22 Z"
+      fill="currentColor"
+      transform="translate(22, 12) scale(1) translate(-22,-12)"
+    />
   </svg>
 )
 
 const VolumeMutedIcon = (props: React.ComponentProps<'svg'>) => (
   <svg
-    viewBox="0 0 24 24"
-    fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    width="24"
+    viewBox="0 0 24 24"
     {...props}
   >
-    <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+    <path
+      d="M11.60 2.08L11.48 2.14L3.91 6.68C3.02 7.21 2.28 7.97 1.77 8.87C1.26 9.77 1.00 10.79 1 11.83V12.16L1.01 12.56C1.07 13.52 1.37 14.46 1.87 15.29C2.38 16.12 3.08 16.81 3.91 17.31L11.48 21.85C11.63 21.94 11.80 21.99 11.98 21.99C12.16 22.00 12.33 21.95 12.49 21.87C12.64 21.78 12.77 21.65 12.86 21.50C12.95 21.35 13 21.17 13 21V3C12.99 2.83 12.95 2.67 12.87 2.52C12.80 2.37 12.68 2.25 12.54 2.16C12.41 2.07 12.25 2.01 12.08 2.00C11.92 1.98 11.75 2.01 11.60 2.08ZM4.94 8.4V8.40L11 4.76V19.23L4.94 15.6C4.38 15.26 3.92 14.80 3.58 14.25C3.24 13.70 3.05 13.07 3.00 12.43L3 12.17V11.83C2.99 11.14 3.17 10.46 3.51 9.86C3.85 9.25 4.34 8.75 4.94 8.4ZM21.29 8.29L19 10.58L16.70 8.29L16.63 8.22C16.43 8.07 16.19 7.99 15.95 8.00C15.70 8.01 15.47 8.12 15.29 8.29C15.12 8.47 15.01 8.70 15.00 8.95C14.99 9.19 15.07 9.43 15.22 9.63L15.29 9.70L17.58 12L15.29 14.29C15.19 14.38 15.12 14.49 15.06 14.61C15.01 14.73 14.98 14.87 14.98 15.00C14.98 15.13 15.01 15.26 15.06 15.39C15.11 15.51 15.18 15.62 15.28 15.71C15.37 15.81 15.48 15.88 15.60 15.93C15.73 15.98 15.86 16.01 15.99 16.01C16.12 16.01 16.26 15.98 16.38 15.93C16.50 15.87 16.61 15.80 16.70 15.70L19 13.41L21.29 15.70L21.36 15.77C21.56 15.93 21.80 16.01 22.05 15.99C22.29 15.98 22.53 15.88 22.70 15.70C22.88 15.53 22.98 15.29 22.99 15.05C23.00 14.80 22.93 14.56 22.77 14.36L22.70 14.29L20.41 12L22.70 9.70C22.80 9.61 22.87 9.50 22.93 9.38C22.98 9.26 23.01 9.12 23.01 8.99C23.01 8.86 22.98 8.73 22.93 8.60C22.88 8.48 22.81 8.37 22.71 8.28C22.62 8.18 22.51 8.11 22.39 8.06C22.26 8.01 22.13 7.98 22.00 7.98C21.87 7.98 21.73 8.01 21.61 8.06C21.49 8.12 21.38 8.19 21.29 8.29Z"
+      fill="currentColor"
+    />
   </svg>
 )
 
