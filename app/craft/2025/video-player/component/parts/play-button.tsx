@@ -22,6 +22,7 @@ export interface PlayButtonRenderProps {
   [PlayButtonDataAttributes.playing]?: boolean
   [PlayButtonDataAttributes.paused]?: boolean
   [PlayButtonDataAttributes.ended]?: boolean
+  [PlayButtonDataAttributes.waiting]?: boolean
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
@@ -29,6 +30,7 @@ export interface PlayButtonState {
   playing: boolean
   paused: boolean
   ended: boolean
+  waiting: boolean
 }
 
 // ============================================================================
@@ -54,6 +56,7 @@ export const PlayButton = React.forwardRef<HTMLButtonElement, PlayButtonProps>(
       playing: context.playing,
       paused: context.paused,
       ended: context.ended,
+      waiting: context.waiting,
     }
 
     const renderProps: PlayButtonRenderProps = {
@@ -63,6 +66,7 @@ export const PlayButton = React.forwardRef<HTMLButtonElement, PlayButtonProps>(
       [PlayButtonDataAttributes.playing]: context.playing || undefined,
       [PlayButtonDataAttributes.paused]: context.paused || undefined,
       [PlayButtonDataAttributes.ended]: context.ended || undefined,
+      [PlayButtonDataAttributes.waiting]: context.waiting || undefined,
       onClick: handleClick,
     }
 

@@ -1,8 +1,6 @@
 import type { MDXComponents } from 'mdx/types'
-import { cn } from './lib/utils'
-import { MediaProps } from './app/craft/_/craft-media'
-import { useMediaQuery } from './hooks/use-media-query'
 import { Frame } from './components/frame'
+import { cn } from './lib/utils'
 
 const components = {
   h2: ({ children, className, ...props }) => (

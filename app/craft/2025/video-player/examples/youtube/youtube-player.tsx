@@ -66,67 +66,50 @@ export function YouTubePlayer({ src, poster }: YouTubePlayerProps) {
         {/* Progress bar row */}
         <div className="px-3">
           <VideoPlayer.SeekSlider
+            thumbAlignment="center"
             className={cn(
-              'flex items-center w-full h-5 select-none touch-none cursor-pointer',
+              'flex items-center w-full select-none touch-none cursor-pointer',
               'group/seek',
             )}
           >
-            <VideoPlayer.SeekSliderTrack
-              className={cn(
-                'relative w-full overflow-hidden rounded-sm',
-                'bg-black/50',
-                'h-1 group-hover/seek:h-1.5 group-data-[pressing]/seek:h-1.5',
-                'transition-[height] duration-100 ease-out',
-              )}
-            >
-              <VideoPlayer.SeekSliderBuffered className="absolute h-full bg-white/50 rounded-sm" />
-              <VideoPlayer.SeekSliderHover className="absolute h-full bg-white/50 rounded-sm" />
-              <VideoPlayer.SeekSliderProgress className="absolute h-full bg-red-600 rounded-sm" />
-            </VideoPlayer.SeekSliderTrack>
-
-            <VideoPlayer.SeekSliderThumb className="block size-4 rounded-full bg-red-600 shadow-sm" />
-
-            {/* Hover preview thumb with thumbnail and time tooltip */}
-            <VideoPlayer.SeekSliderPreviewThumb
-              className={cn(
-                'absolute top-1/2 -translate-y-1/2',
-                'flex flex-col items-center',
-                'pointer-events-none',
-                'group/thumb',
-              )}
-            >
-              {/* Thumbnail preview */}
-              <div
+            <VideoPlayer.SeekSliderControl className="flex items-center w-full h-5">
+              <VideoPlayer.SeekSliderTrack
                 className={cn(
-                  'absolute bottom-4 left-1/2 -translate-x-1/2',
-                  'flex flex-col items-center gap-2',
-                  'opacity-0 group-data-[open]/thumb:opacity-100',
-                  'transition-opacity duration-100',
+                  'relative w-full',
+                  'bg-black/50',
+                  'h-1 group-hover/seek:h-1.5 group-data-[pressing]/seek:h-1.5',
+                  'transition-[height] duration-100 ease-out rounded-sm',
                 )}
               >
-                <VideoPlayer.Thumbnail
-                  width={160}
-                  className="rounded border-2 border-white shadow-lg"
-                />
-                {/* Time tooltip */}
-                <div
-                  className={cn(
-                    'px-2 py-1 bg-black/50 rounded-xl text-xs text-white font-medium flex items-center',
-                    'whitespace-nowrap',
-                  )}
-                >
-                  <VideoPlayer.TimeDisplay format="hover" align="center" />
-                </div>
-              </div>
-              {/* Vertical line indicator */}
-              {/*<div
+                <VideoPlayer.SeekSliderBuffered className="absolute h-full bg-white/50 rounded-sm" />
+                <VideoPlayer.SeekSliderHover className="absolute h-full bg-white/50 rounded-sm" />
+                <VideoPlayer.SeekSliderProgress className="absolute h-full bg-red-600 rounded-sm" />
+                <VideoPlayer.SeekSliderThumb className="size-4 rounded-full bg-red-600 shadow-sm" />
+              </VideoPlayer.SeekSliderTrack>
+            </VideoPlayer.SeekSliderControl>
+
+            {/* Hover preview thumb (anchor for tooltip) */}
+            <VideoPlayer.SeekSliderPreviewThumb />
+
+            {/* Tooltip with thumbnail and time display (collision-aware) */}
+            <VideoPlayer.SeekSliderPreviewTooltip
+              sideOffset={24}
+              collisionPadding={12}
+              className={cn('flex flex-col items-center gap-2')}
+            >
+              <VideoPlayer.Thumbnail
+                width={160}
+                className="rounded border-2 border-white shadow-lg"
+              />
+              <div
                 className={cn(
-                  'w-0.5 h-5 bg-white rounded-full',
-                  'opacity-0 group-data-[open]/thumb:opacity-100',
-                  'transition-opacity duration-100',
+                  'px-2 py-1 bg-black/50 rounded-xl text-xs text-white font-medium',
+                  'whitespace-nowrap',
                 )}
-              />*/}
-            </VideoPlayer.SeekSliderPreviewThumb>
+              >
+                <VideoPlayer.TimeDisplay format="hover" align="center" />
+              </div>
+            </VideoPlayer.SeekSliderPreviewTooltip>
           </VideoPlayer.SeekSlider>
         </div>
 
@@ -151,11 +134,14 @@ export function YouTubePlayer({ src, poster }: YouTubePlayerProps) {
               <VideoPlayer.VolumeSlider
                 className="flex items-center h-10 w-16"
                 orientation="horizontal"
+                thumbAlignment="edge"
               >
-                <VideoPlayer.VolumeSliderTrack className="relative h-1 w-full bg-white/30 rounded-full">
-                  <VideoPlayer.VolumeSliderRange className="absolute h-full bg-white rounded-full" />
-                </VideoPlayer.VolumeSliderTrack>
-                <VideoPlayer.VolumeSliderThumb className="block size-3 bg-white rounded-full shadow-sm" />
+                <VideoPlayer.VolumeSliderControl className="w-full h-full flex items-center">
+                  <VideoPlayer.VolumeSliderTrack className="relative h-1 w-full bg-white/30 rounded-full">
+                    <VideoPlayer.VolumeSliderRange className="absolute h-full bg-white rounded-full" />
+                    <VideoPlayer.VolumeSliderThumb className="block size-3 bg-white rounded-full shadow-sm" />
+                  </VideoPlayer.VolumeSliderTrack>
+                </VideoPlayer.VolumeSliderControl>
               </VideoPlayer.VolumeSlider>
             </div>
           </div>
