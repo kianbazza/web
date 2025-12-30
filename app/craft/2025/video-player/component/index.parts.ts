@@ -26,12 +26,17 @@ export { Thumbnail } from './parts/thumbnail'
 export { PlayButton } from './parts/play-button'
 export {
   SeekSlider,
+  SeekSliderControl,
   SeekSliderTrack,
   SeekSliderProgress,
   SeekSliderBuffered,
   SeekSliderHover,
   SeekSliderThumb,
   SeekSliderPreviewThumb,
+  SeekSliderPreviewTooltip,
+  SeekSliderPreviewTooltipPortal,
+  SeekSliderPreviewTooltipPositioner,
+  SeekSliderPreviewTooltipPopup,
 } from './parts/seek-slider'
 export { TimeDisplay } from './parts/time-display'
 export { BufferedIndicator } from './parts/buffered-indicator'
@@ -39,6 +44,7 @@ export { BufferedIndicator } from './parts/buffered-indicator'
 // Audio Controls
 export {
   VolumeSlider,
+  VolumeSliderControl,
   VolumeSliderTrack,
   VolumeSliderRange,
   VolumeSliderThumb,

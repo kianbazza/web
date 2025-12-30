@@ -78,8 +78,9 @@ export function VideoPlayer({ src, poster }: VideoPlayerProps) {
                   '*:size-4 *:fill-white *:stroke-0',
                 )}
               >
-                <PlayIcon className="group-data-[playing]:hidden" />
-                <PauseIcon className="group-data-[paused]:hidden" />
+                <SpinnerIcon className="hidden group-data-[waiting]:block" />
+                <PlayIcon className="group-data-[playing]:hidden group-data-[waiting]:hidden" />
+                <PauseIcon className="group-data-[paused]:hidden group-data-[waiting]:hidden" />
               </Primitive.PlayButton>
               {/*<Primitive.VolumeSlider />*/}
               <Primitive.TimeDisplay
@@ -332,5 +333,35 @@ const FullscreenIcon = (props: React.ComponentProps<'svg'>) => (
     {...props}
   >
     <path d="M7.28 8.72a.75.75 0 0 1 0 1.06L5 12l1.25 1.25a.75.75 0 0 1-.75.75H2.75a.75.75 0 0 1-.75-.75V10.5a.75.75 0 0 1 .75-.75L4 11l2.22-2.28a.75.75 0 0 1 1.06 0ZM8.72 7.28a.75.75 0 0 1 0-1.06L11 4 9.75 2.75A.75.75 0 0 1 10.5 2h2.75a.75.75 0 0 1 .75.75V5.5a.75.75 0 0 1-.75.75L12 5 9.78 7.28a.75.75 0 0 1-1.06 0Z"></path>
+  </svg>
+)
+
+const SpinnerIcon = (props: React.ComponentProps<'svg'>) => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    role="img"
+    focusable="false"
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+    className="animate-spin"
+    {...props}
+  >
+    <circle
+      cx="8"
+      cy="8"
+      r="6"
+      stroke="currentColor"
+      strokeOpacity="0.25"
+      strokeWidth="2"
+    />
+    <path
+      d="M14 8a6 6 0 0 0-6-6"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
   </svg>
 )

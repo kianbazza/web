@@ -5,4 +5,6 @@ export enum PlayButtonDataAttributes {
   paused = 'data-paused',
   /** Applied when the video has ended. */
   ended = 'data-ended',
+  /** Applied when the video is buffering/waiting for data. */
+  waiting = 'data-waiting',
 }

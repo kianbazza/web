@@ -304,21 +304,26 @@ function VideoPlayerProvider({
   )
 
   const toggleMute = React.useCallback(() => {
-    if (!muted) {
+    // Treat volume === 0 the same as muted for toggle purposes
+    const effectivelyMuted = muted || volume === 0
+
+    if (!effectivelyMuted) {
       // Muting - save current volume for restoration
       previousVolumeRef.current = volume
-    } else {
-      // Unmuting - restore previous volume
       if (videoRef.current) {
-        videoRef.current.volume = previousVolumeRef.current
+        videoRef.current.muted = true
       }
-      setVolume(previousVolumeRef.current)
+      setMuted(true)
+    } else {
+      // Unmuting - restore previous volume, or max if previous was 0
+      const restoreVolume = previousVolumeRef.current > 0 ? previousVolumeRef.current : 1
+      if (videoRef.current) {
+        videoRef.current.volume = restoreVolume
+        videoRef.current.muted = false
+      }
+      setVolume(restoreVolume)
+      setMuted(false)
     }
-    // Toggle mute state
-    if (videoRef.current) {
-      videoRef.current.muted = !muted
-    }
-    setMuted(!muted)
   }, [muted, volume, setMuted, setVolume, videoRef])
 
   const enterFullscreen = React.useCallback(async () => {

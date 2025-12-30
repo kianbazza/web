@@ -1,7 +1,15 @@
 'use client'
 
 import * as React from 'react'
-import * as SliderPrimitive from '@radix-ui/react-slider'
+import * as ReactDOM from 'react-dom'
+import { Slider } from '@base-ui-components/react/slider'
+import {
+  useFloating,
+  offset,
+  shift,
+  autoUpdate,
+  type Padding,
+} from '@floating-ui/react'
 import { useVideoPlayerContext } from '../context'
 import { useTransitionStatus } from '../use-transition-status'
 import type { RenderProp } from '../types'
@@ -10,13 +18,35 @@ import { SeekSliderCssVars } from './seek-slider.css-vars'
 import { SeekSliderPreviewThumbDataAttributes } from './seek-slider-preview-thumb.data-attributes'
 
 // ============================================================================
+// SeekSlider Context (for sharing refs between SeekSlider children)
+// ============================================================================
+
+interface SeekSliderContextValue {
+  sliderRef: React.RefObject<HTMLDivElement>
+  previewThumbElement: HTMLElement | null
+  setPreviewThumbElement: (element: HTMLElement | null) => void
+  hoverProgress: number
+  open: boolean
+}
+
+const SeekSliderContext = React.createContext<SeekSliderContextValue | null>(null)
+
+function useSeekSliderContext(componentName: string) {
+  const context = React.useContext(SeekSliderContext)
+  if (!context) {
+    throw new Error(`${componentName} must be used within SeekSlider`)
+  }
+  return context
+}
+
+// ============================================================================
 // SeekSlider Props
 // ============================================================================
 
 export interface SeekSliderProps
   extends Omit<
-    React.ComponentPropsWithRef<typeof SliderPrimitive.Root>,
-    'value' | 'onValueChange' | 'min' | 'max' | 'children'
+    React.ComponentPropsWithRef<typeof Slider.Root>,
+    'value' | 'onValueChange' | 'min' | 'max' | 'children' | 'render'
   > {
   render?: RenderProp<SeekSliderRenderProps, SeekSliderState>
   children?: React.ReactNode
@@ -46,7 +76,7 @@ export interface SeekSliderState {
 // ============================================================================
 
 export const SeekSlider = React.forwardRef<
-  React.ComponentRef<typeof SliderPrimitive.Root>,
+  React.ComponentRef<typeof Slider.Root>,
   SeekSliderProps
 >(function SeekSlider(props, forwardedRef) {
   const {
@@ -55,11 +85,12 @@ export const SeekSlider = React.forwardRef<
     onPointerMove,
     onPointerLeave,
     onPointerDown,
-    onValueCommit,
+    onValueCommitted,
     ...sliderProps
   } = props
   const context = useVideoPlayerContext('SeekSlider')
-  const sliderRef = React.useRef<HTMLSpanElement>(null)
+  const sliderRef = React.useRef<HTMLDivElement>(null!)
+  const [previewThumbElement, setPreviewThumbElement] = React.useState<HTMLElement | null>(null)
   const [pressing, setPressing] = React.useState(false)
   const [dragging, setDragging] = React.useState(false)
   const pressingRef = React.useRef(false)
@@ -81,8 +112,9 @@ export const SeekSlider = React.forwardRef<
     context.duration > 0 ? (context.currentTime / context.duration) * 100 : 0
 
   const handleValueChange = React.useCallback(
-    (value: number[]) => {
-      context.seek(value[0])
+    (value: number | readonly number[]) => {
+      const v = typeof value === 'number' ? value : value[0]
+      context.seek(v)
       context.resetIdle()
       if (pressingRef.current) {
         setDragging(true)
@@ -123,14 +155,15 @@ export const SeekSlider = React.forwardRef<
     [onPointerDown],
   )
 
-  const handleValueCommit = React.useCallback(
-    (value: number[]) => {
-      onValueCommit?.(value)
+  const handleValueCommitted = React.useCallback(
+    (value: number | readonly number[], eventDetails: { reason: 'none'; event: Event }) => {
+      const v = typeof value === 'number' ? value : value[0]
+      onValueCommitted?.(v, eventDetails)
       setPressing(false)
       setDragging(false)
       pressingRef.current = false
     },
-    [onValueCommit],
+    [onValueCommitted],
   )
 
   const bufferedEnd = React.useMemo(() => {
@@ -149,18 +182,14 @@ export const SeekSlider = React.forwardRef<
   const bufferedPercentage =
     context.duration > 0 ? (bufferedEnd / context.duration) * 100 : 0
 
-  const composedRef = React.useCallback(
-    (node: HTMLSpanElement | null) => {
-      ;(sliderRef as React.MutableRefObject<HTMLSpanElement | null>).current =
-        node
-      if (typeof forwardedRef === 'function') {
-        forwardedRef(node)
-      } else if (forwardedRef) {
-        forwardedRef.current = node
-      }
-    },
-    [forwardedRef],
-  )
+  // Sync internal ref with forwarded ref
+  React.useLayoutEffect(() => {
+    if (typeof forwardedRef === 'function') {
+      forwardedRef(sliderRef.current)
+    } else if (forwardedRef) {
+      forwardedRef.current = sliderRef.current
+    }
+  })
 
   const state: SeekSliderState = {
     currentTime: context.currentTime,
@@ -172,6 +201,20 @@ export const SeekSlider = React.forwardRef<
     hoverTime: context.hoverTime,
     hoverProgress: context.hoverProgress,
   }
+
+  // Context value for child components (PreviewThumb, Tooltip)
+  const open = context.hoverProgress !== null
+  const hoverProgress = context.hoverProgress ?? 0
+  const seekSliderContextValue = React.useMemo<SeekSliderContextValue>(
+    () => ({
+      sliderRef,
+      previewThumbElement,
+      setPreviewThumbElement,
+      hoverProgress,
+      open,
+    }),
+    [sliderRef, previewThumbElement, setPreviewThumbElement, hoverProgress, open]
+  )
 
   const style = {
     position: 'relative',
@@ -194,62 +237,68 @@ export const SeekSlider = React.forwardRef<
     style,
   }
 
-  // Render prop: wrap in SliderPrimitive.Root with asChild
+  // Render prop: use Base UI's render prop to customize the root element
   if (render) {
     return (
-      <SliderPrimitive.Root
-        ref={composedRef}
-        min={0}
-        max={context.duration || 100}
-        step={0.1}
-        value={[context.currentTime]}
-        onValueChange={handleValueChange}
-        onValueCommit={handleValueCommit}
-        onPointerMove={handlePointerMove}
-        onPointerLeave={handlePointerLeave}
-        onPointerDown={handlePointerDown}
-        aria-label="Seek"
-        asChild
-      >
-        {render(renderProps, state)}
-      </SliderPrimitive.Root>
+      <SeekSliderContext.Provider value={seekSliderContextValue}>
+        <Slider.Root
+          ref={sliderRef}
+          min={0}
+          max={context.duration || 100}
+          step={0.1}
+          value={context.currentTime}
+          onValueChange={handleValueChange}
+          onValueCommitted={handleValueCommitted}
+          onPointerMove={handlePointerMove}
+          onPointerLeave={handlePointerLeave}
+          onPointerDown={handlePointerDown}
+          aria-label="Seek"
+          render={(baseProps) => render({
+            ...baseProps,
+            ...renderProps,
+            style: { ...baseProps.style, ...renderProps.style },
+          }, state)}
+        />
+      </SeekSliderContext.Provider>
     )
   }
 
   return (
-    <SliderPrimitive.Root
-      ref={composedRef}
-      min={0}
-      max={context.duration || 100}
-      step={0.1}
-      value={[context.currentTime]}
-      onValueChange={handleValueChange}
-      onValueCommit={handleValueCommit}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-      onPointerDown={handlePointerDown}
-      aria-label="Seek"
-      {...renderProps}
-      {...sliderProps}
-    >
-      {children ?? (
-        <>
-          <SliderPrimitive.Track style={{ position: 'relative' }}>
-            <div
-              style={{
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                height: '100%',
-                width: `${bufferedPercentage}%`,
-              }}
-            />
-            <SliderPrimitive.Range />
-          </SliderPrimitive.Track>
-          <SliderPrimitive.Thumb />
-        </>
-      )}
-    </SliderPrimitive.Root>
+    <SeekSliderContext.Provider value={seekSliderContextValue}>
+      <Slider.Root
+        ref={sliderRef}
+        min={0}
+        max={context.duration || 100}
+        step={0.1}
+        value={context.currentTime}
+        onValueChange={handleValueChange}
+        onValueCommitted={handleValueCommitted}
+        onPointerMove={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
+        onPointerDown={handlePointerDown}
+        aria-label="Seek"
+        {...renderProps}
+        {...sliderProps}
+      >
+        {children ?? (
+          <Slider.Control>
+            <Slider.Track style={{ position: 'relative' }}>
+              <div
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  height: '100%',
+                  width: `${bufferedPercentage}%`,
+                }}
+              />
+              <Slider.Indicator />
+              <Slider.Thumb />
+            </Slider.Track>
+          </Slider.Control>
+        )}
+      </Slider.Root>
+    </SeekSliderContext.Provider>
   )
 })
 
@@ -257,11 +306,14 @@ export const SeekSlider = React.forwardRef<
 // Sub-components
 // ============================================================================
 
+// SeekSliderControl - wrapper for Slider.Control
+export const SeekSliderControl = Slider.Control
+
 // SeekSliderTrack
 export interface SeekSliderTrackProps
   extends Omit<
-    React.ComponentPropsWithRef<typeof SliderPrimitive.Track>,
-    'asChild' | 'children'
+    React.ComponentPropsWithRef<typeof Slider.Track>,
+    'render' | 'children'
   > {
   render?: RenderProp<SeekSliderTrackRenderProps, SeekSliderTrackState>
   children?: React.ReactNode
@@ -275,36 +327,42 @@ export interface SeekSliderTrackRenderProps {
 export interface SeekSliderTrackState {}
 
 export const SeekSliderTrack = React.forwardRef<
-  React.ComponentRef<typeof SliderPrimitive.Track>,
+  React.ComponentRef<typeof Slider.Track>,
   SeekSliderTrackProps
 >(function SeekSliderTrack(props, forwardedRef) {
-  const { render, children, ...trackProps } = props
+  const { render, children, style, ...trackProps } = props
 
   const state: SeekSliderTrackState = {}
 
+  // Always apply position: relative so children with position: absolute work correctly
+  const trackStyle: React.CSSProperties = {
+    position: 'relative',
+    ...style,
+  }
+
   const renderProps: SeekSliderTrackRenderProps = {
     ref: forwardedRef,
-    style: { position: 'relative' as const, ...trackProps.style },
+    style: trackStyle,
   }
 
   if (render) {
     return (
-      <SliderPrimitive.Track asChild>{render(renderProps, state)}</SliderPrimitive.Track>
+      <Slider.Track render={(baseProps) => render({ ...baseProps, ...renderProps }, state)} />
     )
   }
 
   return (
-    <SliderPrimitive.Track ref={forwardedRef} {...trackProps}>
+    <Slider.Track ref={forwardedRef} style={trackStyle} {...trackProps}>
       {children}
-    </SliderPrimitive.Track>
+    </Slider.Track>
   )
 })
 
 // SeekSliderProgress
 export interface SeekSliderProgressProps
   extends Omit<
-    React.ComponentPropsWithRef<typeof SliderPrimitive.Range>,
-    'asChild' | 'children'
+    React.ComponentPropsWithRef<typeof Slider.Indicator>,
+    'render' | 'children'
   > {
   render?: RenderProp<SeekSliderProgressRenderProps, SeekSliderProgressState>
   children?: React.ReactNode
@@ -312,6 +370,7 @@ export interface SeekSliderProgressProps
 
 export interface SeekSliderProgressRenderProps {
   ref: React.Ref<any>
+  style: React.CSSProperties
 }
 
 export interface SeekSliderProgressState {
@@ -319,10 +378,10 @@ export interface SeekSliderProgressState {
 }
 
 export const SeekSliderProgress = React.forwardRef<
-  React.ComponentRef<typeof SliderPrimitive.Range>,
+  React.ComponentRef<typeof Slider.Indicator>,
   SeekSliderProgressProps
 >(function SeekSliderProgress(props, forwardedRef) {
-  const { render, children, ...rangeProps } = props
+  const { render, children, style, ...indicatorProps } = props
   const context = useVideoPlayerContext('SeekSliderProgress')
 
   const progress =
@@ -330,28 +389,38 @@ export const SeekSliderProgress = React.forwardRef<
 
   const state: SeekSliderProgressState = { progress }
 
+  // Base UI handles positioning internally via inline styles
+  // We only add height: 100% to ensure it fills the track vertically
+  const indicatorStyle: React.CSSProperties = {
+    height: '100%',
+    ...style,
+  }
+
   const renderProps: SeekSliderProgressRenderProps = {
     ref: forwardedRef,
+    style: indicatorStyle,
   }
 
   if (render) {
     return (
-      <SliderPrimitive.Range asChild>{render(renderProps, state)}</SliderPrimitive.Range>
+      <Slider.Indicator
+        render={(baseProps) => render({ ...baseProps, ...renderProps, style: { ...baseProps.style, ...indicatorStyle } }, state)}
+      />
     )
   }
 
   return (
-    <SliderPrimitive.Range ref={forwardedRef} {...rangeProps}>
+    <Slider.Indicator ref={forwardedRef} style={indicatorStyle} {...indicatorProps}>
       {children}
-    </SliderPrimitive.Range>
+    </Slider.Indicator>
   )
 })
 
 // SeekSliderThumb
 export interface SeekSliderThumbProps
   extends Omit<
-    React.ComponentPropsWithRef<typeof SliderPrimitive.Thumb>,
-    'asChild' | 'children'
+    React.ComponentPropsWithRef<typeof Slider.Thumb>,
+    'render' | 'children'
   > {
   render?: RenderProp<SeekSliderThumbRenderProps, SeekSliderThumbState>
   children?: React.ReactNode
@@ -359,32 +428,38 @@ export interface SeekSliderThumbProps
 
 export interface SeekSliderThumbRenderProps {
   ref: React.Ref<any>
+  style: React.CSSProperties
 }
 
 export interface SeekSliderThumbState {}
 
 export const SeekSliderThumb = React.forwardRef<
-  React.ComponentRef<typeof SliderPrimitive.Thumb>,
+  React.ComponentRef<typeof Slider.Thumb>,
   SeekSliderThumbProps
 >(function SeekSliderThumb(props, forwardedRef) {
-  const { render, children, ...thumbProps } = props
+  const { render, children, style, ...thumbProps } = props
 
   const state: SeekSliderThumbState = {}
 
+  // Base UI handles positioning internally (position, insetInlineStart, top, translate)
+  // We just pass through user styles
   const renderProps: SeekSliderThumbRenderProps = {
     ref: forwardedRef,
+    style: style ?? {},
   }
 
   if (render) {
     return (
-      <SliderPrimitive.Thumb asChild>{render(renderProps, state)}</SliderPrimitive.Thumb>
+      <Slider.Thumb
+        render={(baseProps) => render({ ...baseProps, ...renderProps, style: { ...baseProps.style, ...style } }, state)}
+      />
     )
   }
 
   return (
-    <SliderPrimitive.Thumb ref={forwardedRef} {...thumbProps}>
+    <Slider.Thumb ref={forwardedRef} style={style} {...thumbProps}>
       {children}
-    </SliderPrimitive.Thumb>
+    </Slider.Thumb>
   )
 })
 
@@ -486,6 +561,7 @@ export const SeekSliderPreviewThumb = React.forwardRef<
 >(function SeekSliderPreviewThumb(props, forwardedRef) {
   const { keepMounted = false, render, children, ...spanProps } = props
   const context = useVideoPlayerContext('SeekSliderPreviewThumb')
+  const seekSliderContext = useSeekSliderContext('SeekSliderPreviewThumb')
 
   const open = context.hoverProgress !== null
 
@@ -504,13 +580,15 @@ export const SeekSliderPreviewThumb = React.forwardRef<
   const composedRef = React.useCallback(
     (node: HTMLSpanElement | null) => {
       ;(elementRef as React.MutableRefObject<HTMLElement | null>).current = node
+      // Register with SeekSlider context for Tooltip to use as anchor
+      seekSliderContext.setPreviewThumbElement(node)
       if (typeof forwardedRef === 'function') {
         forwardedRef(node)
       } else if (forwardedRef) {
         forwardedRef.current = node
       }
     },
-    [forwardedRef, elementRef],
+    [forwardedRef, elementRef, seekSliderContext],
   )
 
   const state: SeekSliderPreviewThumbState = {
@@ -616,6 +694,195 @@ export const SeekSliderHover = React.forwardRef<
 })
 
 // ============================================================================
+// SeekSliderPreviewTooltip Components
+// ============================================================================
+
+// Portal - renders content in a portal (defaults to VideoPlayer root for correct stacking context)
+export interface SeekSliderPreviewTooltipPortalProps {
+  children: React.ReactNode
+  /** Portal container. Defaults to the VideoPlayer root element. */
+  container?: Element | null
+}
+
+export function SeekSliderPreviewTooltipPortal({
+  children,
+  container,
+}: SeekSliderPreviewTooltipPortalProps) {
+  const videoPlayerContext = useVideoPlayerContext('SeekSliderPreviewTooltipPortal')
+  const [mounted, setMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
+
+  // Default to VideoPlayer root for correct stacking context (z-index works within the player)
+  const portalContainer = container ?? videoPlayerContext.rootRef.current ?? document.body
+  return ReactDOM.createPortal(children, portalContainer)
+}
+
+// Positioner - handles Floating UI positioning
+export interface SeekSliderPreviewTooltipPositionerProps
+  extends React.ComponentPropsWithRef<'div'> {
+  /** Offset from the anchor (thumb) in pixels (default: 8) */
+  sideOffset?: number
+  /** Padding from collision boundary edges (default: 0) */
+  collisionPadding?: Padding
+  /** Custom collision boundary element(s) */
+  collisionBoundary?: Element | Element[]
+  /** Keep mounted in DOM even when closed (default: false) */
+  keepMounted?: boolean
+  children?: React.ReactNode
+}
+
+export const SeekSliderPreviewTooltipPositioner = React.forwardRef<
+  HTMLDivElement,
+  SeekSliderPreviewTooltipPositionerProps
+>(function SeekSliderPreviewTooltipPositioner(props, forwardedRef) {
+  const {
+    sideOffset = 8,
+    collisionPadding = 0,
+    collisionBoundary,
+    keepMounted = false,
+    children,
+    style: styleProp,
+    ...divProps
+  } = props
+
+  const seekSliderContext = useSeekSliderContext('SeekSliderPreviewTooltipPositioner')
+  const { previewThumbElement, open, hoverProgress } = seekSliderContext
+  const [floatingElement, setFloatingElement] = React.useState<HTMLDivElement | null>(null)
+
+  const { refs, floatingStyles, update } = useFloating({
+    placement: 'top',
+    middleware: [
+      offset(sideOffset),
+      shift({
+        boundary: collisionBoundary,
+        padding: collisionPadding,
+      }),
+    ],
+  })
+
+  // Set reference element when it becomes available (following Base UI pattern)
+  React.useLayoutEffect(() => {
+    if (previewThumbElement) {
+      refs.setReference(previewThumbElement)
+    }
+  }, [previewThumbElement, refs])
+
+  // Set up autoUpdate when both elements are available
+  React.useEffect(() => {
+    if (open && previewThumbElement && floatingElement) {
+      return autoUpdate(previewThumbElement, floatingElement, update)
+    }
+  }, [open, previewThumbElement, floatingElement, update])
+
+  // Update position when hover progress changes (PreviewThumb moves via CSS)
+  React.useLayoutEffect(() => {
+    if (open && previewThumbElement && floatingElement) {
+      update()
+    }
+  }, [hoverProgress, open, previewThumbElement, floatingElement, update])
+
+  // Merge refs - track floating element with state for effect dependencies
+  const mergedRef = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      refs.setFloating(node)
+      setFloatingElement(node)
+      if (typeof forwardedRef === 'function') {
+        forwardedRef(node)
+      } else if (forwardedRef) {
+        forwardedRef.current = node
+      }
+    },
+    [refs, forwardedRef]
+  )
+
+  // Don't render until we have the reference element (and open, unless keepMounted)
+  const shouldRender = keepMounted ? !!previewThumbElement : (open && !!previewThumbElement)
+  if (!shouldRender) return null
+
+  return (
+    <div
+      ref={mergedRef}
+      style={{ ...floatingStyles, ...styleProp }}
+      data-seek-slider-preview-tooltip-positioner
+      data-open={open || undefined}
+      data-closed={!open || undefined}
+      {...divProps}
+    >
+      {children}
+    </div>
+  )
+})
+
+// Popup - simple content wrapper
+export interface SeekSliderPreviewTooltipPopupProps
+  extends React.ComponentPropsWithRef<'div'> {
+  children?: React.ReactNode
+}
+
+export const SeekSliderPreviewTooltipPopup = React.forwardRef<
+  HTMLDivElement,
+  SeekSliderPreviewTooltipPopupProps
+>(function SeekSliderPreviewTooltipPopup(props, forwardedRef) {
+  const { children, ...divProps } = props
+
+  return (
+    <div ref={forwardedRef} data-seek-slider-preview-tooltip-popup {...divProps}>
+      {children}
+    </div>
+  )
+})
+
+// Simplified combined component
+export interface SeekSliderPreviewTooltipProps
+  extends Omit<SeekSliderPreviewTooltipPopupProps, 'ref'> {
+  /** Offset from the anchor (thumb) in pixels (default: 8) */
+  sideOffset?: number
+  /** Padding from collision boundary edges (default: 0) */
+  collisionPadding?: Padding
+  /** Custom collision boundary element(s) */
+  collisionBoundary?: Element | Element[]
+  /** Keep mounted in DOM even when closed (default: false) */
+  keepMounted?: boolean
+  /** Portal container element */
+  container?: Element | null
+}
+
+export function SeekSliderPreviewTooltip({
+  sideOffset,
+  collisionPadding,
+  collisionBoundary,
+  keepMounted,
+  container,
+  children,
+  ...popupProps
+}: SeekSliderPreviewTooltipProps) {
+  return (
+    <SeekSliderPreviewTooltipPortal container={container}>
+      <SeekSliderPreviewTooltipPositioner
+        sideOffset={sideOffset}
+        collisionPadding={collisionPadding}
+        collisionBoundary={collisionBoundary}
+        keepMounted={keepMounted}
+      >
+        <SeekSliderPreviewTooltipPopup {...popupProps}>
+          {children}
+        </SeekSliderPreviewTooltipPopup>
+      </SeekSliderPreviewTooltipPositioner>
+    </SeekSliderPreviewTooltipPortal>
+  )
+}
+
+// Attach sub-components for composition pattern
+SeekSliderPreviewTooltip.Portal = SeekSliderPreviewTooltipPortal
+SeekSliderPreviewTooltip.Positioner = SeekSliderPreviewTooltipPositioner
+SeekSliderPreviewTooltip.Popup = SeekSliderPreviewTooltipPopup
+
+// ============================================================================
 // Namespaces
 // ============================================================================
 
@@ -659,4 +926,11 @@ export namespace SeekSliderHover {
   export type Props = SeekSliderHoverProps
   export type State = SeekSliderHoverState
   export type RenderProps = SeekSliderHoverRenderProps
+}
+
+export namespace SeekSliderPreviewTooltip {
+  export type Props = SeekSliderPreviewTooltipProps
+  export type PortalProps = SeekSliderPreviewTooltipPortalProps
+  export type PositionerProps = SeekSliderPreviewTooltipPositionerProps
+  export type PopupProps = SeekSliderPreviewTooltipPopupProps
 }

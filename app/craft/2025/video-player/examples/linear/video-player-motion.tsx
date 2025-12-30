@@ -91,15 +91,27 @@ export function VideoPlayer_Motion({ src }: VideoPlayerProps) {
             transition={{ duration, ease }}
           >
             <VideoPlayer.PlayButton
-              render={(props, { playing, paused }) => (
+              render={(props, { playing, paused, waiting }) => (
                 <motion.button
                   {...props}
                   className={cn(buttonClassName, 'group')}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {paused && <PlayIcon />}
-                  {playing && <PauseIcon />}
+                  {waiting && (
+                    <motion.span
+                      animate={{ rotate: 360 }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 1,
+                        ease: 'linear',
+                      }}
+                    >
+                      <SpinnerIcon className="stroke-white" />
+                    </motion.span>
+                  )}
+                  {paused && !waiting && <PlayIcon />}
+                  {playing && !waiting && <PauseIcon />}
                 </motion.button>
               )}
             />
@@ -116,33 +128,36 @@ export function VideoPlayer_Motion({ src }: VideoPlayerProps) {
                   {...props}
                   className="flex items-center w-full h-12 select-none touch-none cursor-crosshair"
                 >
-                  <VideoPlayer.SeekSliderTrack
-                    render={(props) => (
-                      <motion.div
-                        {...props}
-                        className="relative w-full rounded-[9999999px] bg-white/20"
-                        animate={{ height: pressing ? 6 : 4 }}
-                        transition={{ duration: 0.15, ease: 'easeInOut' }}
-                      >
-                        <VideoPlayer.SeekSliderBuffered
-                          render={(props) => (
-                            <div
-                              {...props}
-                              className="absolute h-full bg-white/30 rounded-[9999999px]"
-                            />
-                          )}
-                        />
-                        <VideoPlayer.SeekSliderProgress
-                          render={(props) => (
-                            <div
-                              {...props}
-                              className="absolute h-full bg-white rounded-[9999999px]"
-                            />
-                          )}
-                        />
-                      </motion.div>
-                    )}
-                  />
+                  <VideoPlayer.SeekSliderControl className="flex items-center w-full h-full">
+                    <VideoPlayer.SeekSliderTrack
+                      render={(props) => (
+                        <motion.div
+                          {...props}
+                          className="relative w-full rounded-[9999999px] bg-white/20"
+                          animate={{ height: pressing ? 6 : 4 }}
+                          transition={{ duration: 0.15, ease: 'easeInOut' }}
+                        >
+                          <VideoPlayer.SeekSliderBuffered
+                            render={(props) => (
+                              <div
+                                {...props}
+                                className="absolute h-full bg-white/30 rounded-[9999999px]"
+                              />
+                            )}
+                          />
+                          <VideoPlayer.SeekSliderProgress
+                            render={(props) => (
+                              <div
+                                {...props}
+                                className="absolute h-full bg-white rounded-[9999999px]"
+                              />
+                            )}
+                          />
+                          <VideoPlayer.SeekSliderThumb className="size-0" />
+                        </motion.div>
+                      )}
+                    />
+                  </VideoPlayer.SeekSliderControl>
                   <VideoPlayer.SeekSliderPreviewThumb
                     keepMounted
                     render={(props, { open }) => (
@@ -279,5 +294,23 @@ const FullscreenIcon = (props: React.ComponentProps<'svg'>) => (
     {...props}
   >
     <path d="M7.28 8.72a.75.75 0 0 1 0 1.06L5 12l1.25 1.25a.75.75 0 0 1-.75.75H2.75a.75.75 0 0 1-.75-.75V10.5a.75.75 0 0 1 .75-.75L4 11l2.22-2.28a.75.75 0 0 1 1.06 0ZM8.72 7.28a.75.75 0 0 1 0-1.06L11 4 9.75 2.75A.75.75 0 0 1 10.5 2h2.75a.75.75 0 0 1 .75.75V5.5a.75.75 0 0 1-.75.75L12 5 9.78 7.28a.75.75 0 0 1-1.06 0Z"></path>
+  </svg>
+)
+
+const SpinnerIcon = (props: React.ComponentProps<'svg'>) => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    role="img"
+    focusable="false"
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <circle cx="8" cy="8" r="6" strokeOpacity="0.25" strokeWidth="2" />
+    <path d="M14 8a6 6 0 0 0-6-6" strokeWidth="2" strokeLinecap="round" />
   </svg>
 )
