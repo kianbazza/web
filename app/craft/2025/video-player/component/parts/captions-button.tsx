@@ -15,7 +15,7 @@ export interface CaptionsButtonProps
 }
 
 export interface CaptionsButtonRenderProps {
-  ref: React.Ref<HTMLElement>
+  ref: React.Ref<HTMLButtonElement>
   type: 'button'
   'aria-label': string
   'aria-pressed': boolean

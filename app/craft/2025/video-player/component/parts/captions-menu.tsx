@@ -17,7 +17,7 @@ export interface CaptionsMenuProps extends React.ComponentPropsWithRef<'div'> {
 }
 
 export interface CaptionsMenuRenderProps {
-  ref: React.Ref<HTMLElement>
+  ref: React.Ref<HTMLDivElement>
   role: 'menu'
   'aria-label': string
   [CaptionsMenuDataAttributes.active]?: boolean
