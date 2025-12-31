@@ -37,6 +37,7 @@ export interface ControlsRenderProps {
   [ControlsDataAttributes.idle]?: boolean
   [ControlsDataAttributes.playing]?: boolean
   [ControlsDataAttributes.paused]?: boolean
+  [ControlsDataAttributes.ended]?: boolean
   [ControlsDataAttributes.startingStyle]?: boolean
   [ControlsDataAttributes.endingStyle]?: boolean
 }
@@ -47,6 +48,7 @@ export interface ControlsState {
   idle: boolean
   playing: boolean
   paused: boolean
+  ended: boolean
 }
 
 // ============================================================================
@@ -98,6 +100,7 @@ export const Controls = React.forwardRef<HTMLDivElement, ControlsProps>(
       idle: context.idle,
       playing: context.playing,
       paused: context.paused,
+      ended: context.ended,
     }
 
     const renderProps: ControlsRenderProps = {
@@ -107,6 +110,7 @@ export const Controls = React.forwardRef<HTMLDivElement, ControlsProps>(
       [ControlsDataAttributes.idle]: context.idle || undefined,
       [ControlsDataAttributes.playing]: context.playing || undefined,
       [ControlsDataAttributes.paused]: context.paused || undefined,
+      [ControlsDataAttributes.ended]: context.ended || undefined,
       [ControlsDataAttributes.startingStyle]:
         transitionStatus === 'starting' || undefined,
       [ControlsDataAttributes.endingStyle]:

@@ -2,16 +2,15 @@
 
 import * as React from 'react'
 import { VideoPlayerContext } from './context'
+import { RootDataAttributes } from './parts/root.data-attributes'
 import type {
+  TrackInfo,
   VideoPlayerContextValue,
-  VideoPlayerExternalActions,
   VideoPlayerRootProps,
-  VideoPlayerState,
   VideoQuality,
 } from './types'
 import { useKeyboardShortcuts } from './use-keyboard-shortcuts'
 import { useVideoPlayer } from './use-video-player'
-import { RootDataAttributes } from './parts/root.data-attributes'
 
 // ============================================================================
 // Hook: useControllableState
@@ -207,9 +206,12 @@ function VideoPlayerProvider({
   const [seeking, setSeeking] = React.useState(false)
   const [fullscreen, setFullscreen] = React.useState(false)
   const [pictureInPicture, setPictureInPicture] = React.useState(false)
-  const [textTracks, setTextTracks] = React.useState<TextTrack[]>([])
+  const [registeredTracks, setRegisteredTracks] = React.useState<TrackInfo[]>(
+    [],
+  )
   const [activeTextTrack, setActiveTextTrack] =
     React.useState<TextTrack | null>(null)
+  const [activeCues, setActiveCues] = React.useState<VTTCue[]>([])
   const [qualities, setQualities] = React.useState<VideoQuality[]>([])
   const [activeQuality, setActiveQuality] = React.useState<VideoQuality | null>(
     null,
@@ -316,7 +318,8 @@ function VideoPlayerProvider({
       setMuted(true)
     } else {
       // Unmuting - restore previous volume, or max if previous was 0
-      const restoreVolume = previousVolumeRef.current > 0 ? previousVolumeRef.current : 1
+      const restoreVolume =
+        previousVolumeRef.current > 0 ? previousVolumeRef.current : 1
       if (videoRef.current) {
         videoRef.current.volume = restoreVolume
         videoRef.current.muted = false
@@ -383,12 +386,16 @@ function VideoPlayerProvider({
         for (let i = 0; i < videoRef.current.textTracks.length; i++) {
           videoRef.current.textTracks[i].mode = 'disabled'
         }
-        // Enable selected track
+        // Enable selected track in 'hidden' mode
+        // 'hidden' fires cuechange events but doesn't render native captions
+        // allowing our custom Captions component to handle rendering
         if (track) {
-          track.mode = 'showing'
+          track.mode = 'hidden'
         }
       }
       setActiveTextTrack(track)
+      // Clear active cues when switching tracks
+      setActiveCues([])
     },
     [videoRef],
   )
@@ -398,6 +405,61 @@ function VideoPlayerProvider({
     // This is a placeholder for the action
     setActiveQuality(quality)
   }, [])
+
+  // Track registration actions (for VideoPlayer.Track component)
+  const registerTrack = React.useCallback((track: TrackInfo) => {
+    setRegisteredTracks((prev) => {
+      // Avoid duplicates
+      if (prev.some((t) => t.id === track.id)) return prev
+      return [...prev, track]
+    })
+  }, [])
+
+  const unregisterTrack = React.useCallback((id: string) => {
+    setRegisteredTracks((prev) => prev.filter((t) => t.id !== id))
+  }, [])
+
+  const updateTrackRef = React.useCallback(
+    (id: string, textTrack: TextTrack) => {
+      setRegisteredTracks((prev) =>
+        prev.map((t) => (t.id === id ? { ...t, textTrack } : t)),
+      )
+    },
+    [],
+  )
+
+  // Cuechange event listener - updates activeCues when cues change
+  React.useEffect(() => {
+    if (!activeTextTrack) {
+      setActiveCues([])
+      return
+    }
+
+    const handleCueChange = () => {
+      const cues = activeTextTrack.activeCues
+      if (!cues) {
+        setActiveCues([])
+        return
+      }
+      // Convert CueList to array of VTTCue
+      const cueArray: VTTCue[] = []
+      for (let i = 0; i < cues.length; i++) {
+        const cue = cues[i]
+        if (cue instanceof VTTCue) {
+          cueArray.push(cue)
+        }
+      }
+      setActiveCues(cueArray)
+    }
+
+    // Initial check for any active cues
+    handleCueChange()
+
+    activeTextTrack.addEventListener('cuechange', handleCueChange)
+    return () => {
+      activeTextTrack.removeEventListener('cuechange', handleCueChange)
+    }
+  }, [activeTextTrack])
 
   // Populate actionsRef for external control (Base UI pattern)
   React.useImperativeHandle(
@@ -459,13 +521,21 @@ function VideoPlayerProvider({
 
   const handleSeeking = React.useCallback(() => {
     setSeeking(true)
+    setEnded(false) // Clear ended state when user seeks
     onSeeking?.()
   }, [onSeeking])
 
   const handleSeeked = React.useCallback(() => {
     setSeeking(false)
+    // Check if we've seeked to the end (small epsilon for floating point precision)
+    if (videoRef.current) {
+      const { currentTime, duration } = videoRef.current
+      if (duration > 0 && duration - currentTime < 0.01) {
+        setEnded(true)
+      }
+    }
     onSeeked?.()
-  }, [onSeeked])
+  }, [onSeeked, videoRef])
 
   const handleVolumeChange = React.useCallback(() => {
     if (videoRef.current) {
@@ -477,12 +547,8 @@ function VideoPlayerProvider({
   const handleLoadedMetadata = React.useCallback(() => {
     if (videoRef.current) {
       setDuration(videoRef.current.duration)
-      // Collect text tracks
-      const tracks: TextTrack[] = []
-      for (let i = 0; i < videoRef.current.textTracks.length; i++) {
-        tracks.push(videoRef.current.textTracks[i])
-      }
-      setTextTracks(tracks)
+      // Note: Text tracks are now registered via VideoPlayer.Track components
+      // instead of being auto-discovered from the video element
     }
   }, [videoRef])
 
@@ -511,8 +577,9 @@ function VideoPlayerProvider({
       idle: effectiveIdle,
       idleTimeout,
       preventIdleWhenPaused,
-      textTracks,
+      registeredTracks,
       activeTextTrack,
+      activeCues,
       playbackRate,
       qualities,
       activeQuality,
@@ -535,6 +602,9 @@ function VideoPlayerProvider({
       setPlaybackRate,
       setTextTrack,
       setQuality,
+      registerTrack,
+      unregisterTrack,
+      updateTrackRef,
       resetIdle,
       setHoverTime,
 
@@ -574,8 +644,9 @@ function VideoPlayerProvider({
       effectiveIdle,
       idleTimeout,
       preventIdleWhenPaused,
-      textTracks,
+      registeredTracks,
       activeTextTrack,
+      activeCues,
       playbackRate,
       qualities,
       activeQuality,
@@ -596,6 +667,9 @@ function VideoPlayerProvider({
       setPlaybackRate,
       setTextTrack,
       setQuality,
+      registerTrack,
+      unregisterTrack,
+      updateTrackRef,
       resetIdle,
       setHoverTime,
       handleTimeUpdate,
@@ -655,6 +729,7 @@ export const VideoPlayerRoot = React.forwardRef<
     // Idle detection
     idleTimeout,
     preventIdleWhenPaused,
+    hideCursorWhenIdle = 'fullscreen',
     idle,
     onIdleChange,
 
@@ -709,6 +784,7 @@ export const VideoPlayerRoot = React.forwardRef<
         ref={forwardedRef}
         rootRef={rootRef}
         keyboardShortcuts={keyboardShortcuts}
+        hideCursorWhenIdle={hideCursorWhenIdle}
         {...rootDivProps}
       >
         {children}
@@ -725,6 +801,7 @@ interface VideoPlayerRootImplProps
   extends Omit<React.ComponentPropsWithoutRef<'div'>, 'children'> {
   rootRef: React.RefObject<HTMLDivElement | null>
   keyboardShortcuts: 'focused' | 'global' | 'none'
+  hideCursorWhenIdle: 'always' | 'fullscreen' | false
   children: React.ReactNode
 }
 
@@ -732,7 +809,15 @@ const VideoPlayerRootImpl = React.forwardRef<
   HTMLDivElement,
   VideoPlayerRootImplProps
 >(function VideoPlayerRootImpl(
-  { rootRef, keyboardShortcuts, children, className, style, ...divProps },
+  {
+    rootRef,
+    keyboardShortcuts,
+    hideCursorWhenIdle,
+    children,
+    className,
+    style,
+    ...divProps
+  },
   forwardedRef,
 ) {
   const context = useVideoPlayer()
@@ -787,15 +872,28 @@ const VideoPlayerRootImpl = React.forwardRef<
     [RootDataAttributes.fullscreen]: context.fullscreen || undefined,
     [RootDataAttributes.pip]: context.pictureInPicture || undefined,
     [RootDataAttributes.muted]: context.muted || undefined,
-    [RootDataAttributes.idle]: context.idle,
+    [RootDataAttributes.idle]: context.idle || undefined,
   }
 
+  // Determine if cursor should be hidden based on hideCursorWhenIdle prop
+  const shouldHideCursor =
+    hideCursorWhenIdle !== false &&
+    context.idle &&
+    (hideCursorWhenIdle === 'always' ||
+      (hideCursorWhenIdle === 'fullscreen' && context.fullscreen))
+
+  // Generate a stable ID for scoped CSS
+  const scopeId = React.useId()
+
   return (
+    // biome-ignore lint/a11y/noStaticElementInteractions: allowed
+    // biome-ignore lint/a11y/useKeyWithClickEvents: allowed
     <div
       ref={composedRef}
       tabIndex={keyboardShortcuts === 'focused' ? 0 : undefined}
       className={className}
       style={style}
+      data-video-player-scope={scopeId}
       {...dataAttributes}
       {...divProps}
       onMouseMove={handleMouseMove}
@@ -803,6 +901,10 @@ const VideoPlayerRootImpl = React.forwardRef<
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
     >
+      {/* Inject scoped style to hide cursor - uses !important to override child styles */}
+      {shouldHideCursor && (
+        <style>{`[data-video-player-scope="${scopeId}"], [data-video-player-scope="${scopeId}"] * { cursor: none !important; }`}</style>
+      )}
       {children}
     </div>
   )
@@ -830,7 +932,7 @@ function useComposedRef<T>(
         if (typeof ref === 'function') {
           ref(node)
         } else if (ref != null) {
-          ;(ref as React.MutableRefObject<T>).current = node
+          ;(ref as React.RefObject<T>).current = node
         }
       }
     },
