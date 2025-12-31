@@ -2,8 +2,11 @@
 
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
-import type { RenderProp } from '../types'
-import { CaptionsMenuDataAttributes, CaptionsMenuItemDataAttributes } from './captions-menu.data-attributes'
+import type { RenderProp, TrackInfo } from '../types'
+import {
+  CaptionsMenuDataAttributes,
+  CaptionsMenuItemDataAttributes,
+} from './captions-menu.data-attributes'
 
 // ============================================================================
 // CaptionsMenu Props
@@ -21,7 +24,7 @@ export interface CaptionsMenuRenderProps {
 }
 
 export interface CaptionsMenuState {
-  textTracks: TextTrack[]
+  registeredTracks: TrackInfo[]
   activeTextTrack: TextTrack | null
 }
 
@@ -35,7 +38,7 @@ export const CaptionsMenu = React.forwardRef<HTMLDivElement, CaptionsMenuProps>(
     const context = useVideoPlayerContext('CaptionsMenu')
 
     const state: CaptionsMenuState = {
-      textTracks: context.textTracks,
+      registeredTracks: context.registeredTracks,
       activeTextTrack: context.activeTextTrack,
     }
 
@@ -43,7 +46,8 @@ export const CaptionsMenu = React.forwardRef<HTMLDivElement, CaptionsMenuProps>(
       ref: forwardedRef,
       role: 'menu',
       'aria-label': 'Captions',
-      [CaptionsMenuDataAttributes.active]: context.activeTextTrack !== null || undefined,
+      [CaptionsMenuDataAttributes.active]:
+        context.activeTextTrack !== null || undefined,
     }
 
     if (render) {
@@ -52,23 +56,20 @@ export const CaptionsMenu = React.forwardRef<HTMLDivElement, CaptionsMenuProps>(
 
     // Default render: list of track options with "Off" option
     return (
-      <div
-        {...renderProps}
-        {...divProps}
-      >
+      <div {...renderProps} {...divProps}>
         {children ?? (
           <>
             <CaptionsMenuItem track={null}>Off</CaptionsMenuItem>
-            {context.textTracks.map((track, index) => (
-              <CaptionsMenuItem key={track.label || index} track={track}>
-                {track.label || `Track ${index + 1}`}
+            {context.registeredTracks.map((trackInfo) => (
+              <CaptionsMenuItem key={trackInfo.id} track={trackInfo.textTrack}>
+                {trackInfo.label}
               </CaptionsMenuItem>
             ))}
           </>
         )}
       </div>
     )
-  }
+  },
 )
 
 // ============================================================================

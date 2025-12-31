@@ -39,13 +39,13 @@ export const CaptionsButton = React.forwardRef<HTMLButtonElement, CaptionsButton
     const { render, onClick, ...buttonProps } = props
     const context = useVideoPlayerContext('CaptionsButton')
 
-    const available = context.textTracks.length > 0
+    const available = context.registeredTracks.length > 0
     const active = context.activeTextTrack !== null
 
     const state: CaptionsButtonState = {
       active,
       available,
-      trackCount: context.textTracks.length,
+      trackCount: context.registeredTracks.length,
     }
 
     const handleClick = React.useCallback(
@@ -55,13 +55,16 @@ export const CaptionsButton = React.forwardRef<HTMLButtonElement, CaptionsButton
           if (active) {
             // Turn off captions
             context.setTextTrack(null)
-          } else if (context.textTracks.length > 0) {
-            // Turn on first available track
-            context.setTextTrack(context.textTracks[0])
+          } else if (context.registeredTracks.length > 0) {
+            // Turn on first available track (use the TextTrack reference from TrackInfo)
+            const firstTrack = context.registeredTracks[0]
+            if (firstTrack.textTrack) {
+              context.setTextTrack(firstTrack.textTrack)
+            }
           }
         }
       },
-      [onClick, context, active]
+      [onClick, context, active],
     )
 
     const renderProps: CaptionsButtonRenderProps = {

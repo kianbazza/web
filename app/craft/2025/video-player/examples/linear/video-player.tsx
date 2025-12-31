@@ -5,9 +5,17 @@ import * as React from 'react'
 import * as Primitive from '@/app/craft/2025/video-player/component/index.parts'
 import { cn } from '@/lib/utils'
 
+export interface CaptionTrack {
+  src: string
+  label: string
+  srcLang: string
+  default?: boolean
+}
+
 export interface VideoPlayerProps {
   src: string
   poster?: string
+  captions?: CaptionTrack[]
 }
 
 const Overlay = motion.create(Primitive.Overlay)

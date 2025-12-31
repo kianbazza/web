@@ -22,6 +22,25 @@ export interface VideoTextTrack {
   src?: string
 }
 
+/**
+ * Registered track info from VideoPlayer.Track components.
+ * Includes a reference to the native TextTrack for cue access.
+ */
+export interface TrackInfo {
+  /** Unique identifier for this track registration */
+  id: string
+  /** Track kind (captions, subtitles, descriptions, chapters, metadata) */
+  kind: TextTrackKind
+  /** Human-readable label */
+  label: string
+  /** Language code (e.g., 'en', 'es') */
+  srcLang: string
+  /** Source URL for the track file */
+  src: string
+  /** Reference to the native TextTrack object (set after track loads) */
+  textTrack: TextTrack | null
+}
+
 // ============================================================================
 // Video Player State
 // ============================================================================
@@ -54,8 +73,12 @@ export interface VideoPlayerState {
   preventIdleWhenPaused: boolean
 
   // Captions
-  textTracks: TextTrack[]
+  /** Registered tracks from VideoPlayer.Track components */
+  registeredTracks: TrackInfo[]
+  /** Currently active text track */
   activeTextTrack: TextTrack | null
+  /** Currently active cues from the active text track */
+  activeCues: VTTCue[]
 
   // Playback rate
   playbackRate: number
@@ -89,6 +112,12 @@ export interface VideoPlayerActions {
   setPlaybackRate: (rate: number) => void
   setTextTrack: (track: TextTrack | null) => void
   setQuality: (quality: VideoQuality) => void
+  /** Register a track from VideoPlayer.Track component */
+  registerTrack: (track: TrackInfo) => void
+  /** Unregister a track when VideoPlayer.Track unmounts */
+  unregisterTrack: (id: string) => void
+  /** Update a registered track's textTrack reference */
+  updateTrackRef: (id: string, textTrack: TextTrack) => void
   /** Reset idle state and restart idle timeout */
   resetIdle: () => void
   /** Set hover time for seek preview (null to clear) */
@@ -196,6 +225,14 @@ export interface VideoPlayerRootProps extends DivPropsWithoutConflicts {
    * @default false
    */
   preventIdleWhenPaused?: boolean
+  /**
+   * Controls cursor auto-hiding behavior when the player is idle.
+   * - 'fullscreen': hide cursor only when in fullscreen mode and idle (default)
+   * - 'always': hide cursor when idle in any mode
+   * - false: never auto-hide cursor
+   * @default 'fullscreen'
+   */
+  hideCursorWhenIdle?: 'always' | 'fullscreen' | false
   idle?: boolean
   onIdleChange?: (idle: boolean) => void
 

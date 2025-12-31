@@ -18,6 +18,7 @@
 // Core
 export { VideoPlayerRoot as Root } from './video-player'
 export { Video } from './parts/video'
+export { Track } from './parts/track'
 export { Poster } from './parts/poster'
 export { Overlay } from './parts/overlay'
 export { Thumbnail } from './parts/thumbnail'
@@ -63,6 +64,7 @@ export { PlaybackRateMenu, PlaybackRateMenuItem } from './parts/playback-rate-me
 // Captions
 export { CaptionsButton } from './parts/captions-button'
 export { CaptionsMenu, CaptionsMenuItem } from './parts/captions-menu'
+export { Captions } from './parts/captions'
 
 // Quality
 export { QualityMenu, QualityMenuItem } from './parts/quality-menu'
@@ -87,6 +89,7 @@ export type {
   VideoPlayerRootProps,
   VideoQuality,
   VideoTextTrack,
+  TrackInfo,
   RenderProp,
 } from './types'
 
@@ -101,3 +104,4 @@ export { OverlayDataAttributes } from './parts/overlay.data-attributes'
 export { TimeDisplayDataAttributes } from './parts/time-display.data-attributes'
 export { SeekSliderPreviewThumbDataAttributes } from './parts/seek-slider-preview-thumb.data-attributes'
 export { ThumbnailDataAttributes } from './parts/thumbnail.data-attributes'
+export { CaptionsDataAttributes } from './parts/captions.data-attributes'
