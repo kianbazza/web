@@ -25,7 +25,7 @@ export interface PlaybackRateButtonProps
 }
 
 export interface PlaybackRateButtonRenderProps {
-  ref: React.Ref<HTMLElement>
+  ref: React.Ref<HTMLButtonElement>
   type: 'button'
   'aria-label': string
   [PlaybackRateButtonDataAttributes.rate]: number

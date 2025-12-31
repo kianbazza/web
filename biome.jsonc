@@ -8,7 +8,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!**/globals.css"]
+    "includes": ["**", "!**/globals.css", "!**/.source"]
   },
   "formatter": {
     "enabled": true,

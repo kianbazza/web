@@ -156,7 +156,7 @@ export const VolumeSlider = React.forwardRef<
   // Composition pattern: if children provided, use them; otherwise use default structure
   return (
     <Slider.Root
-      ref={sliderRef}
+      ref={sliderRef as React.RefObject<HTMLDivElement>}
       min={0}
       max={1}
       step={0.01}

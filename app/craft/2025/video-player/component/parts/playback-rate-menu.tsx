@@ -28,7 +28,7 @@ export interface PlaybackRateMenuProps
 }
 
 export interface PlaybackRateMenuRenderProps {
-  ref: React.Ref<HTMLElement>
+  ref: React.Ref<HTMLDivElement>
   role: 'menu'
   'aria-label': string
   [PlaybackRateMenuDataAttributes.rate]: number
