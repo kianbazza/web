@@ -2,8 +2,8 @@
 
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
-import { useTransitionStatus } from '../use-transition-status'
 import type { RenderProp } from '../types'
+import { useTransitionStatus } from '../use-transition-status'
 import { OverlayDataAttributes } from './overlay.data-attributes'
 
 // ============================================================================

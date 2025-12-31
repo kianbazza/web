@@ -3,15 +3,21 @@
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp } from '../types'
-import { PlaybackRateMenuDataAttributes, PlaybackRateMenuItemDataAttributes } from './playback-rate-menu.data-attributes'
+import {
+  PlaybackRateMenuDataAttributes,
+  PlaybackRateMenuItemDataAttributes,
+} from './playback-rate-menu.data-attributes'
 
 // ============================================================================
 // PlaybackRateMenu Props
 // ============================================================================
 
-export const DEFAULT_PLAYBACK_RATES = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] as const
+export const DEFAULT_PLAYBACK_RATES = [
+  0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2,
+] as const
 
-export interface PlaybackRateMenuProps extends React.ComponentPropsWithRef<'div'> {
+export interface PlaybackRateMenuProps
+  extends React.ComponentPropsWithRef<'div'> {
   /**
    * Available playback rates.
    * @default [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
@@ -22,7 +28,7 @@ export interface PlaybackRateMenuProps extends React.ComponentPropsWithRef<'div'
 }
 
 export interface PlaybackRateMenuRenderProps {
-  ref: React.Ref<any>
+  ref: React.Ref<HTMLElement>
   role: 'menu'
   'aria-label': string
   [PlaybackRateMenuDataAttributes.rate]: number
@@ -37,81 +43,87 @@ export interface PlaybackRateMenuState {
 // PlaybackRateMenu Component
 // ============================================================================
 
-export const PlaybackRateMenu = React.forwardRef<HTMLDivElement, PlaybackRateMenuProps>(
-  function PlaybackRateMenu(props, forwardedRef) {
-    const { rates = DEFAULT_PLAYBACK_RATES, render, children, ...divProps } = props
-    const context = useVideoPlayerContext('PlaybackRateMenu')
+export const PlaybackRateMenu = React.forwardRef<
+  HTMLDivElement,
+  PlaybackRateMenuProps
+>(function PlaybackRateMenu(props, forwardedRef) {
+  const {
+    rates = DEFAULT_PLAYBACK_RATES,
+    render,
+    children,
+    ...divProps
+  } = props
+  const context = useVideoPlayerContext('PlaybackRateMenu')
 
-    const state: PlaybackRateMenuState = {
-      playbackRate: context.playbackRate,
-      rates,
-    }
-
-    const renderProps: PlaybackRateMenuRenderProps = {
-      ref: forwardedRef,
-      role: 'menu',
-      'aria-label': 'Playback speed',
-      [PlaybackRateMenuDataAttributes.rate]: context.playbackRate,
-    }
-
-    if (render) {
-      return render(renderProps, state)
-    }
-
-    // Default render: simple list of rate options
-    return (
-      <div
-        {...renderProps}
-        {...divProps}
-      >
-        {children ?? rates.map((rate) => (
-          <PlaybackRateMenuItem key={rate} rate={rate} />
-        ))}
-      </div>
-    )
+  const state: PlaybackRateMenuState = {
+    playbackRate: context.playbackRate,
+    rates,
   }
-)
+
+  const renderProps: PlaybackRateMenuRenderProps = {
+    ref: forwardedRef,
+    role: 'menu',
+    'aria-label': 'Playback speed',
+    [PlaybackRateMenuDataAttributes.rate]: context.playbackRate,
+  }
+
+  if (render) {
+    return render(renderProps, state)
+  }
+
+  // Default render: simple list of rate options
+  return (
+    <div {...renderProps} {...divProps}>
+      {children ??
+        rates.map((rate) => <PlaybackRateMenuItem key={rate} rate={rate} />)}
+    </div>
+  )
+})
 
 // ============================================================================
 // PlaybackRateMenuItem
 // ============================================================================
 
-export interface PlaybackRateMenuItemProps extends React.ComponentPropsWithRef<'button'> {
+export interface PlaybackRateMenuItemProps
+  extends React.ComponentPropsWithRef<'button'> {
   rate: number
 }
 
-export const PlaybackRateMenuItem = React.forwardRef<HTMLButtonElement, PlaybackRateMenuItemProps>(
-  function PlaybackRateMenuItem(props, forwardedRef) {
-    const { rate, onClick, children, ...buttonProps } = props
-    const context = useVideoPlayerContext('PlaybackRateMenuItem')
+export const PlaybackRateMenuItem = React.forwardRef<
+  HTMLButtonElement,
+  PlaybackRateMenuItemProps
+>(function PlaybackRateMenuItem(props, forwardedRef) {
+  const { rate, onClick, children, ...buttonProps } = props
+  const context = useVideoPlayerContext('PlaybackRateMenuItem')
 
-    const isActive = context.playbackRate === rate
+  const isActive = context.playbackRate === rate
 
-    const handleClick = React.useCallback(
-      (event: React.MouseEvent<HTMLButtonElement>) => {
-        onClick?.(event)
-        if (!event.defaultPrevented) {
-          context.setPlaybackRate(rate)
-        }
-      },
-      [onClick, context, rate]
-    )
+  const handleClick = React.useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(event)
+      if (!event.defaultPrevented) {
+        context.setPlaybackRate(rate)
+      }
+    },
+    [onClick, context, rate],
+  )
 
-    return (
-      <button
-        ref={forwardedRef}
-        type="button"
-        role="menuitemradio"
-        aria-checked={isActive}
-        {...{ [PlaybackRateMenuItemDataAttributes.active]: isActive || undefined }}
-        {...buttonProps}
-        onClick={handleClick}
-      >
-        {children ?? `${rate}x`}
-      </button>
-    )
-  }
-)
+  return (
+    <button
+      ref={forwardedRef}
+      type="button"
+      role="menuitemradio"
+      aria-checked={isActive}
+      {...{
+        [PlaybackRateMenuItemDataAttributes.active]: isActive || undefined,
+      }}
+      {...buttonProps}
+      onClick={handleClick}
+    >
+      {children ?? `${rate}x`}
+    </button>
+  )
+})
 
 // ============================================================================
 // Namespace

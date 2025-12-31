@@ -58,7 +58,9 @@ export const Video = React.forwardRef<HTMLVideoElement, VideoProps>(
         } else if (forwardedRef) {
           forwardedRef.current = node
         }
-        ;(context.videoRef as React.MutableRefObject<HTMLVideoElement | null>).current = node
+        ;(
+          context.videoRef as React.MutableRefObject<HTMLVideoElement | null>
+        ).current = node
 
         // Handle race condition: metadata/canplay may have loaded before handlers attached
         // Only check once to avoid infinite loops
@@ -131,4 +133,3 @@ export namespace Video {
   export type Props = VideoProps
   export type State = VideoState
 }
-

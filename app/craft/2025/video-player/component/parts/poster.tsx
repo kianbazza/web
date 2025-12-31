@@ -2,8 +2,8 @@
 
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
-import { useTransitionStatus } from '../use-transition-status'
 import type { RenderProp } from '../types'
+import { useTransitionStatus } from '../use-transition-status'
 import { PosterDataAttributes } from './poster.data-attributes'
 
 // ============================================================================
@@ -71,8 +71,10 @@ export const Poster = React.forwardRef<HTMLDivElement, PosterProps>(
       'aria-hidden': true,
       [PosterDataAttributes.loading]: loading || undefined,
       [PosterDataAttributes.loaded]: loaded || undefined,
-      [PosterDataAttributes.startingStyle]: transitionStatus === 'starting' || undefined,
-      [PosterDataAttributes.endingStyle]: transitionStatus === 'ending' || undefined,
+      [PosterDataAttributes.startingStyle]:
+        transitionStatus === 'starting' || undefined,
+      [PosterDataAttributes.endingStyle]:
+        transitionStatus === 'ending' || undefined,
     }
 
     if (!mounted) {
@@ -114,11 +116,11 @@ function useComposedRef<T>(
         if (typeof ref === 'function') {
           ref(node)
         } else if (ref != null) {
-          ;(ref as React.MutableRefObject<T>).current = node
+          ;(ref as React.RefObject<T>).current = node
         }
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // biome-ignore lint/correctness/useExhaustiveDependencies: allowed
     refs,
   )
 }

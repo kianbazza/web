@@ -17,7 +17,7 @@ export interface CaptionsMenuProps extends React.ComponentPropsWithRef<'div'> {
 }
 
 export interface CaptionsMenuRenderProps {
-  ref: React.Ref<any>
+  ref: React.Ref<HTMLElement>
   role: 'menu'
   'aria-label': string
   [CaptionsMenuDataAttributes.active]?: boolean
@@ -76,42 +76,44 @@ export const CaptionsMenu = React.forwardRef<HTMLDivElement, CaptionsMenuProps>(
 // CaptionsMenuItem
 // ============================================================================
 
-export interface CaptionsMenuItemProps extends React.ComponentPropsWithRef<'button'> {
+export interface CaptionsMenuItemProps
+  extends React.ComponentPropsWithRef<'button'> {
   track: TextTrack | null
 }
 
-export const CaptionsMenuItem = React.forwardRef<HTMLButtonElement, CaptionsMenuItemProps>(
-  function CaptionsMenuItem(props, forwardedRef) {
-    const { track, onClick, children, ...buttonProps } = props
-    const context = useVideoPlayerContext('CaptionsMenuItem')
+export const CaptionsMenuItem = React.forwardRef<
+  HTMLButtonElement,
+  CaptionsMenuItemProps
+>(function CaptionsMenuItem(props, forwardedRef) {
+  const { track, onClick, children, ...buttonProps } = props
+  const context = useVideoPlayerContext('CaptionsMenuItem')
 
-    const isActive = context.activeTextTrack === track
+  const isActive = context.activeTextTrack === track
 
-    const handleClick = React.useCallback(
-      (event: React.MouseEvent<HTMLButtonElement>) => {
-        onClick?.(event)
-        if (!event.defaultPrevented) {
-          context.setTextTrack(track)
-        }
-      },
-      [onClick, context, track]
-    )
+  const handleClick = React.useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(event)
+      if (!event.defaultPrevented) {
+        context.setTextTrack(track)
+      }
+    },
+    [onClick, context, track],
+  )
 
-    return (
-      <button
-        ref={forwardedRef}
-        type="button"
-        role="menuitemradio"
-        aria-checked={isActive}
-        {...{ [CaptionsMenuItemDataAttributes.active]: isActive || undefined }}
-        {...buttonProps}
-        onClick={handleClick}
-      >
-        {children}
-      </button>
-    )
-  }
-)
+  return (
+    <button
+      ref={forwardedRef}
+      type="button"
+      role="menuitemradio"
+      aria-checked={isActive}
+      {...{ [CaptionsMenuItemDataAttributes.active]: isActive || undefined }}
+      {...buttonProps}
+      onClick={handleClick}
+    >
+      {children}
+    </button>
+  )
+})
 
 // ============================================================================
 // Namespace

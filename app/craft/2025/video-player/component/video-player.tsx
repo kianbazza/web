@@ -4,6 +4,8 @@ import * as React from 'react'
 import { VideoPlayerContext } from './context'
 import { RootDataAttributes } from './parts/root.data-attributes'
 import type {
+  PlaybackIntent,
+  PlaybackStatus,
   TrackInfo,
   VideoPlayerContextValue,
   VideoPlayerRootProps,
@@ -48,6 +50,8 @@ function useControllableState<T>(
 // ============================================================================
 
 export interface VideoPlayerRootState {
+  playbackStatus: PlaybackStatus
+  playbackIntent: PlaybackIntent
   playing: boolean
   paused: boolean
   ended: boolean
@@ -121,11 +125,24 @@ function VideoPlayerProvider({
   const previousVolumeRef = React.useRef(1)
 
   // Controllable state
-  const [playing, setPlaying] = useControllableState(
-    controlledPlaying,
-    defaultPlaying,
-    onPlayingChange,
+  // Note: We use playbackStatus internally but still support the controlled `playing` prop
+  // for backward compatibility. The `playing` prop maps to playbackIntent.
+  const [playbackStatus, setPlaybackStatus] =
+    React.useState<PlaybackStatus>('paused')
+  const [playbackIntent, setPlaybackIntent] = React.useState<PlaybackIntent>(
+    defaultPlaying ? 'play' : 'pause',
   )
+
+  // Sync playbackStatus when controlled `playing` prop changes
+  React.useEffect(() => {
+    if (controlledPlaying !== undefined) {
+      setPlaybackIntent(controlledPlaying ? 'play' : 'pause')
+      // Only update status if not in a transient state like 'waiting'
+      if (playbackStatus !== 'waiting') {
+        setPlaybackStatus(controlledPlaying ? 'playing' : 'paused')
+      }
+    }
+  }, [controlledPlaying, playbackStatus])
   const [volume, setVolume] = useControllableState(
     controlledVolume,
     defaultVolume,
@@ -177,6 +194,7 @@ function VideoPlayerProvider({
   }, [clearIdleTimeout, setIdle])
 
   // Start idle timeout on mount, cleanup on unmount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: allowed
   React.useEffect(() => {
     if (idleTimeout > 0) {
       idleTimeoutRef.current = setTimeout(() => {
@@ -188,20 +206,18 @@ function VideoPlayerProvider({
         clearTimeout(idleTimeoutRef.current)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Compute effective idle state synchronously to prevent flicker
-  // When preventIdleWhenPaused is enabled and video is paused, never be idle
-  const effectiveIdle = preventIdleWhenPaused && !playing ? false : idle
+  // When preventIdleWhenPaused is enabled and video is not playing, never be idle
+  const effectiveIdle =
+    preventIdleWhenPaused && playbackStatus !== 'playing' ? false : idle
 
   // Internal state (not controllable)
   const [currentTime, setCurrentTime] = React.useState(0)
   const [duration, setDuration] = React.useState(0)
   const [buffered, setBuffered] = React.useState<TimeRanges | null>(null)
   const [hoverTime, setHoverTime] = React.useState<number | null>(null)
-  const [ended, setEnded] = React.useState(false)
-  const [waiting, setWaiting] = React.useState(false)
   const [canPlay, setCanPlay] = React.useState(false)
   const [seeking, setSeeking] = React.useState(false)
   const [fullscreen, setFullscreen] = React.useState(false)
@@ -262,26 +278,29 @@ function VideoPlayerProvider({
   // Actions
   const play = React.useCallback(async () => {
     if (videoRef.current) {
+      setPlaybackIntent('play')
       await videoRef.current.play()
-      setPlaying(true)
-      setEnded(false)
+      setPlaybackStatus('playing')
+      onPlayingChange?.(true)
     }
-  }, [setPlaying, videoRef])
+  }, [videoRef, onPlayingChange])
 
   const pause = React.useCallback(() => {
     if (videoRef.current) {
+      setPlaybackIntent('pause')
       videoRef.current.pause()
-      setPlaying(false)
+      setPlaybackStatus('paused')
+      onPlayingChange?.(false)
     }
-  }, [setPlaying, videoRef])
+  }, [videoRef, onPlayingChange])
 
   const toggle = React.useCallback(async () => {
-    if (playing) {
+    if (playbackStatus === 'playing') {
       pause()
     } else {
       await play()
     }
-  }, [playing, play, pause])
+  }, [playbackStatus, play, pause])
 
   const seek = React.useCallback(
     (time: number) => {
@@ -495,35 +514,49 @@ function VideoPlayerProvider({
   }, [videoRef])
 
   const handlePlay = React.useCallback(() => {
-    setPlaying(true)
-    setEnded(false)
-  }, [setPlaying])
+    setPlaybackIntent('play')
+    setPlaybackStatus('playing')
+    onPlayingChange?.(true)
+  }, [onPlayingChange])
 
   const handlePause = React.useCallback(() => {
-    setPlaying(false)
-  }, [setPlaying])
+    // Only set to paused if not ended (ended takes precedence)
+    if (playbackStatus !== 'ended') {
+      setPlaybackStatus('paused')
+      onPlayingChange?.(false)
+    }
+  }, [playbackStatus, onPlayingChange])
 
   const handleEnded = React.useCallback(() => {
-    setEnded(true)
-    setPlaying(false)
+    setPlaybackIntent('pause')
+    setPlaybackStatus('ended')
+    onPlayingChange?.(false)
     onEnded?.()
-  }, [setPlaying, onEnded])
+  }, [onPlayingChange, onEnded])
 
   const handleWaiting = React.useCallback(() => {
-    setWaiting(true)
+    setPlaybackStatus('waiting')
     onWaiting?.()
   }, [onWaiting])
 
   const handleCanPlay = React.useCallback(() => {
-    setWaiting(false)
+    // Resume based on intent when exiting waiting state
+    if (playbackStatus === 'waiting') {
+      const resumeStatus = playbackIntent === 'play' ? 'playing' : 'paused'
+      setPlaybackStatus(resumeStatus)
+      onPlayingChange?.(resumeStatus === 'playing')
+    }
     setCanPlay(true)
-  }, [])
+  }, [playbackStatus, playbackIntent, onPlayingChange])
 
   const handleSeeking = React.useCallback(() => {
     setSeeking(true)
-    setEnded(false) // Clear ended state when user seeks
+    // Clear ended state when user seeks
+    if (playbackStatus === 'ended') {
+      setPlaybackStatus('paused')
+    }
     onSeeking?.()
-  }, [onSeeking])
+  }, [playbackStatus, onSeeking])
 
   const handleSeeked = React.useCallback(() => {
     setSeeking(false)
@@ -531,7 +564,7 @@ function VideoPlayerProvider({
     if (videoRef.current) {
       const { currentTime, duration } = videoRef.current
       if (duration > 0 && duration - currentTime < 0.01) {
-        setEnded(true)
+        setPlaybackStatus('ended')
       }
     }
     onSeeked?.()
@@ -555,11 +588,17 @@ function VideoPlayerProvider({
   // Context value
   const contextValue = React.useMemo<VideoPlayerContextValue>(
     () => ({
-      // State
-      playing,
-      paused: !playing,
-      ended,
-      waiting,
+      // Playback - Primary API
+      playbackStatus,
+      playbackIntent,
+
+      // Playback - Derived booleans (backward compatibility)
+      playing: playbackStatus === 'playing',
+      paused: playbackStatus === 'paused',
+      ended: playbackStatus === 'ended',
+      waiting: playbackStatus === 'waiting',
+
+      // Playback - Orthogonal states
       seeking,
       canPlay,
       currentTime,
@@ -628,9 +667,8 @@ function VideoPlayerProvider({
       },
     }),
     [
-      playing,
-      ended,
-      waiting,
+      playbackStatus,
+      playbackIntent,
       seeking,
       canPlay,
       currentTime,
@@ -671,7 +709,6 @@ function VideoPlayerProvider({
       unregisterTrack,
       updateTrackRef,
       resetIdle,
-      setHoverTime,
       handleTimeUpdate,
       handleDurationChange,
       handleProgress,
@@ -936,7 +973,7 @@ function useComposedRef<T>(
         }
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // biome-ignore lint/correctness/useExhaustiveDependencies: allowed
     refs,
   )
 }

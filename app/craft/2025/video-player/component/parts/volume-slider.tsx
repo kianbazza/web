@@ -1,11 +1,11 @@
 'use client'
 
-import * as React from 'react'
 import { Slider } from '@base-ui-components/react/slider'
+import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp } from '../types'
-import { VolumeSliderDataAttributes } from './volume-slider.data-attributes'
 import { VolumeSliderCssVars } from './volume-slider.css-vars'
+import { VolumeSliderDataAttributes } from './volume-slider.data-attributes'
 
 // ============================================================================
 // VolumeSlider Props
@@ -45,7 +45,7 @@ export const VolumeSlider = React.forwardRef<
 >(function VolumeSlider(props, forwardedRef) {
   const { render, children, onPointerDown, ...sliderProps } = props
   const context = useVideoPlayerContext('VolumeSlider')
-  const sliderRef = React.useRef<HTMLDivElement>(null!)
+  const sliderRef = React.useRef<HTMLDivElement | null>(null)
   const [pressing, setPressing] = React.useState(false)
   const [dragging, setDragging] = React.useState(false)
   const pressingRef = React.useRef(false)
@@ -140,7 +140,7 @@ export const VolumeSlider = React.forwardRef<
   if (render) {
     return (
       <Slider.Root
-        ref={sliderRef}
+        ref={sliderRef as React.RefObject<HTMLDivElement>}
         min={0}
         max={1}
         step={0.01}
@@ -201,9 +201,7 @@ export const VolumeSliderTrack = React.forwardRef<
     ...style,
   }
 
-  return (
-    <Slider.Track ref={forwardedRef} style={trackStyle} {...trackProps} />
-  )
+  return <Slider.Track ref={forwardedRef} style={trackStyle} {...trackProps} />
 })
 
 // VolumeSliderRange - Base UI handles positioning internally
@@ -227,9 +225,7 @@ export const VolumeSliderThumb = React.forwardRef<
   VolumeSliderThumbProps
 >(function VolumeSliderThumb(props, forwardedRef) {
   // Base UI handles positioning internally (position, insetInlineStart, top, translate)
-  return (
-    <Slider.Thumb ref={forwardedRef} {...props} />
-  )
+  return <Slider.Thumb ref={forwardedRef} {...props} />
 })
 
 // ============================================================================
