@@ -72,9 +72,9 @@ export function VideoPlayer_v2({ src, captions }: VideoPlayerProps) {
           className={cn(buttonClassName, 'group *:size-4 *:text-white')}
         >
           <SpinnerIcon className="hidden group-data-[waiting]:block animate-spin" />
-          <PlayIcon className="group-data-[playing]:hidden group-data-[waiting]:hidden group-data-[ended]:hidden" />
-          <PauseIcon className="group-data-[paused]:hidden group-data-[waiting]:hidden" />
-          <ReplayIcon className="group-not-data-[ended]:hidden" />
+          <PlayIcon className="hidden group-data-[paused]:block" />
+          <PauseIcon className="hidden group-data-[playing]:block" />
+          <ReplayIcon className="hidden group-data-[ended]:block" />
         </VideoPlayer.PlayButton>
 
         <div>

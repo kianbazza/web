@@ -3,7 +3,10 @@
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp, VideoQuality } from '../types'
-import { QualityMenuDataAttributes, QualityMenuItemDataAttributes } from './quality-menu.data-attributes'
+import {
+  QualityMenuDataAttributes,
+  QualityMenuItemDataAttributes,
+} from './quality-menu.data-attributes'
 
 // ============================================================================
 // QualityMenu Props
@@ -43,7 +46,8 @@ export const QualityMenu = React.forwardRef<HTMLDivElement, QualityMenuProps>(
       ref: forwardedRef,
       role: 'menu',
       'aria-label': 'Video quality',
-      [QualityMenuDataAttributes.quality]: context.activeQuality?.label ?? undefined,
+      [QualityMenuDataAttributes.quality]:
+        context.activeQuality?.label ?? undefined,
     }
 
     if (render) {
@@ -52,60 +56,60 @@ export const QualityMenu = React.forwardRef<HTMLDivElement, QualityMenuProps>(
 
     // Default render: list of quality options
     return (
-      <div
-        {...renderProps}
-        {...divProps}
-      >
-        {children ?? context.qualities.map((quality) => (
-          <QualityMenuItem key={quality.label} quality={quality}>
-            {quality.label}
-          </QualityMenuItem>
-        ))}
+      <div {...renderProps} {...divProps}>
+        {children ??
+          context.qualities.map((quality) => (
+            <QualityMenuItem key={quality.label} quality={quality}>
+              {quality.label}
+            </QualityMenuItem>
+          ))}
       </div>
     )
-  }
+  },
 )
 
 // ============================================================================
 // QualityMenuItem
 // ============================================================================
 
-export interface QualityMenuItemProps extends React.ComponentPropsWithRef<'button'> {
+export interface QualityMenuItemProps
+  extends React.ComponentPropsWithRef<'button'> {
   quality: VideoQuality
 }
 
-export const QualityMenuItem = React.forwardRef<HTMLButtonElement, QualityMenuItemProps>(
-  function QualityMenuItem(props, forwardedRef) {
-    const { quality, onClick, children, ...buttonProps } = props
-    const context = useVideoPlayerContext('QualityMenuItem')
+export const QualityMenuItem = React.forwardRef<
+  HTMLButtonElement,
+  QualityMenuItemProps
+>(function QualityMenuItem(props, forwardedRef) {
+  const { quality, onClick, children, ...buttonProps } = props
+  const context = useVideoPlayerContext('QualityMenuItem')
 
-    const isActive = context.activeQuality?.label === quality.label
+  const isActive = context.activeQuality?.label === quality.label
 
-    const handleClick = React.useCallback(
-      (event: React.MouseEvent<HTMLButtonElement>) => {
-        onClick?.(event)
-        if (!event.defaultPrevented) {
-          context.setQuality(quality)
-        }
-      },
-      [onClick, context, quality]
-    )
+  const handleClick = React.useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(event)
+      if (!event.defaultPrevented) {
+        context.setQuality(quality)
+      }
+    },
+    [onClick, context, quality],
+  )
 
-    return (
-      <button
-        ref={forwardedRef}
-        type="button"
-        role="menuitemradio"
-        aria-checked={isActive}
-        {...{ [QualityMenuItemDataAttributes.active]: isActive || undefined }}
-        {...buttonProps}
-        onClick={handleClick}
-      >
-        {children}
-      </button>
-    )
-  }
-)
+  return (
+    <button
+      ref={forwardedRef}
+      type="button"
+      role="menuitemradio"
+      aria-checked={isActive}
+      {...{ [QualityMenuItemDataAttributes.active]: isActive || undefined }}
+      {...buttonProps}
+      onClick={handleClick}
+    >
+      {children}
+    </button>
+  )
+})
 
 // ============================================================================
 // Namespace

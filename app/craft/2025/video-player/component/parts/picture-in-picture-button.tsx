@@ -9,12 +9,16 @@ import { PictureInPictureButtonDataAttributes } from './picture-in-picture-butto
 // PictureInPictureButton Props
 // ============================================================================
 
-export interface PictureInPictureButtonProps extends React.ComponentPropsWithRef<'button'> {
-  render?: RenderProp<PictureInPictureButtonRenderProps, PictureInPictureButtonState>
+export interface PictureInPictureButtonProps
+  extends React.ComponentPropsWithRef<'button'> {
+  render?: RenderProp<
+    PictureInPictureButtonRenderProps,
+    PictureInPictureButtonState
+  >
 }
 
 export interface PictureInPictureButtonRenderProps {
-  ref: React.Ref<any>
+  ref: React.Ref<HTMLElement>
   type: 'button'
   'aria-label': string
   'aria-pressed': boolean
@@ -33,55 +37,56 @@ export interface PictureInPictureButtonState {
 // PictureInPictureButton Component
 // ============================================================================
 
-export const PictureInPictureButton = React.forwardRef<HTMLButtonElement, PictureInPictureButtonProps>(
-  function PictureInPictureButton(props, forwardedRef) {
-    const { render, onClick, ...buttonProps } = props
-    const context = useVideoPlayerContext('PictureInPictureButton')
+export const PictureInPictureButton = React.forwardRef<
+  HTMLButtonElement,
+  PictureInPictureButtonProps
+>(function PictureInPictureButton(props, forwardedRef) {
+  const { render, onClick, ...buttonProps } = props
+  const context = useVideoPlayerContext('PictureInPictureButton')
 
-    // Defer to after hydration to avoid mismatch
-    const [supported, setSupported] = React.useState(false)
-    React.useEffect(() => {
-      setSupported('pictureInPictureEnabled' in document && document.pictureInPictureEnabled)
-    }, [])
-
-    const state: PictureInPictureButtonState = {
-      pictureInPicture: context.pictureInPicture,
-      supported,
-    }
-
-    const handleClick = React.useCallback(
-      (event: React.MouseEvent<HTMLButtonElement>) => {
-        onClick?.(event)
-        if (!event.defaultPrevented) {
-          context.togglePictureInPicture()
-        }
-      },
-      [onClick, context]
+  // Defer to after hydration to avoid mismatch
+  const [supported, setSupported] = React.useState(false)
+  React.useEffect(() => {
+    setSupported(
+      'pictureInPictureEnabled' in document && document.pictureInPictureEnabled,
     )
+  }, [])
 
-    const renderProps: PictureInPictureButtonRenderProps = {
-      ref: forwardedRef,
-      type: 'button',
-      'aria-label': context.pictureInPicture ? 'Exit picture-in-picture' : 'Enter picture-in-picture',
-      'aria-pressed': context.pictureInPicture,
-      disabled: !supported,
-      [PictureInPictureButtonDataAttributes.pip]: context.pictureInPicture || undefined,
-      [PictureInPictureButtonDataAttributes.supported]: supported || undefined,
-      onClick: handleClick,
-    }
-
-    if (render) {
-      return render(renderProps, state)
-    }
-
-    return (
-      <button
-        {...renderProps}
-        {...buttonProps}
-      />
-    )
+  const state: PictureInPictureButtonState = {
+    pictureInPicture: context.pictureInPicture,
+    supported,
   }
-)
+
+  const handleClick = React.useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(event)
+      if (!event.defaultPrevented) {
+        context.togglePictureInPicture()
+      }
+    },
+    [onClick, context],
+  )
+
+  const renderProps: PictureInPictureButtonRenderProps = {
+    ref: forwardedRef,
+    type: 'button',
+    'aria-label': context.pictureInPicture
+      ? 'Exit picture-in-picture'
+      : 'Enter picture-in-picture',
+    'aria-pressed': context.pictureInPicture,
+    disabled: !supported,
+    [PictureInPictureButtonDataAttributes.pip]:
+      context.pictureInPicture || undefined,
+    [PictureInPictureButtonDataAttributes.supported]: supported || undefined,
+    onClick: handleClick,
+  }
+
+  if (render) {
+    return render(renderProps, state)
+  }
+
+  return <button {...renderProps} {...buttonProps} />
+})
 
 // ============================================================================
 // Namespace

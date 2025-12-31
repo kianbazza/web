@@ -33,7 +33,8 @@ export function Portal(props: PortalProps): React.ReactPortal | null {
     return null
   }
 
-  const target = container ?? (typeof document !== 'undefined' ? document.body : null)
+  const target =
+    container ?? (typeof document !== 'undefined' ? document.body : null)
 
   if (!target) {
     return null

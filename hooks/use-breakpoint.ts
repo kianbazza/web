@@ -14,7 +14,7 @@ export function useBreakpoint() {
   // State to store the current breakpoint
   const [breakpoint, setBreakpoint] = useState(getBreakpoint(0))
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: allowed
   useEffect(() => {
     setBreakpoint(getBreakpoint(window.innerWidth))
 

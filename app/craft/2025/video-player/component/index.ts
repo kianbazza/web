@@ -16,20 +16,20 @@
 
 // Namespace export
 export * as VideoPlayer from './index.parts'
-
-// Hook (also available via VideoPlayer.useVideoPlayer)
-export { useVideoPlayer } from './use-video-player'
-
 // Types
 export type {
-  VideoPlayerContextValue,
-  VideoPlayerState,
+  PlaybackIntent,
+  PlaybackStatus,
+  RenderProp,
   VideoPlayerActions,
+  VideoPlayerContextValue,
   VideoPlayerExternalActions,
   VideoPlayerRootProps,
+  VideoPlayerState,
   VideoQuality,
   VideoTextTrack,
-  RenderProp,
 } from './types'
+// Hook (also available via VideoPlayer.useVideoPlayer)
+export { useVideoPlayer } from './use-video-player'
 
 export type { VideoPlayerRootState } from './video-player'

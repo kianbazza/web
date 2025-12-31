@@ -1,8 +1,8 @@
 'use client'
 
 import { motion, type Variants } from 'motion/react'
-import { cn } from '@/lib/utils'
 import { VideoPlayer } from '@/app/craft/2025/video-player/component'
+import { cn } from '@/lib/utils'
 import type { VideoPlayerProps } from './video-player'
 
 const duration = 0.3

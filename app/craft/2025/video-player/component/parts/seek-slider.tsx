@@ -1,20 +1,20 @@
 'use client'
 
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import { Slider } from '@base-ui-components/react/slider'
 import {
-  useFloating,
-  offset,
-  shift,
   autoUpdate,
+  offset,
   type Padding,
+  shift,
+  useFloating,
 } from '@floating-ui/react'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 import { useVideoPlayerContext } from '../context'
-import { useTransitionStatus } from '../use-transition-status'
 import type { RenderProp } from '../types'
-import { SeekSliderDataAttributes } from './seek-slider.data-attributes'
+import { useTransitionStatus } from '../use-transition-status'
 import { SeekSliderCssVars } from './seek-slider.css-vars'
+import { SeekSliderDataAttributes } from './seek-slider.data-attributes'
 import { SeekSliderPreviewThumbDataAttributes } from './seek-slider-preview-thumb.data-attributes'
 
 // ============================================================================
@@ -29,7 +29,9 @@ interface SeekSliderContextValue {
   open: boolean
 }
 
-const SeekSliderContext = React.createContext<SeekSliderContextValue | null>(null)
+const SeekSliderContext = React.createContext<SeekSliderContextValue | null>(
+  null,
+)
 
 function useSeekSliderContext(componentName: string) {
   const context = React.useContext(SeekSliderContext)
@@ -90,7 +92,8 @@ export const SeekSlider = React.forwardRef<
   } = props
   const context = useVideoPlayerContext('SeekSlider')
   const sliderRef = React.useRef<HTMLDivElement>(null!)
-  const [previewThumbElement, setPreviewThumbElement] = React.useState<HTMLElement | null>(null)
+  const [previewThumbElement, setPreviewThumbElement] =
+    React.useState<HTMLElement | null>(null)
   const [pressing, setPressing] = React.useState(false)
   const [dragging, setDragging] = React.useState(false)
   const pressingRef = React.useRef(false)
@@ -156,7 +159,10 @@ export const SeekSlider = React.forwardRef<
   )
 
   const handleValueCommitted = React.useCallback(
-    (value: number | readonly number[], eventDetails: { reason: 'none'; event: Event }) => {
+    (
+      value: number | readonly number[],
+      eventDetails: { reason: 'none'; event: Event },
+    ) => {
       const v = typeof value === 'number' ? value : value[0]
       onValueCommitted?.(v, eventDetails)
       setPressing(false)
@@ -205,6 +211,7 @@ export const SeekSlider = React.forwardRef<
   // Context value for child components (PreviewThumb, Tooltip)
   const open = context.hoverProgress !== null
   const hoverProgress = context.hoverProgress ?? 0
+  // biome-ignore lint/correctness/useExhaustiveDependencies: allowed
   const seekSliderContextValue = React.useMemo<SeekSliderContextValue>(
     () => ({
       sliderRef,
@@ -213,7 +220,13 @@ export const SeekSlider = React.forwardRef<
       hoverProgress,
       open,
     }),
-    [sliderRef, previewThumbElement, setPreviewThumbElement, hoverProgress, open]
+    [
+      sliderRef,
+      previewThumbElement,
+      setPreviewThumbElement,
+      hoverProgress,
+      open,
+    ],
   )
 
   const style = {
@@ -253,11 +266,16 @@ export const SeekSlider = React.forwardRef<
           onPointerLeave={handlePointerLeave}
           onPointerDown={handlePointerDown}
           aria-label="Seek"
-          render={(baseProps) => render({
-            ...baseProps,
-            ...renderProps,
-            style: { ...baseProps.style, ...renderProps.style },
-          }, state)}
+          render={(baseProps) =>
+            render(
+              {
+                ...baseProps,
+                ...renderProps,
+                style: { ...baseProps.style, ...renderProps.style },
+              },
+              state,
+            )
+          }
         />
       </SeekSliderContext.Provider>
     )
@@ -324,7 +342,7 @@ export interface SeekSliderTrackRenderProps {
   style: React.CSSProperties
 }
 
-export interface SeekSliderTrackState {}
+export type SeekSliderTrackState = {}
 
 export const SeekSliderTrack = React.forwardRef<
   React.ComponentRef<typeof Slider.Track>,
@@ -347,7 +365,9 @@ export const SeekSliderTrack = React.forwardRef<
 
   if (render) {
     return (
-      <Slider.Track render={(baseProps) => render({ ...baseProps, ...renderProps }, state)} />
+      <Slider.Track
+        render={(baseProps) => render({ ...baseProps, ...renderProps }, state)}
+      />
     )
   }
 
@@ -404,13 +424,26 @@ export const SeekSliderProgress = React.forwardRef<
   if (render) {
     return (
       <Slider.Indicator
-        render={(baseProps) => render({ ...baseProps, ...renderProps, style: { ...baseProps.style, ...indicatorStyle } }, state)}
+        render={(baseProps) =>
+          render(
+            {
+              ...baseProps,
+              ...renderProps,
+              style: { ...baseProps.style, ...indicatorStyle },
+            },
+            state,
+          )
+        }
       />
     )
   }
 
   return (
-    <Slider.Indicator ref={forwardedRef} style={indicatorStyle} {...indicatorProps}>
+    <Slider.Indicator
+      ref={forwardedRef}
+      style={indicatorStyle}
+      {...indicatorProps}
+    >
       {children}
     </Slider.Indicator>
   )
@@ -431,7 +464,7 @@ export interface SeekSliderThumbRenderProps {
   style: React.CSSProperties
 }
 
-export interface SeekSliderThumbState {}
+export type SeekSliderThumbState = {}
 
 export const SeekSliderThumb = React.forwardRef<
   React.ComponentRef<typeof Slider.Thumb>,
@@ -451,7 +484,16 @@ export const SeekSliderThumb = React.forwardRef<
   if (render) {
     return (
       <Slider.Thumb
-        render={(baseProps) => render({ ...baseProps, ...renderProps, style: { ...baseProps.style, ...style } }, state)}
+        render={(baseProps) =>
+          render(
+            {
+              ...baseProps,
+              ...renderProps,
+              style: { ...baseProps.style, ...style },
+            },
+            state,
+          )
+        }
       />
     )
   }
@@ -708,7 +750,9 @@ export function SeekSliderPreviewTooltipPortal({
   children,
   container,
 }: SeekSliderPreviewTooltipPortalProps) {
-  const videoPlayerContext = useVideoPlayerContext('SeekSliderPreviewTooltipPortal')
+  const videoPlayerContext = useVideoPlayerContext(
+    'SeekSliderPreviewTooltipPortal',
+  )
   const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
@@ -718,7 +762,8 @@ export function SeekSliderPreviewTooltipPortal({
   if (!mounted) return null
 
   // Default to VideoPlayer root for correct stacking context (z-index works within the player)
-  const portalContainer = container ?? videoPlayerContext.rootRef.current ?? document.body
+  const portalContainer =
+    container ?? videoPlayerContext.rootRef.current ?? document.body
   return ReactDOM.createPortal(children, portalContainer)
 }
 
@@ -750,9 +795,12 @@ export const SeekSliderPreviewTooltipPositioner = React.forwardRef<
     ...divProps
   } = props
 
-  const seekSliderContext = useSeekSliderContext('SeekSliderPreviewTooltipPositioner')
+  const seekSliderContext = useSeekSliderContext(
+    'SeekSliderPreviewTooltipPositioner',
+  )
   const { previewThumbElement, open, hoverProgress } = seekSliderContext
-  const [floatingElement, setFloatingElement] = React.useState<HTMLDivElement | null>(null)
+  const [floatingElement, setFloatingElement] =
+    React.useState<HTMLDivElement | null>(null)
 
   const { refs, floatingStyles, update } = useFloating({
     placement: 'top',
@@ -780,6 +828,7 @@ export const SeekSliderPreviewTooltipPositioner = React.forwardRef<
   }, [open, previewThumbElement, floatingElement, update])
 
   // Update position when hover progress changes (PreviewThumb moves via CSS)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: see above
   React.useLayoutEffect(() => {
     if (open && previewThumbElement && floatingElement) {
       update()
@@ -797,11 +846,13 @@ export const SeekSliderPreviewTooltipPositioner = React.forwardRef<
         forwardedRef.current = node
       }
     },
-    [refs, forwardedRef]
+    [refs, forwardedRef],
   )
 
   // Don't render until we have the reference element (and open, unless keepMounted)
-  const shouldRender = keepMounted ? !!previewThumbElement : (open && !!previewThumbElement)
+  const shouldRender = keepMounted
+    ? !!previewThumbElement
+    : open && !!previewThumbElement
   if (!shouldRender) return null
 
   return (
@@ -831,7 +882,11 @@ export const SeekSliderPreviewTooltipPopup = React.forwardRef<
   const { children, ...divProps } = props
 
   return (
-    <div ref={forwardedRef} data-seek-slider-preview-tooltip-popup {...divProps}>
+    <div
+      ref={forwardedRef}
+      data-seek-slider-preview-tooltip-popup
+      {...divProps}
+    >
       {children}
     </div>
   )

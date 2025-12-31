@@ -1,6 +1,27 @@
 import type * as React from 'react'
 
 // ============================================================================
+// Playback Status & Intent
+// ============================================================================
+
+/**
+ * Mutually exclusive playback states.
+ * - 'playing': Video is actively playing
+ * - 'paused': Video is paused by user action
+ * - 'waiting': Video is buffering/loading (will resume based on playbackIntent)
+ * - 'ended': Video has reached the end
+ */
+export type PlaybackStatus = 'playing' | 'paused' | 'waiting' | 'ended'
+
+/**
+ * The user's intended playback state.
+ * Persists through transient states like 'waiting' to enable correct resumption.
+ * - 'play': User wants the video to play
+ * - 'pause': User wants the video to be paused
+ */
+export type PlaybackIntent = 'play' | 'pause'
+
+// ============================================================================
 // Video Quality
 // ============================================================================
 
@@ -46,12 +67,26 @@ export interface TrackInfo {
 // ============================================================================
 
 export interface VideoPlayerState {
-  // Playback
+  // Playback - Primary API
+  /** Current mutually exclusive playback state */
+  playbackStatus: PlaybackStatus
+  /** User's intended playback state (persists through 'waiting' state) */
+  playbackIntent: PlaybackIntent
+
+  // Playback - Derived booleans (for convenience and backward compatibility)
+  /** True when playbackStatus === 'playing' */
   playing: boolean
+  /** True when playbackStatus === 'paused' */
   paused: boolean
+  /** True when playbackStatus === 'ended' */
   ended: boolean
+  /** True when playbackStatus === 'waiting' */
   waiting: boolean
+
+  // Playback - Orthogonal states
+  /** True while seeking to a new position (orthogonal to playbackStatus) */
   seeking: boolean
+  /** True when video has enough data to begin playback */
   canPlay: boolean
 
   // Time
@@ -150,7 +185,9 @@ export interface VideoPlayerInternalHandlers {
 // Video Player Context
 // ============================================================================
 
-export interface VideoPlayerContextValue extends VideoPlayerState, VideoPlayerActions {
+export interface VideoPlayerContextValue
+  extends VideoPlayerState,
+    VideoPlayerActions {
   _handlers: VideoPlayerInternalHandlers
 }
 

@@ -34,6 +34,7 @@ function useActiveHeadingStable(toc: TOCItemType[], topOffsetPx = 164) {
 
   const measure = useCallback(() => {
     const ids = toc
+      // biome-ignore lint/suspicious/noExplicitAny: allowed
       .flatMap((i: any) => [i, ...(i.children ?? [])])
       .map((i) => getIdFromUrl(i.url))
     const els = ids
@@ -87,8 +88,6 @@ function useActiveHeadingStable(toc: TOCItemType[], topOffsetPx = 164) {
 
 export function TableOfContents({ toc }: { toc: TOCItemType[] }) {
   const activeId = useActiveHeadingStable(toc, 114)
-
-  console.log('activeId:', activeId)
 
   return (
     <ul className="-translate-x-2 flex flex-col gap-1">

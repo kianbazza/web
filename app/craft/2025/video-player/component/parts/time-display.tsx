@@ -34,7 +34,7 @@ export interface TimeDisplayProps extends React.ComponentPropsWithRef<'span'> {
 }
 
 export interface TimeDisplayRenderProps {
-  ref: React.Ref<any>
+  ref: React.Ref<HTMLElement>
   style: React.CSSProperties
   [TimeDisplayDataAttributes.hovering]?: boolean
 }
@@ -57,7 +57,13 @@ export interface TimeDisplayState {
 
 export const TimeDisplay = React.forwardRef<HTMLSpanElement, TimeDisplayProps>(
   function TimeDisplay(props, forwardedRef) {
-    const { format = 'current / duration', fixedWidth = true, align = 'left', render, ...spanProps } = props
+    const {
+      format = 'current / duration',
+      fixedWidth = true,
+      align = 'left',
+      render,
+      ...spanProps
+    } = props
     const context = useVideoPlayerContext('TimeDisplay')
 
     // Preserve last hover time for exit animations
@@ -143,7 +149,9 @@ export const TimeDisplay = React.forwardRef<HTMLSpanElement, TimeDisplayProps>(
     return (
       <span
         ref={forwardedRef}
-        {...{ [TimeDisplayDataAttributes.hovering]: state.hovering || undefined }}
+        {...{
+          [TimeDisplayDataAttributes.hovering]: state.hovering || undefined,
+        }}
         {...spanProps}
         style={{
           position: fixedWidth ? 'relative' : undefined,
@@ -166,7 +174,7 @@ export const TimeDisplay = React.forwardRef<HTMLSpanElement, TimeDisplayProps>(
         )}
       </span>
     )
-  }
+  },
 )
 
 // ============================================================================
@@ -202,7 +210,7 @@ function getAlignmentStyle(
 // ============================================================================
 
 function formatTime(seconds: number): string {
-  if (!isFinite(seconds) || isNaN(seconds)) return '0:00'
+  if (!Number.isFinite(seconds) || Number.isNaN(seconds)) return '0:00'
 
   const hours = Math.floor(seconds / 3600)
   const mins = Math.floor((seconds % 3600) / 60)
@@ -220,7 +228,7 @@ function formatTime(seconds: number): string {
  * for a given duration. Uses 0s which are typically the widest digit.
  */
 function getTimeTemplate(duration: number): string {
-  if (!isFinite(duration) || isNaN(duration) || duration <= 0) {
+  if (!Number.isFinite(duration) || Number.isNaN(duration) || duration <= 0) {
     return '0:00'
   }
 

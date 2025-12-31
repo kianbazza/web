@@ -69,7 +69,8 @@ export const FullscreenButton = React.forwardRef<
     'aria-label': context.fullscreen ? 'Exit fullscreen' : 'Enter fullscreen',
     'aria-pressed': context.fullscreen,
     disabled: !supported,
-    [FullscreenButtonDataAttributes.fullscreen]: context.fullscreen || undefined,
+    [FullscreenButtonDataAttributes.fullscreen]:
+      context.fullscreen || undefined,
     [FullscreenButtonDataAttributes.supported]: supported || undefined,
     onClick: handleClick,
   }

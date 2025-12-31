@@ -15,93 +15,88 @@
 // </VideoPlayer.Root>
 //
 
-// Core
-export { VideoPlayerRoot as Root } from './video-player'
-export { Video } from './parts/video'
-export { Track } from './parts/track'
-export { Poster } from './parts/poster'
+export { BufferedIndicator } from './parts/buffered-indicator'
+export { Captions } from './parts/captions'
+export { CaptionsDataAttributes } from './parts/captions.data-attributes'
+// Captions
+export { CaptionsButton } from './parts/captions-button'
+export { CaptionsMenu, CaptionsMenuItem } from './parts/captions-menu'
+export { Controls } from './parts/controls'
+export { ControlsDataAttributes } from './parts/controls.data-attributes'
+// Display Controls
+export { FullscreenButton } from './parts/fullscreen-button'
+export { MuteButton } from './parts/mute-button'
 export { Overlay } from './parts/overlay'
-export { Thumbnail } from './parts/thumbnail'
-
+export { OverlayDataAttributes } from './parts/overlay.data-attributes'
+export { PictureInPictureButton } from './parts/picture-in-picture-button'
 // Playback Controls
 export { PlayButton } from './parts/play-button'
+// Playback Rate
+export { PlaybackRateButton } from './parts/playback-rate-button'
+export {
+  PlaybackRateMenu,
+  PlaybackRateMenuItem,
+} from './parts/playback-rate-menu'
+// Layout
+export { Portal } from './parts/portal'
+export { Poster } from './parts/poster'
+// Quality
+export { QualityMenu, QualityMenuItem } from './parts/quality-menu'
+// Data Attributes & CSS Variables
+export { RootDataAttributes } from './parts/root.data-attributes'
 export {
   SeekSlider,
-  SeekSliderControl,
-  SeekSliderTrack,
-  SeekSliderProgress,
   SeekSliderBuffered,
+  SeekSliderControl,
   SeekSliderHover,
-  SeekSliderThumb,
   SeekSliderPreviewThumb,
   SeekSliderPreviewTooltip,
+  SeekSliderPreviewTooltipPopup,
   SeekSliderPreviewTooltipPortal,
   SeekSliderPreviewTooltipPositioner,
-  SeekSliderPreviewTooltipPopup,
+  SeekSliderProgress,
+  SeekSliderThumb,
+  SeekSliderTrack,
 } from './parts/seek-slider'
+export { SeekSliderCssVars } from './parts/seek-slider.css-vars'
+export { SeekSliderDataAttributes } from './parts/seek-slider.data-attributes'
+export { SeekSliderPreviewThumbDataAttributes } from './parts/seek-slider-preview-thumb.data-attributes'
+export { Thumbnail } from './parts/thumbnail'
+export { ThumbnailDataAttributes } from './parts/thumbnail.data-attributes'
 export { TimeDisplay } from './parts/time-display'
-export { BufferedIndicator } from './parts/buffered-indicator'
-
+export { TimeDisplayDataAttributes } from './parts/time-display.data-attributes'
+export { Track } from './parts/track'
+export { Video } from './parts/video'
 // Audio Controls
 export {
   VolumeSlider,
   VolumeSliderControl,
-  VolumeSliderTrack,
   VolumeSliderRange,
   VolumeSliderThumb,
+  VolumeSliderTrack,
 } from './parts/volume-slider'
-export { MuteButton } from './parts/mute-button'
-
-// Display Controls
-export { FullscreenButton } from './parts/fullscreen-button'
-export { PictureInPictureButton } from './parts/picture-in-picture-button'
-export { Controls } from './parts/controls'
-
-// Playback Rate
-export { PlaybackRateButton } from './parts/playback-rate-button'
-export { PlaybackRateMenu, PlaybackRateMenuItem } from './parts/playback-rate-menu'
-
-// Captions
-export { CaptionsButton } from './parts/captions-button'
-export { CaptionsMenu, CaptionsMenuItem } from './parts/captions-menu'
-export { Captions } from './parts/captions'
-
-// Quality
-export { QualityMenu, QualityMenuItem } from './parts/quality-menu'
-
-// Layout
-export { Portal } from './parts/portal'
-
-// Hooks
-export { useVideoPlayer } from './use-video-player'
+export { VolumeSliderCssVars } from './parts/volume-slider.css-vars'
+export { VolumeSliderDataAttributes } from './parts/volume-slider.data-attributes'
+// Types
+export type {
+  PlaybackIntent,
+  PlaybackStatus,
+  RenderProp,
+  TrackInfo,
+  VideoPlayerActions,
+  VideoPlayerContextValue,
+  VideoPlayerRootProps,
+  VideoPlayerState,
+  VideoQuality,
+  VideoTextTrack,
+} from './types'
 export {
-  useTransitionStatus,
   type TransitionStatus,
   type UseTransitionStatusOptions,
   type UseTransitionStatusReturn,
+  useTransitionStatus,
 } from './use-transition-status'
-
-// Types
-export type {
-  VideoPlayerContextValue,
-  VideoPlayerState,
-  VideoPlayerActions,
-  VideoPlayerRootProps,
-  VideoQuality,
-  VideoTextTrack,
-  TrackInfo,
-  RenderProp,
-} from './types'
-
-// Data Attributes & CSS Variables
-export { RootDataAttributes } from './parts/root.data-attributes'
-export { SeekSliderDataAttributes } from './parts/seek-slider.data-attributes'
-export { SeekSliderCssVars } from './parts/seek-slider.css-vars'
-export { VolumeSliderDataAttributes } from './parts/volume-slider.data-attributes'
-export { VolumeSliderCssVars } from './parts/volume-slider.css-vars'
-export { ControlsDataAttributes } from './parts/controls.data-attributes'
-export { OverlayDataAttributes } from './parts/overlay.data-attributes'
-export { TimeDisplayDataAttributes } from './parts/time-display.data-attributes'
-export { SeekSliderPreviewThumbDataAttributes } from './parts/seek-slider-preview-thumb.data-attributes'
-export { ThumbnailDataAttributes } from './parts/thumbnail.data-attributes'
-export { CaptionsDataAttributes } from './parts/captions.data-attributes'
+// Hooks
+export { useVideoPlayer } from './use-video-player'
+// Core
+export { VideoPlayerRoot as Root } from './video-player'

@@ -14,7 +14,7 @@ export interface MuteButtonProps extends React.ComponentPropsWithRef<'button'> {
 }
 
 export interface MuteButtonRenderProps {
-  ref: React.Ref<any>
+  ref: React.Ref<HTMLElement>
   type: 'button'
   'aria-label': string
   'aria-pressed': boolean
