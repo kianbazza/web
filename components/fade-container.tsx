@@ -26,18 +26,27 @@ interface FadeContainerProps {
   hideBottom?: boolean
 }
 
-export function FadeContainer({
-  children,
-  className,
-  topHeight = 60,
-  bottomHeight = 60,
-  blur = '4px',
-  stop = '25%',
-  background = 'var(--sand-1)',
-  hideTop = false,
-  hideBottom = false,
-}: FadeContainerProps) {
+export const FadeContainer = React.forwardRef<
+  HTMLDivElement,
+  FadeContainerProps
+>(function FadeContainer(
+  {
+    children,
+    className,
+    topHeight = 60,
+    bottomHeight = 60,
+    blur = '4px',
+    stop = '25%',
+    background = 'var(--sand-1)',
+    hideTop = false,
+    hideBottom = false,
+  },
+  forwardedRef,
+) {
   const containerRef = React.useRef<HTMLDivElement>(null)
+
+  // Sync refs
+  React.useImperativeHandle(forwardedRef, () => containerRef.current!)
   const [topEdgeTouched, setTopEdgeTouched] = React.useState(true)
   const [bottomEdgeTouched, setBottomEdgeTouched] = React.useState(true)
 
@@ -111,4 +120,4 @@ export function FadeContainer({
       </div>
     </div>
   )
-}
+})

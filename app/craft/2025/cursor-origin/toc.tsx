@@ -1,8 +1,8 @@
 'use client'
 
 import type { TOCItemType } from 'fumadocs-core/toc'
-import { LayoutGroup } from 'motion/react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { LayoutGroup, motion } from 'motion/react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FadeContainer } from '@/components/fade-container'
 import { cn } from '@/lib/utils'
 
@@ -87,62 +87,169 @@ function useActiveHeadingStable(toc: TOCItemType[], topOffsetPx = 164) {
   return activeId
 }
 
+const SCROLL_PADDING = 50 // Match the fade height
+
 export function TableOfContents({ toc }: { toc: TOCItemType[] }) {
   const activeId = useActiveHeadingStable(toc, 114)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const itemRefs = useRef<Map<string, HTMLAnchorElement>>(new Map())
 
   // Find the minimum depth to use as the base (usually 2 for h2)
-  const minDepth = Math.min(...toc.map((item) => item.depth))
+  const minDepth = useMemo(
+    () => Math.min(...toc.map((item) => item.depth)),
+    [toc],
+  )
+
+  // Scroll active TOC item into view when it changes
+  useEffect(() => {
+    if (!activeId) return
+    const item = itemRefs.current.get(activeId)
+    const container = containerRef.current
+    if (!item || !container) return
+
+    const itemRect = item.getBoundingClientRect()
+    const containerRect = container.getBoundingClientRect()
+
+    // Check if item is above visible area (with padding)
+    const isAbove = itemRect.top < containerRect.top + SCROLL_PADDING
+    // Check if item is below visible area (with padding)
+    const isBelow = itemRect.bottom > containerRect.bottom - SCROLL_PADDING
+
+    if (!isAbove && !isBelow) return // Already visible
+
+    const reduced = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches
+
+    let scrollTop: number
+    if (isAbove) {
+      // Scroll up: align item top with container top + padding
+      scrollTop =
+        container.scrollTop +
+        (itemRect.top - containerRect.top) -
+        SCROLL_PADDING
+    } else {
+      // Scroll down: align item bottom with container bottom - padding
+      scrollTop =
+        container.scrollTop +
+        (itemRect.bottom - containerRect.bottom) +
+        SCROLL_PADDING
+    }
+
+    container.scrollTo({
+      top: scrollTop,
+      behavior: reduced ? 'auto' : 'smooth',
+    })
+  }, [activeId])
+
+  // Track the active item's position for the indicator
+  const [indicatorPos, setIndicatorPos] = useState<{
+    x: number
+    y: number
+  } | null>(null)
+  const listRef = useRef<HTMLUListElement>(null)
+
+  // Update indicator position when active item changes
+  useEffect(() => {
+    if (!activeId) {
+      setIndicatorPos(null)
+      return
+    }
+    const item = itemRefs.current.get(activeId)
+    const list = listRef.current
+    if (!item || !list) return
+
+    // Find the text span inside the anchor
+    const textSpan = item.querySelector('span')
+    if (!textSpan) return
+
+    // Use offsetTop/offsetLeft which are relative to the offsetParent (the list)
+    const itemTop = item.offsetTop
+    const itemHeight = item.offsetHeight
+    const spanPaddingLeft = Number.parseInt(
+      getComputedStyle(textSpan).paddingLeft,
+      10,
+    )
+
+    const pos = {
+      x: spanPaddingLeft - 10, // Account for pl-3 (12px), then 10px before text
+      y: itemTop + itemHeight / 2 - 3, // Center vertically (3 = half of 6px dot)
+    }
+    setIndicatorPos(pos)
+  }, [activeId])
 
   return (
     <FadeContainer
+      ref={containerRef}
       className="-translate-x-2 flex-1 min-h-0"
       topHeight={50}
       bottomHeight={50}
       blur="4px"
       stop="30%"
     >
-      <ul className="flex flex-col gap-1 pr-2">
-        <LayoutGroup>
-          {toc.map(({ title, url, depth }) => {
-            const id = getIdFromUrl(url)
-            const isActive = activeId === id
-            // Calculate indent level relative to minimum depth
-            const indentLevel = depth - minDepth
+      <ul ref={listRef} className="relative flex flex-col gap-1 pr-2 pl-3">
+        {/* Animated indicator dot */}
+        {indicatorPos && (
+          <motion.div
+            className="absolute size-1.5 rounded-full bg-blue-9 pointer-events-none"
+            initial={false}
+            animate={{
+              x: indicatorPos.x,
+              y: indicatorPos.y,
+            }}
+            transition={{
+              type: 'spring',
+              stiffness: 300,
+              damping: 25,
+            }}
+          />
+        )}
 
-            return (
-              <a
-                key={url}
-                href={url}
-                className="relative"
-                onClick={(e) => {
-                  e.preventDefault()
-                  const el = document.getElementById(id)
-                  if (!el) return
-                  const y =
-                    el.getBoundingClientRect().top + window.scrollY - 114
-                  const reduced = window.matchMedia(
-                    '(prefers-reduced-motion: reduce)',
-                  ).matches
-                  window.scrollTo({
-                    top: y,
-                    behavior: reduced ? 'auto' : 'smooth',
-                  })
-                  history.replaceState(null, '', `#${encodeURIComponent(id)}`)
-                }}
+        {toc.map(({ title, url, depth }) => {
+          const id = getIdFromUrl(url)
+          const isActive = activeId === id
+          // Calculate indent level relative to minimum depth
+          const indentLevel = depth - minDepth
+
+          return (
+            <a
+              key={url}
+              href={url}
+              className="relative"
+              ref={(el) => {
+                if (el) {
+                  itemRefs.current.set(id, el)
+                } else {
+                  itemRefs.current.delete(id)
+                }
+              }}
+              onClick={(e) => {
+                e.preventDefault()
+                const el = document.getElementById(id)
+                if (!el) return
+                const y = el.getBoundingClientRect().top + window.scrollY - 114
+                const reduced = window.matchMedia(
+                  '(prefers-reduced-motion: reduce)',
+                ).matches
+                window.scrollTo({
+                  top: y,
+                  behavior: reduced ? 'auto' : 'smooth',
+                })
+                history.replaceState(null, '', `#${encodeURIComponent(id)}`)
+              }}
+            >
+              <span
+                className={cn(
+                  'text-sm transition-colors duration-150 ease-out block',
+                  isActive ? 'text-sand-12' : 'text-sand-10',
+                )}
+                style={{ paddingLeft: `${indentLevel * 12}px` }}
               >
-                <li
-                  className={cn(
-                    'text-sm transition-[color] duration-150 ease-out',
-                    isActive ? 'text-sand-12' : 'text-sand-10',
-                  )}
-                  style={{ paddingLeft: `${indentLevel * 12}px` }}
-                >
-                  {title}
-                </li>
-              </a>
-            )
-          })}
-        </LayoutGroup>
+                {title}
+              </span>
+            </a>
+          )
+        })}
       </ul>
     </FadeContainer>
   )
