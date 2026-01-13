@@ -1,6 +1,6 @@
 'use client'
 
-import { Slider } from '@base-ui-components/react/slider'
+import { Slider, type SliderRoot } from '@base-ui/react/slider'
 import {
   autoUpdate,
   offset,
@@ -22,7 +22,7 @@ import { SeekSliderPreviewThumbDataAttributes } from './seek-slider-preview-thum
 // ============================================================================
 
 interface SeekSliderContextValue {
-  sliderRef: React.RefObject<HTMLDivElement>
+  sliderRef: React.RefObject<HTMLDivElement | null>
   previewThumbElement: HTMLElement | null
   setPreviewThumbElement: (element: HTMLElement | null) => void
   hoverProgress: number
@@ -91,7 +91,7 @@ export const SeekSlider = React.forwardRef<
     ...sliderProps
   } = props
   const context = useVideoPlayerContext('SeekSlider')
-  const sliderRef = React.useRef<HTMLDivElement>(null!)
+  const sliderRef = React.useRef<HTMLDivElement | null>(null)
   const [previewThumbElement, setPreviewThumbElement] =
     React.useState<HTMLElement | null>(null)
   const [pressing, setPressing] = React.useState(false)
@@ -161,7 +161,7 @@ export const SeekSlider = React.forwardRef<
   const handleValueCommitted = React.useCallback(
     (
       value: number | readonly number[],
-      eventDetails: { reason: 'none'; event: Event },
+      eventDetails: SliderRoot.CommitEventDetails,
     ) => {
       const v = typeof value === 'number' ? value : value[0]
       onValueCommitted?.(v, eventDetails)
@@ -239,7 +239,7 @@ export const SeekSlider = React.forwardRef<
       context.hoverProgress !== null ? `${context.hoverProgress}%` : undefined,
     [SeekSliderCssVars.hoverTime]: context.hoverTime ?? undefined,
     ...sliderProps.style,
-  } as React.CSSProperties
+  } as unknown as React.CSSProperties
 
   const renderProps: SeekSliderRenderProps = {
     [SeekSliderDataAttributes.seeking]: context.seeking || undefined,

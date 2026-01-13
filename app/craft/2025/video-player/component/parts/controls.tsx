@@ -32,6 +32,7 @@ export interface ControlsProps
 
 export interface ControlsRenderProps {
   ref: React.Ref<HTMLDivElement>
+  onClick: (event: React.MouseEvent<HTMLDivElement>) => void
   [ControlsDataAttributes.open]?: boolean
   [ControlsDataAttributes.closed]?: boolean
   [ControlsDataAttributes.idle]?: boolean
@@ -95,6 +96,17 @@ export const Controls = React.forwardRef<HTMLDivElement, ControlsProps>(
       [forwardedRef, elementRef],
     )
 
+    const { onClick, ...restDivProps } = divProps
+
+    // Stop click propagation to prevent Overlay from toggling play/pause
+    const handleClick = React.useCallback(
+      (event: React.MouseEvent<HTMLDivElement>) => {
+        event.stopPropagation()
+        onClick?.(event)
+      },
+      [onClick],
+    )
+
     const state: ControlsState = {
       open,
       idle: context.idle,
@@ -105,6 +117,7 @@ export const Controls = React.forwardRef<HTMLDivElement, ControlsProps>(
 
     const renderProps: ControlsRenderProps = {
       ref: composedRef,
+      onClick: handleClick,
       [ControlsDataAttributes.open]: open || undefined,
       [ControlsDataAttributes.closed]: !open || undefined,
       [ControlsDataAttributes.idle]: context.idle || undefined,
@@ -126,7 +139,7 @@ export const Controls = React.forwardRef<HTMLDivElement, ControlsProps>(
     }
 
     return (
-      <div {...renderProps} {...divProps}>
+      <div {...renderProps} {...restDivProps}>
         {children}
       </div>
     )

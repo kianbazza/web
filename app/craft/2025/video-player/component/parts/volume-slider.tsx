@@ -1,6 +1,6 @@
 'use client'
 
-import { Slider } from '@base-ui-components/react/slider'
+import { Slider } from '@base-ui/react/slider'
 import * as React from 'react'
 import { useVideoPlayerContext } from '../context'
 import type { RenderProp } from '../types'
@@ -126,7 +126,7 @@ export const VolumeSlider = React.forwardRef<
     [VolumeSliderCssVars.volume]: context.volume,
     [VolumeSliderCssVars.volumePercentage]: `${percentage}%`,
     ...sliderProps.style,
-  } as React.CSSProperties
+  } as unknown as React.CSSProperties
 
   const renderProps: VolumeSliderRenderProps = {
     [VolumeSliderDataAttributes.muted]: context.muted || undefined,

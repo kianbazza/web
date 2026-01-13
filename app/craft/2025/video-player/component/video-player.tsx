@@ -228,7 +228,7 @@ function VideoPlayerProvider({
   const [activeTextTrack, setActiveTextTrack] =
     React.useState<TextTrack | null>(null)
   const [activeCues, setActiveCues] = React.useState<VTTCue[]>([])
-  const [qualities, setQualities] = React.useState<VideoQuality[]>([])
+  const [qualities, _setQualities] = React.useState<VideoQuality[]>([])
   const [activeQuality, setActiveQuality] = React.useState<VideoQuality | null>(
     null,
   )

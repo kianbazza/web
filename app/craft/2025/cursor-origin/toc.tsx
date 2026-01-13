@@ -3,6 +3,7 @@
 import type { TOCItemType } from 'fumadocs-core/toc'
 import { LayoutGroup } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { FadeContainer } from '@/components/fade-container'
 import { cn } from '@/lib/utils'
 
 function getIdFromUrl(url: string) {
@@ -89,45 +90,60 @@ function useActiveHeadingStable(toc: TOCItemType[], topOffsetPx = 164) {
 export function TableOfContents({ toc }: { toc: TOCItemType[] }) {
   const activeId = useActiveHeadingStable(toc, 114)
 
-  return (
-    <ul className="-translate-x-2 flex flex-col gap-1">
-      <LayoutGroup>
-        {toc.map(({ title, url }) => {
-          const id = getIdFromUrl(url)
-          const isActive = activeId === id
+  // Find the minimum depth to use as the base (usually 2 for h2)
+  const minDepth = Math.min(...toc.map((item) => item.depth))
 
-          return (
-            <a
-              key={url}
-              href={url}
-              className="relative"
-              onClick={(e) => {
-                e.preventDefault()
-                const el = document.getElementById(id)
-                if (!el) return
-                const y = el.getBoundingClientRect().top + window.scrollY - 114
-                const reduced = window.matchMedia(
-                  '(prefers-reduced-motion: reduce)',
-                ).matches
-                window.scrollTo({
-                  top: y,
-                  behavior: reduced ? 'auto' : 'smooth',
-                })
-                history.replaceState(null, '', `#${encodeURIComponent(id)}`)
-              }}
-            >
-              <li
-                className={cn(
-                  'text-sm transition-[color] duration-150 ease-out',
-                  isActive ? 'text-sand-12' : 'text-sand-10',
-                )}
+  return (
+    <FadeContainer
+      className="-translate-x-2 flex-1 min-h-0"
+      topHeight={50}
+      bottomHeight={50}
+      blur="4px"
+      stop="30%"
+    >
+      <ul className="flex flex-col gap-1 pr-2">
+        <LayoutGroup>
+          {toc.map(({ title, url, depth }) => {
+            const id = getIdFromUrl(url)
+            const isActive = activeId === id
+            // Calculate indent level relative to minimum depth
+            const indentLevel = depth - minDepth
+
+            return (
+              <a
+                key={url}
+                href={url}
+                className="relative"
+                onClick={(e) => {
+                  e.preventDefault()
+                  const el = document.getElementById(id)
+                  if (!el) return
+                  const y =
+                    el.getBoundingClientRect().top + window.scrollY - 114
+                  const reduced = window.matchMedia(
+                    '(prefers-reduced-motion: reduce)',
+                  ).matches
+                  window.scrollTo({
+                    top: y,
+                    behavior: reduced ? 'auto' : 'smooth',
+                  })
+                  history.replaceState(null, '', `#${encodeURIComponent(id)}`)
+                }}
               >
-                {title}
-              </li>
-            </a>
-          )
-        })}
-      </LayoutGroup>
-    </ul>
+                <li
+                  className={cn(
+                    'text-sm transition-[color] duration-150 ease-out',
+                    isActive ? 'text-sand-12' : 'text-sand-10',
+                  )}
+                  style={{ paddingLeft: `${indentLevel * 12}px` }}
+                >
+                  {title}
+                </li>
+              </a>
+            )
+          })}
+        </LayoutGroup>
+      </ul>
+    </FadeContainer>
   )
 }

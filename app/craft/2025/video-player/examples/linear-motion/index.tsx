@@ -1,9 +1,33 @@
 'use client'
 
+import { Popover } from '@base-ui/react'
 import { motion, type Variants } from 'motion/react'
+import * as React from 'react'
 import { VideoPlayer } from '@/app/craft/2025/video-player/component'
 import { cn } from '@/lib/utils'
-import type { VideoPlayerProps } from './video-player'
+import {
+  CaptionsOffIcon,
+  CaptionsOnIcon,
+  FullscreenIcon,
+  MuteIcon,
+  PauseIcon,
+  PictureInPictureIcon,
+  PlayIcon,
+  ReplayIcon,
+  SpinnerIcon,
+  VolumeHighIcon,
+  VolumeLowIcon,
+} from './icons'
+
+export interface VideoPlayerProps {
+  src: string
+  captions?: Array<{
+    src: string
+    label: string
+    srcLang: string
+    default?: boolean
+  }>
+}
 
 const duration = 0.3
 const ease = 'easeOut'
@@ -14,7 +38,7 @@ const posterVariants: Variants = {
 }
 
 const overlayVariants: Variants = {
-  visible: { backgroundColor: 'rgba(0, 0, 0, 0.2)' },
+  visible: { backgroundColor: 'rgba(0, 0, 0, 0.3)' },
   hidden: { backgroundColor: 'rgba(0, 0, 0, 0)' },
 }
 
@@ -28,15 +52,19 @@ const thumbLineVariants: Variants = {
   hidden: { opacity: 0, height: 0, filter: 'blur(4px)' },
 }
 
-export function VideoPlayer_Motion({ src }: VideoPlayerProps) {
+export function LinearMotionPlayer({ src, captions }: VideoPlayerProps) {
+  const ref = React.useRef<HTMLDivElement>(null)
+
   return (
     <VideoPlayer.Root
+      ref={ref}
+      hideCursorWhenIdle="always"
       className={cn(
-        'group relative rounded-xl overflow-hidden',
+        'group/root relative rounded-xl overflow-hidden bg-black',
+        'flex items-center justify-center',
         'shadow-[inset_0px_0px_0px_2px_rgba(255,255,255,0.5)]',
         'aspect-video w-full h-auto',
-        'data-[fullscreen]:flex data-[fullscreen]:items-center data-[fullscreen]:justify-center',
-        'data-[fullscreen]:bg-black data-[fullscreen]:rounded-none data-[fullscreen]:h-full data-[fullscreen]:w-full',
+        'data-[fullscreen]:rounded-none data-[fullscreen]:h-full data-[fullscreen]:w-full',
         'data-[fullscreen]:border-0 data-[fullscreen]:shadow-none',
       )}
     >
@@ -58,9 +86,20 @@ export function VideoPlayer_Motion({ src }: VideoPlayerProps) {
         src={src}
         className={cn(
           'w-full h-auto',
-          'group-data-[fullscreen]:w-full group-data-[fullscreen]:h-auto',
+          'group-data-[fullscreen]/root:w-full group-data-[fullscreen]/root:h-auto',
         )}
-      />
+      >
+        {captions?.map((track) => (
+          <VideoPlayer.Track
+            key={track.src}
+            kind="captions"
+            src={track.src}
+            label={track.label}
+            srcLang={track.srcLang}
+            default={track.default}
+          />
+        ))}
+      </VideoPlayer.Video>
 
       <VideoPlayer.Overlay
         keepMounted
@@ -73,6 +112,17 @@ export function VideoPlayer_Motion({ src }: VideoPlayerProps) {
             animate={open ? 'visible' : 'hidden'}
             transition={{ duration, ease }}
           />
+        )}
+      />
+
+      <VideoPlayer.Captions
+        className={cn(
+          'absolute bottom-22 group-data-[idle]/root:bottom-8 left-1/2 -translate-x-1/2',
+          'bg-black/50 text-white px-2 py-1 rounded-lg',
+          'font-sans text-center max-w-[80%]',
+          'group-data-[fullscreen]/root:text-3xl group-data-[fullscreen]/root:bottom-48 group-data-[fullscreen]/root:group-data-[idle]/root:bottom-32',
+          'hidden data-[active]:block',
+          'transition-[opacity,bottom] duration-200',
         )}
       />
 
@@ -91,10 +141,10 @@ export function VideoPlayer_Motion({ src }: VideoPlayerProps) {
             transition={{ duration, ease }}
           >
             <VideoPlayer.PlayButton
-              render={(props, { playing, paused, waiting }) => (
+              render={(props, { playing, paused, waiting, ended }) => (
                 <motion.button
                   {...props}
-                  className={cn(buttonClassName, 'group')}
+                  className={cn(buttonClassName, 'group *:size-4 *:fill-white')}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -107,14 +157,79 @@ export function VideoPlayer_Motion({ src }: VideoPlayerProps) {
                         ease: 'linear',
                       }}
                     >
-                      <SpinnerIcon className="stroke-white" />
+                      <SpinnerIcon className="stroke-white fill-none" />
                     </motion.span>
                   )}
-                  {paused && !waiting && <PlayIcon />}
+                  {paused && !waiting && !ended && <PlayIcon />}
                   {playing && !waiting && <PauseIcon />}
+                  {ended && !waiting && <ReplayIcon />}
                 </motion.button>
               )}
             />
+
+            <div>
+              <Popover.Root>
+                <Popover.Trigger
+                  openOnHover
+                  delay={0}
+                  onClick={(e) => {
+                    e.preventBaseUIHandler()
+                  }}
+                  render={(props) => (
+                    <VideoPlayer.MuteButton
+                      render={(muteProps, muteState) => {
+                        const volumeOff =
+                          muteState.muted || muteState.volume === 0
+                        const volumeLow = !volumeOff && muteState.volume < 0.5
+                        const volumeHigh = !volumeOff && muteState.volume >= 0.5
+                        return (
+                          <motion.button
+                            {...muteProps}
+                            onClick={(e) => {
+                              props.onClick?.(e)
+                              muteProps.onClick?.(e)
+                            }}
+                            className={cn(
+                              buttonClassName,
+                              'group *:size-4 *:fill-white',
+                            )}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            {volumeOff && <MuteIcon />}
+                            {volumeLow && <VolumeLowIcon />}
+                            {volumeHigh && <VolumeHighIcon />}
+                          </motion.button>
+                        )
+                      }}
+                    />
+                  )}
+                />
+                <Popover.Portal container={ref}>
+                  <Popover.Positioner
+                    className="z-50"
+                    side="top"
+                    align="center"
+                    sideOffset={8}
+                  >
+                    <Popover.Popup className="z-50 border border-white/10 bg-white/10 backdrop-blur-sm w-8 py-3 rounded-[10px]">
+                      <VideoPlayer.VolumeSlider
+                        className="flex flex-col items-center h-16 w-full **:cursor-crosshair! group"
+                        orientation="vertical"
+                        thumbAlignment="edge"
+                      >
+                        <VideoPlayer.VolumeSliderControl className="w-full h-full flex flex-col items-center">
+                          <VideoPlayer.VolumeSliderTrack className="relative w-1 h-full bg-white/30 rounded-full group-data-[pressing]:w-1.5 transition-[width] duration-150 ease-in-out">
+                            <VideoPlayer.VolumeSliderRange className="absolute bottom-0 w-full bg-white rounded-full" />
+                            <VideoPlayer.VolumeSliderThumb className="block size-3 bg-white rounded-full shadow-sm" />
+                          </VideoPlayer.VolumeSliderTrack>
+                        </VideoPlayer.VolumeSliderControl>
+                      </VideoPlayer.VolumeSlider>
+                    </Popover.Popup>
+                  </Popover.Positioner>
+                </Popover.Portal>
+              </Popover.Root>
+            </div>
 
             <VideoPlayer.TimeDisplay
               align="right"
@@ -223,11 +338,57 @@ export function VideoPlayer_Motion({ src }: VideoPlayerProps) {
               className="text-white text-sm"
             />
 
+            <VideoPlayer.PlaybackRateButton
+              render={(props, state) => (
+                <motion.button
+                  {...props}
+                  className={cn(
+                    buttonClassName,
+                    'w-15 min-w-15 text-sm text-white',
+                  )}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {state.playbackRate}x
+                </motion.button>
+              )}
+            />
+
+            <VideoPlayer.CaptionsButton
+              render={(props, state) => (
+                <motion.button
+                  {...props}
+                  className={cn(
+                    buttonClassName,
+                    'group *:size-4 *:fill-white',
+                    state.available ? 'opacity-100' : 'opacity-50',
+                  )}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {state.active ? <CaptionsOnIcon /> : <CaptionsOffIcon />}
+                </motion.button>
+              )}
+            />
+
+            <VideoPlayer.PictureInPictureButton
+              render={(props) => (
+                <motion.button
+                  {...props}
+                  className={cn(buttonClassName, '*:size-4 *:fill-white')}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <PictureInPictureIcon />
+                </motion.button>
+              )}
+            />
+
             <VideoPlayer.FullscreenButton
               render={(props) => (
                 <motion.button
                   {...props}
-                  className={cn(buttonClassName, 'group')}
+                  className={cn(buttonClassName, 'group *:size-4 *:fill-white')}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -246,71 +407,4 @@ const buttonClassName = cn(
   'size-8 min-h-8 min-w-8 rounded-[10px] flex items-center justify-center',
   'border border-transparent',
   'hover:border-white/10 hover:bg-white/10 hover:backdrop-blur-sm',
-  '*:size-4 *:fill-white *:stroke-0',
-)
-
-const PlayIcon = (props: React.ComponentProps<'svg'>) => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="currentColor"
-    role="img"
-    focusable="false"
-    aria-hidden="true"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <path d="m5.604 2.41 7.23 4.502a1.375 1.375 0 0 1-.02 2.345L5.585 13.6a1.375 1.375 0 0 1-2.083-1.18V3.576A1.375 1.375 0 0 1 5.604 2.41Z"></path>
-  </svg>
-)
-
-const PauseIcon = (props: React.ComponentProps<'svg'>) => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="currentColor"
-    role="img"
-    focusable="false"
-    aria-hidden="true"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <path d="M3.5 3.5a1 1 0 0 1 1-1H6a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4.5a1 1 0 0 1-1-1v-9ZM9 3.5a1 1 0 0 1 1-1h1.5a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H10a1 1 0 0 1-1-1v-9Z"></path>
-  </svg>
-)
-
-const FullscreenIcon = (props: React.ComponentProps<'svg'>) => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="currentColor"
-    role="img"
-    focusable="false"
-    aria-hidden="true"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <path d="M7.28 8.72a.75.75 0 0 1 0 1.06L5 12l1.25 1.25a.75.75 0 0 1-.75.75H2.75a.75.75 0 0 1-.75-.75V10.5a.75.75 0 0 1 .75-.75L4 11l2.22-2.28a.75.75 0 0 1 1.06 0ZM8.72 7.28a.75.75 0 0 1 0-1.06L11 4 9.75 2.75A.75.75 0 0 1 10.5 2h2.75a.75.75 0 0 1 .75.75V5.5a.75.75 0 0 1-.75.75L12 5 9.78 7.28a.75.75 0 0 1-1.06 0Z"></path>
-  </svg>
-)
-
-const SpinnerIcon = (props: React.ComponentProps<'svg'>) => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="none"
-    stroke="currentColor"
-    role="img"
-    focusable="false"
-    aria-hidden="true"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <circle cx="8" cy="8" r="6" strokeOpacity="0.25" strokeWidth="2" />
-    <path d="M14 8a6 6 0 0 0-6-6" strokeWidth="2" strokeLinecap="round" />
-  </svg>
 )

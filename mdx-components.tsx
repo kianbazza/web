@@ -3,20 +3,38 @@ import { Frame } from './components/frame'
 import { cn } from './lib/utils'
 
 const components = {
+  h1: ({ children, className, ...props }) => (
+    <h1 className={cn('text-3xl font-medium pt-10', className)} {...props}>
+      {children}
+    </h1>
+  ),
   h2: ({ children, className, ...props }) => (
     <h2 className={cn('text-2xl font-medium pt-8', className)} {...props}>
       {children}
     </h2>
   ),
   h3: ({ children, className, ...props }) => (
-    <h3 className={cn('text-xl font-medium pt-7', className)} {...props}>
+    <h3 className={cn('text-xl font-medium pt-6', className)} {...props}>
       {children}
     </h3>
   ),
   h4: ({ children, className, ...props }) => (
-    <h4 className={cn('text-lg font-medium pt-6', className)} {...props}>
+    <h4 className={cn('text-lg font-medium pt-5', className)} {...props}>
       {children}
     </h4>
+  ),
+  h5: ({ children, className, ...props }) => (
+    <h5 className={cn('text-base font-medium pt-4', className)} {...props}>
+      {children}
+    </h5>
+  ),
+  h6: ({ children, className, ...props }) => (
+    <h6
+      className={cn('text-sm font-medium pt-4 text-sand-11', className)}
+      {...props}
+    >
+      {children}
+    </h6>
   ),
   p: ({ children }) => (
     <p className="text-sand-12/80 !font-sans !tabular-nums leading-7 font-[420]">
@@ -72,6 +90,42 @@ const components = {
     >
       {children}
     </code>
+  ),
+  table: ({ children, className, ...props }) => (
+    <div className="overflow-x-auto">
+      <table
+        className={cn('w-full font-sans text-sm border-collapse', className)}
+        {...props}
+      >
+        {children}
+      </table>
+    </div>
+  ),
+  thead: ({ children, className, ...props }) => (
+    <thead className={cn('border-b border-sand-6', className)} {...props}>
+      {children}
+    </thead>
+  ),
+  th: ({ children, className, ...props }) => (
+    <th
+      className={cn('text-left font-medium py-2 pr-4 text-sand-11', className)}
+      {...props}
+    >
+      {children}
+    </th>
+  ),
+  td: ({ children, className, ...props }) => (
+    <td className={cn('py-2 pr-4 text-sand-12/80', className)} {...props}>
+      {children}
+    </td>
+  ),
+  tr: ({ children, className, ...props }) => (
+    <tr
+      className={cn('border-b border-sand-4 last:border-b-0', className)}
+      {...props}
+    >
+      {children}
+    </tr>
   ),
   Frame,
 } satisfies MDXComponents

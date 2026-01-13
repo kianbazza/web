@@ -1,5 +1,6 @@
 import { format } from 'date-fns'
 import type { Metadata } from 'next'
+import { HideGlobalFade } from '@/components/hide-global-fade'
 import { WidthContainer } from '@/components/width-container'
 import { env } from '@/lib/env'
 import { craftSource } from '@/lib/source'
@@ -61,9 +62,10 @@ export default function Page() {
   const formattedDate = format(date, 'MMMM yyyy')
 
   return (
-    <div className="grid grid-cols-[1fr_auto_1fr]">
+    <div className="grid grid-cols-[1fr_auto_1fr] [&_h1]:scroll-mt-[114px] [&_h2]:scroll-mt-[114px] [&_h3]:scroll-mt-[114px] [&_h4]:scroll-mt-[114px] [&_h5]:scroll-mt-[114px] [&_h6]:scroll-mt-[114px]">
+      <HideGlobalFade />
       <div className="col-span-1 flex flex-col items-end">
-        <div className="fixed top-36 max-xl:hidden mr-32 flex flex-col gap-4">
+        <div className="fixed top-36 bottom-64 max-xl:hidden mr-32 flex flex-col gap-4">
           <BackToCraft />
           <TableOfContents toc={page!.data.toc} />
         </div>
