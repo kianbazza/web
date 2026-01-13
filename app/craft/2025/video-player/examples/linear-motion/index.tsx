@@ -144,7 +144,7 @@ export function LinearMotionPlayer({ src, captions }: VideoPlayerProps) {
               render={(props, { playing, paused, waiting, ended }) => (
                 <motion.button
                   {...props}
-                  className={cn(buttonClassName, 'group *:size-4 *:fill-white')}
+                  className={cn(buttonClassName, 'group *:size-4 text-white')}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -167,45 +167,41 @@ export function LinearMotionPlayer({ src, captions }: VideoPlayerProps) {
               )}
             />
 
-            <div>
-              <Popover.Root>
-                <Popover.Trigger
-                  openOnHover
-                  delay={0}
-                  onClick={(e) => {
-                    e.preventBaseUIHandler()
-                  }}
-                  render={(props) => (
-                    <VideoPlayer.MuteButton
-                      render={(muteProps, muteState) => {
-                        const volumeOff =
-                          muteState.muted || muteState.volume === 0
-                        const volumeLow = !volumeOff && muteState.volume < 0.5
-                        const volumeHigh = !volumeOff && muteState.volume >= 0.5
-                        return (
-                          <motion.button
-                            {...muteProps}
-                            onClick={(e) => {
-                              props.onClick?.(e)
-                              muteProps.onClick?.(e)
-                            }}
-                            className={cn(
-                              buttonClassName,
-                              'group *:size-4 *:fill-white',
-                            )}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            {volumeOff && <MuteIcon />}
-                            {volumeLow && <VolumeLowIcon />}
-                            {volumeHigh && <VolumeHighIcon />}
-                          </motion.button>
-                        )
+            <Popover.Root>
+              <VideoPlayer.MuteButton
+                render={({ onClick, ...props }, state) => {
+                  const volumeOff = state.muted || state.volume === 0
+                  const volumeLow = !volumeOff && state.volume < 0.5
+                  const volumeHigh = !volumeOff && state.volume >= 0.5
+                  return (
+                    <Popover.Trigger
+                      openOnHover
+                      delay={0}
+                      onClick={(e) => {
+                        e.preventBaseUIHandler()
+                        onClick(e)
                       }}
-                    />
-                  )}
-                />
-                <Popover.Portal container={ref}>
+                      render={
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        />
+                      }
+                      className={cn(
+                        buttonClassName,
+                        'group *:size-4 text-white',
+                      )}
+                      {...props}
+                    >
+                      {volumeOff && <MuteIcon />}
+                      {volumeLow && <VolumeLowIcon />}
+                      {volumeHigh && <VolumeHighIcon />}
+                    </Popover.Trigger>
+                  )
+                }}
+              />
+              {open && (
+                <Popover.Portal keepMounted container={ref}>
                   <Popover.Positioner
                     className="z-50"
                     side="top"
@@ -228,8 +224,8 @@ export function LinearMotionPlayer({ src, captions }: VideoPlayerProps) {
                     </Popover.Popup>
                   </Popover.Positioner>
                 </Popover.Portal>
-              </Popover.Root>
-            </div>
+              )}
+            </Popover.Root>
 
             <VideoPlayer.TimeDisplay
               align="right"
@@ -241,7 +237,7 @@ export function LinearMotionPlayer({ src, captions }: VideoPlayerProps) {
               render={(props, { pressing }) => (
                 <div
                   {...props}
-                  className="flex items-center w-full h-12 select-none touch-none cursor-crosshair"
+                  className="flex items-center w-full h-12 select-none touch-none **:cursor-crosshair!"
                 >
                   <VideoPlayer.SeekSliderControl className="flex items-center w-full h-full">
                     <VideoPlayer.SeekSliderTrack
@@ -360,7 +356,7 @@ export function LinearMotionPlayer({ src, captions }: VideoPlayerProps) {
                   {...props}
                   className={cn(
                     buttonClassName,
-                    'group *:size-4 *:fill-white',
+                    'group *:size-4 text-white',
                     state.available ? 'opacity-100' : 'opacity-50',
                   )}
                   whileHover={{ scale: 1.05 }}

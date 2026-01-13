@@ -38,14 +38,14 @@ export function DemoClient({ children, files }: DemoClientProps) {
   }, [])
 
   return (
-    <div className="border border-sand-6 rounded-lg overflow-hidden">
+    <div className="overflow-hidden">
       {/* Preview area */}
-      <div className="p-8 flex items-center justify-center min-h-[300px] bg-sand-2">
+      <div className="p-0 flex items-center justify-center min-h-[300px] bg-sand-2">
         {children}
       </div>
 
       {/* Code section */}
-      <div className="border-t border-sand-6">
+      <div className="border-x border-b rounded-b-lg overflow-hidden border-sand-6 pt-8 -mt-8">
         <Tabs.Root value={activeTab} onValueChange={handleTabChange}>
           {/* Header with tabs and copy button */}
           <div className="flex items-center justify-between px-4 py-2 bg-sand-1 border-b border-sand-6">

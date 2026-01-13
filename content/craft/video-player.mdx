@@ -117,7 +117,7 @@ A YouTube-inspired video player with red accent color, expanding volume slider, 
 | Component | Description |
 |-----------|-------------|
 | `PlayButton` | Play/pause toggle. |
-| `SeekSlider` | Seek bar with progress, buffered indicator, and hover preview. Composable with [SeekSlider Parts](#seekslider-parts). |
+| `SeekSlider` | Seek bar with progress, buffered indicator, and hover preview. Composable via [`SeekSlider`](#seekslider). |
 | `TimeDisplay` | Shows current time, duration, remaining, or hover time. |
 | `PlaybackRateButton` | Cycles through playback speeds (0.25x - 2x). |
 
@@ -126,7 +126,7 @@ A YouTube-inspired video player with red accent color, expanding volume slider, 
 | Component | Description |
 |-----------|-------------|
 | `MuteButton` | Mute toggle. |
-| `VolumeSlider` | Volume control slider (0-1). Composable with [VolumeSlider Parts](#volumeslider-parts). |
+| `VolumeSlider` | Volume control slider (0-1). Composable via [`VolumeSlider`](#volumeslider). |
 
 ### Display
 
@@ -212,15 +212,30 @@ Or with plain CSS:
 
 ### CSS animations
 
-You can also use CSS keyframe animations with `data-open` and `data-closed`:
+You can use CSS keyframe animations with `data-open` and `data-closed` attributes.
+
+With Tailwind CSS v4 + [`tw-animate-css`](https://github.com/Wombosvideo/tw-animate-css/tree/main):
+
+```tsx
+<VideoPlayer.Controls
+  className={cn(
+    'data-[open]:animate-in data-[closed]:animate-out',
+    'data-[open]:fade-in data-[closed]:fade-out',
+    'data-[open]:slide-in-from-bottom-4 data-[closed]:slide-out-to-bottom-4',
+    'duration-300',
+  )}
+/>
+```
+
+Or with plain CSS:
 
 ```css
-.overlay[data-open] {
-  animation: fade-in 300ms ease-out;
+.controls[data-open] {
+  animation: fade-in 300ms ease-out, slide-in 300ms ease-out;
 }
 
-.overlay[data-closed] {
-  animation: fade-out 300ms ease-out;
+.controls[data-closed] {
+  animation: fade-out 300ms ease-out, slide-out 300ms ease-out;
 }
 
 @keyframes fade-in {
@@ -231,6 +246,16 @@ You can also use CSS keyframe animations with `data-open` and `data-closed`:
 @keyframes fade-out {
   from { opacity: 1; }
   to { opacity: 0; }
+}
+
+@keyframes slide-in {
+  from { transform: translateY(1rem); }
+  to { transform: translateY(0); }
+}
+
+@keyframes slide-out {
+  from { transform: translateY(0); }
+  to { transform: translateY(1rem); }
 }
 ```
 
