@@ -1188,6 +1188,19 @@ var oscuraSunrise = {
       settings: { foreground: OSCURA2.number, fontStyle: "italic" }
     },
     // -------------------------------------------------------------------------
+    // JS/TS Object Property Names
+    // -------------------------------------------------------------------------
+    {
+      name: "Object Literal Keys",
+      scope: [
+        "meta.object-literal.key",
+        "meta.object.member variable.other.readwrite",
+        "variable.object.property",
+        "meta.objectliteral meta.object.member"
+      ],
+      settings: { foreground: OSCURA2.text }
+    },
+    // -------------------------------------------------------------------------
     // JS/TS String Special Cases
     // -------------------------------------------------------------------------
     {

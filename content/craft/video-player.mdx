@@ -1,0 +1,765 @@
+---
+title: Video player
+published_date: 2025-12-19
+---
+
+import { VideoPlayer } from '@/app/craft/2025/video-player/component'
+import { LinearCSSPlayer } from '@/app/craft/2025/video-player/examples/linear-css'
+import { LinearMotionPlayer } from '@/app/craft/2025/video-player/examples/linear-motion'
+import { YouTubePlayer } from '@/app/craft/2025/video-player/examples/youtube-player'
+import { Demo } from '@/app/craft/2025/video-player/components/demo'
+import { Signature } from '@/components/signature'
+
+I was struck by the simplicity and elegance of Linear's *Conversations on Quality* series—especially their video player.
+
+It inspired me to build my own from scratch, and what started as a quick experiment slowly evolved into a mini project I'm excited to share here. You'll notice a strong emphasis on composability and a deep reliance on Base UI's primitives and practices throughout.
+
+I'm not quite ready to publish the source code yet, but when I do, it'll be part of the <code className='font-mono'>bazza/ui</code> family.
+
+Open source. Open code. For all to use.
+
+<Signature className="max-w-[300px] sm:max-w-[300px] pt-4 stroke-sand-12" isScrollTriggered />
+
+----
+
+<LinearCSSPlayer
+  src="https://static.linear.app/assets/web/quality/teaser-full.90D8F66A-6715-41C0-9BC0-74FCD0B1047C.mp4"
+  captions={[
+    { src: "/linear-quality-teaser.captions.vtt", label: "English", srcLang: "en", default: true },
+  ]}
+/>
+
+## Quick Start
+
+The `VideoPlayer` uses a compound component pattern. At minimum, you need a `Root` and a `Video`:
+
+```tsx
+import { VideoPlayer } from '@/app/craft/2025/video-player/component'
+
+<VideoPlayer.Root>
+  <VideoPlayer.Video src="/my-video.mp4" />
+</VideoPlayer.Root>
+```
+
+Add controls by composing the parts you need:
+
+```tsx
+<VideoPlayer.Root className="relative">
+  <VideoPlayer.Video src="/my-video.mp4" />
+  <VideoPlayer.Controls className="absolute bottom-0">
+    <VideoPlayer.PlayButton />
+    <VideoPlayer.SeekSlider />
+    <VideoPlayer.TimeDisplay />
+  </VideoPlayer.Controls>
+</VideoPlayer.Root>
+```
+
+## Examples
+
+### Linear
+
+A clean, minimal video player inspired by Linear's design. Features a translucent controls bar with CSS transitions.
+
+<Demo files={[
+  { name: "index.tsx", path: "app/craft/2025/video-player/examples/linear-css/index.tsx" },
+  { name: "icons.tsx", path: "app/craft/2025/video-player/examples/linear-css/icons.tsx" },
+]}>
+  <LinearCSSPlayer
+    src="https://static.linear.app/assets/web/quality/teaser-full.90D8F66A-6715-41C0-9BC0-74FCD0B1047C.mp4"
+    captions={[
+      { src: "/linear-quality-teaser.captions.vtt", label: "English", srcLang: "en", default: true },
+    ]}
+  />
+</Demo>
+
+Same Linear-style player but using Motion (Framer Motion) for animations instead of CSS transitions.
+
+<Demo files={[
+  { name: "index.tsx", path: "app/craft/2025/video-player/examples/linear-motion/index.tsx" },
+  { name: "icons.tsx", path: "app/craft/2025/video-player/examples/linear-motion/icons.tsx" },
+]}>
+  <LinearMotionPlayer
+    src="https://static.linear.app/assets/web/quality/teaser-full.90D8F66A-6715-41C0-9BC0-74FCD0B1047C.mp4"
+    captions={[
+      { src: "/linear-quality-teaser.captions.vtt", label: "English", srcLang: "en", default: true },
+    ]}
+  />
+</Demo>
+
+### YouTube
+
+A YouTube-inspired video player with red accent color, expanding volume slider, and thumbnail previews on seek.
+
+<Demo files={[
+  { name: "index.tsx", path: "app/craft/2025/video-player/examples/youtube-player/index.tsx" },
+  { name: "icons.tsx", path: "app/craft/2025/video-player/examples/youtube-player/icons.tsx" },
+]}>
+  <YouTubePlayer
+    src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+  />
+</Demo>
+
+
+## Components
+
+### Core
+
+| Component | Description |
+|-----------|-------------|
+| `Root` | Provider and container. Handles state, keyboard shortcuts, idle detection. |
+| `Video` | The video element. Clicking toggles play/pause by default. |
+| `Controls` | Auto-hiding controls container. Responds to idle state. |
+| `Overlay` | Clickable overlay for play/pause. Also responds to idle state. |
+| `Poster` | Loading state placeholder. Fades out when video can play. |
+
+### Playback
+
+| Component | Description |
+|-----------|-------------|
+| `PlayButton` | Play/pause toggle. |
+| `SeekSlider` | Seek bar with progress, buffered indicator, and hover preview. Composable via [`SeekSlider`](#seekslider). |
+| `TimeDisplay` | Shows current time, duration, remaining, or hover time. |
+| `PlaybackRateButton` | Cycles through playback speeds (0.25x - 2x). |
+
+### Audio
+
+| Component | Description |
+|-----------|-------------|
+| `MuteButton` | Mute toggle. |
+| `VolumeSlider` | Volume control slider (0-1). Composable via [`VolumeSlider`](#volumeslider). |
+
+### Display
+
+| Component | Description |
+|-----------|-------------|
+| `FullscreenButton` | Enter/exit fullscreen. |
+| `PictureInPictureButton` | Enter/exit picture-in-picture mode. |
+
+### Captions
+
+| Component | Description |
+|-----------|-------------|
+| `Track` | Define a caption/subtitle track (placed inside `Video`). |
+| `Captions` | Renders active caption text. |
+| `CaptionsButton` | Toggle captions on/off. |
+
+### SeekSlider
+
+| Component | Description |
+|-----------|-------------|
+| `SeekSliderControl` | Slider control wrapper. |
+| `SeekSliderTrack` | The track element. |
+| `SeekSliderProgress` | Progress indicator (current position). |
+| `SeekSliderBuffered` | Buffered range indicator. |
+| `SeekSliderThumb` | Draggable thumb. |
+| `SeekSliderPreviewThumb` | Hover preview indicator. |
+| `SeekSliderHover` | Hover progress fill. |
+
+### VolumeSlider
+
+| Component | Description |
+|-----------|-------------|
+| `VolumeSliderControl` | Slider control wrapper. |
+| `VolumeSliderTrack` | The track element. |
+| `VolumeSliderRange` | Volume level indicator. |
+| `VolumeSliderThumb` | Draggable thumb. |
+
+## Styling
+
+### Data attributes
+
+Components expose data attributes for CSS styling. Use Tailwind's `data-[]` modifier:
+
+```tsx
+<VideoPlayer.PlayButton className="group">
+  <PlayIcon className="hidden group-data-[paused]:block" />
+  <PauseIcon className="hidden group-data-[playing]:block" />
+  <ReplayIcon className="hidden group-data-[ended]:block" />
+  <SpinnerIcon className="hidden group-data-[waiting]:block animate-spin" />
+</VideoPlayer.PlayButton>
+```
+
+### CSS transitions
+
+Components with enter/exit states (`Controls`, `Overlay`, `Poster`, `SeekSliderPreviewThumb`) expose `data-starting-style` and `data-ending-style` attributes for CSS transitions:
+
+```tsx
+<VideoPlayer.Controls
+  className={cn(
+    'opacity-100 translate-y-0',
+    'transition-[opacity,transform] duration-300',
+    'data-[starting-style]:opacity-0 data-[starting-style]:translate-y-2',
+    'data-[ending-style]:opacity-0 data-[ending-style]:translate-y-2',
+  )}
+/>
+```
+
+Or with plain CSS:
+
+```css
+.controls {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.controls[data-starting-style],
+.controls[data-ending-style] {
+  opacity: 0;
+  transform: translateY(8px);
+}
+```
+
+### CSS animations
+
+You can use CSS keyframe animations with `data-open` and `data-closed` attributes.
+
+With Tailwind CSS v4 + [`tw-animate-css`](https://github.com/Wombosvideo/tw-animate-css/tree/main):
+
+```tsx
+<VideoPlayer.Controls
+  className={cn(
+    'data-[open]:animate-in data-[closed]:animate-out',
+    'data-[open]:fade-in data-[closed]:fade-out',
+    'data-[open]:slide-in-from-bottom-4 data-[closed]:slide-out-to-bottom-4',
+    'duration-300',
+  )}
+/>
+```
+
+Or with plain CSS:
+
+```css
+.controls[data-open] {
+  animation: fade-in 300ms ease-out, slide-in 300ms ease-out;
+}
+
+.controls[data-closed] {
+  animation: fade-out 300ms ease-out, slide-out 300ms ease-out;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slide-in {
+  from { transform: translateY(1rem); }
+  to { transform: translateY(0); }
+}
+
+@keyframes slide-out {
+  from { transform: translateY(0); }
+  to { transform: translateY(1rem); }
+}
+```
+
+### JavaScript animations
+
+For JavaScript animation libraries like [Motion](https://motion.dev), use `keepMounted` and the `render` prop to compose with `motion` components:
+
+```tsx
+import { motion, AnimatePresence } from 'motion/react'
+
+function Player() {
+  const [open, setOpen] = React.useState(true)
+
+  return (
+    <VideoPlayer.Root>
+      <VideoPlayer.Video src="/video.mp4" />
+      <AnimatePresence>
+        {open && (
+          <VideoPlayer.Controls
+            keepMounted
+            render={(props) => (
+              <motion.div
+                {...props}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+              />
+            )}
+          >
+            {/* controls */}
+          </VideoPlayer.Controls>
+        )}
+      </AnimatePresence>
+    </VideoPlayer.Root>
+  )
+}
+```
+
+The `keepMounted` prop ensures the element stays in the DOM during exit animations, and the `render` prop lets you compose with Motion's `motion` components for full animation control.
+
+## Composition
+
+All components support a `render` prop for full control:
+
+```tsx
+<VideoPlayer.PlayButton
+  render={(props, state) => (
+    <button {...props} className="my-button">
+      {state.playing ? 'Pause' : state.ended ? 'Replay' : 'Play'}
+    </button>
+  )}
+/>
+```
+
+## Keyboard shortcuts
+
+When `keyboardShortcuts="focused"` (default):
+
+| Key | Action |
+|-----|--------|
+| `Space` / `K` | Toggle play/pause |
+| `M` | Toggle mute |
+| `F` | Toggle fullscreen |
+| `ArrowLeft` | Seek -5s |
+| `ArrowRight` | Seek +5s |
+| `ArrowUp` | Volume +10% |
+| `ArrowDown` | Volume -10% |
+| `0-9` | Seek to 0%-90% |
+
+## API reference
+
+### Root
+
+Groups all parts of the video player and manages shared state including playback, volume, idle detection, and keyboard shortcuts. Renders a `<div>` element.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `keyboardShortcuts` | `'focused' \| 'global' \| 'none'` | `'focused'` | Keyboard shortcuts scope. |
+| `idleTimeout` | `number` | `3000` | Time in ms before player is considered idle. |
+| `preventIdleWhenPaused` | `boolean` | `false` | Prevents idle state while paused. |
+| `hideCursorWhenIdle` | `'always' \| 'fullscreen' \| false` | `'fullscreen'` | Cursor auto-hiding behavior. |
+| `defaultPlaying` | `boolean` | `false` | Initial playing state. |
+| `defaultVolume` | `number` | `1` | Initial volume (0-1). |
+| `defaultMuted` | `boolean` | `false` | Initial muted state. |
+| `defaultPlaybackRate` | `number` | `1` | Initial playback rate. |
+| `playing` | `boolean` | - | Controlled playing state. |
+| `onPlayingChange` | `(playing: boolean) => void` | - | Playing state change callback. |
+| `volume` | `number` | - | Controlled volume. |
+| `onVolumeChange` | `(volume: number) => void` | - | Volume change callback. |
+| `muted` | `boolean` | - | Controlled muted state. |
+| `onMutedChange` | `(muted: boolean) => void` | - | Muted state change callback. |
+| `onEnded` | `() => void` | - | Video ended callback. |
+| `onFullscreenChange` | `(fullscreen: boolean) => void` | - | Fullscreen change callback. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-playing` | Video is playing. |
+| `data-paused` | Video is paused. |
+| `data-ended` | Video has ended. |
+| `data-waiting` | Video is buffering. |
+| `data-seeking` | Video is seeking. |
+| `data-fullscreen` | In fullscreen mode. |
+| `data-pip` | In picture-in-picture mode. |
+| `data-muted` | Audio is muted. |
+| `data-idle` | Player is idle. |
+
+### Video
+
+The video element that displays media content. Clicking toggles play/pause by default. Renders a `<video>` element.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `src` | `string` | - | Video source URL. |
+| `toggleOnClick` | `boolean` | `true` | Toggle play/pause when clicking video. |
+
+| State | Type | Description |
+|-------|------|-------------|
+| `playing` | `boolean` | Whether the video is playing. |
+| `paused` | `boolean` | Whether the video is paused. |
+| `ended` | `boolean` | Whether the video has ended. |
+| `waiting` | `boolean` | Whether the video is buffering. |
+| `seeking` | `boolean` | Whether the video is seeking. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-playing` | Video is playing. |
+| `data-paused` | Video is paused. |
+| `data-ended` | Video has ended. |
+| `data-waiting` | Video is buffering. |
+| `data-seeking` | Video is seeking. |
+
+### Controls
+
+A container for playback controls that auto-hides based on idle state. Renders a `<div>` element.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `idleTimeout` | `number` | Root's value | Custom idle timeout for this element. |
+| `keepMounted` | `boolean` | `false` | Keep mounted in DOM when hidden. |
+
+| State | Type | Description |
+|-------|------|-------------|
+| `open` | `boolean` | Whether the controls are currently visible. |
+| `idle` | `boolean` | Whether the player is idle. |
+| `playing` | `boolean` | Whether the video is playing. |
+| `paused` | `boolean` | Whether the video is paused. |
+| `ended` | `boolean` | Whether the video has ended. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-open` | Controls are visible. |
+| `data-closed` | Controls are hidden. |
+| `data-idle` | Player is idle. |
+| `data-playing` | Video is playing. |
+| `data-paused` | Video is paused. |
+| `data-ended` | Video has ended. |
+| `data-starting-style` | First frame when entering. |
+| `data-ending-style` | During exit animation. |
+
+### Overlay
+
+A clickable overlay that toggles play/pause when clicked. Auto-hides based on idle state. Renders a `<div>` element.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `idleTimeout` | `number` | Root's value | Custom idle timeout for this element. |
+| `keepMounted` | `boolean` | `false` | Keep mounted in DOM when hidden. |
+
+| State | Type | Description |
+|-------|------|-------------|
+| `open` | `boolean` | Whether the overlay is currently visible (opposite of idle). |
+| `playing` | `boolean` | Whether the video is playing. |
+| `paused` | `boolean` | Whether the video is paused. |
+| `ended` | `boolean` | Whether the video has ended. |
+| `waiting` | `boolean` | Whether the video is buffering. |
+| `seeking` | `boolean` | Whether the video is seeking. |
+| `fullscreen` | `boolean` | Whether in fullscreen mode. |
+| `pictureInPicture` | `boolean` | Whether in picture-in-picture mode. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-open` | Overlay is visible. |
+| `data-closed` | Overlay is hidden. |
+| `data-playing` | Video is playing. |
+| `data-paused` | Video is paused. |
+| `data-ended` | Video has ended. |
+| `data-waiting` | Video is buffering. |
+| `data-seeking` | Video is seeking. |
+| `data-fullscreen` | In fullscreen mode. |
+| `data-pip` | In picture-in-picture mode. |
+| `data-starting-style` | First frame when entering. |
+| `data-ending-style` | During exit animation. |
+
+### Poster
+
+A placeholder displayed while the video is loading. Fades out when the video can play. Renders a `<div>` element.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `keepMounted` | `boolean` | `false` | Keep mounted in DOM when hidden. |
+
+| State | Type | Description |
+|-------|------|-------------|
+| `loading` | `boolean` | Whether the poster is loading/visible. |
+| `loaded` | `boolean` | Whether the video has loaded. |
+| `transitionStatus` | `'starting' \| 'ending' \| undefined` | The current transition status. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-loading` | Poster is loading/visible. |
+| `data-loaded` | Video has loaded. |
+| `data-starting-style` | First frame when entering. |
+| `data-ending-style` | During exit animation. |
+
+### PlayButton
+
+A button that toggles between play and pause states. Renders a `<button>` element.
+
+| State | Type | Description |
+|-------|------|-------------|
+| `playing` | `boolean` | Whether the video is playing. |
+| `paused` | `boolean` | Whether the video is paused. |
+| `ended` | `boolean` | Whether the video has ended. |
+| `waiting` | `boolean` | Whether the video is buffering. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-playing` | Video is playing. |
+| `data-paused` | Video is paused. |
+| `data-ended` | Video has ended. |
+| `data-waiting` | Video is buffering. |
+
+### MuteButton
+
+A button that toggles the muted state of the video. Renders a `<button>` element.
+
+| State | Type | Description |
+|-------|------|-------------|
+| `muted` | `boolean` | Whether the audio is muted. |
+| `volume` | `number` | The current volume level (0-1). |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-muted` | Explicitly muted via toggle. |
+| `data-volume-off` | Muted or volume is 0. |
+| `data-volume-on` | Volume > 0 and not muted. |
+| `data-volume-low` | Not muted and volume < 0.5. |
+| `data-volume-high` | Not muted and volume >= 0.5. |
+
+### FullscreenButton
+
+A button that toggles fullscreen mode. Renders a `<button>` element.
+
+| State | Type | Description |
+|-------|------|-------------|
+| `fullscreen` | `boolean` | Whether in fullscreen mode. |
+| `supported` | `boolean` | Whether fullscreen is supported by the browser. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-fullscreen` | In fullscreen mode. |
+| `data-supported` | Fullscreen is supported. |
+
+### PictureInPictureButton
+
+A button that toggles picture-in-picture mode. Renders a `<button>` element.
+
+| State | Type | Description |
+|-------|------|-------------|
+| `pictureInPicture` | `boolean` | Whether in picture-in-picture mode. |
+| `supported` | `boolean` | Whether picture-in-picture is supported by the browser. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-pip` | In picture-in-picture mode. |
+| `data-supported` | Picture-in-picture is supported. |
+
+### PlaybackRateButton
+
+A button that cycles through available playback speeds. Renders a `<button>` element.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `rates` | `number[]` | `[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]` | Available playback rates. |
+
+| State | Type | Description |
+|-------|------|-------------|
+| `playbackRate` | `number` | The current playback rate. |
+| `rates` | `readonly number[]` | The available playback rates. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-rate` | Current playback rate value. |
+
+### SeekSlider
+
+A slider for seeking through the video timeline. Includes progress, buffered indicator, and hover preview. Renders a `<div>` element.
+
+| State | Type | Description |
+|-------|------|-------------|
+| `currentTime` | `number` | The current playback time in seconds. |
+| `duration` | `number` | The total duration in seconds. |
+| `progress` | `number` | The current progress as a percentage. |
+| `seeking` | `boolean` | Whether the video is actively seeking. |
+| `pressing` | `boolean` | Whether the pointer is pressed down. |
+| `dragging` | `boolean` | Whether the user is dragging the thumb. |
+| `hoverTime` | `number \| null` | The time at the hover position in seconds. |
+| `hoverProgress` | `number \| null` | The hover position as a percentage. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-seeking` | Video is actively seeking. |
+| `data-hovering` | Pointer is hovering over slider. |
+| `data-pressing` | Pointer is pressed down. |
+| `data-dragging` | User is dragging the thumb. |
+
+| CSS Variable | Description |
+|--------------|-------------|
+| `--seek-progress` | Current progress as percentage (e.g., `45%`). |
+| `--seek-buffered` | Buffered progress as percentage (e.g., `80%`). |
+| `--seek-current-time` | Current time in seconds. |
+| `--seek-duration` | Total duration in seconds. |
+| `--seek-hover-progress` | Hover position as percentage. |
+| `--seek-hover-time` | Hover time in seconds. |
+
+### SeekSliderControl
+
+The interactive area of the seek slider. Re-exports Base UI's `Slider.Control`. Renders a `<div>` element.
+
+### SeekSliderTrack
+
+The track that contains the progress indicator and thumb. Renders a `<span>` element.
+
+### SeekSliderProgress
+
+Displays the current playback position on the track. Renders a `<span>` element.
+
+| State | Type | Description |
+|-------|------|-------------|
+| `progress` | `number` | The current progress as a percentage. |
+
+### SeekSliderBuffered
+
+Displays how much of the video has been buffered. Renders a `<div>` element.
+
+| State | Type | Description |
+|-------|------|-------------|
+| `bufferedPercentage` | `number` | The buffered amount as a percentage. |
+
+### SeekSliderThumb
+
+The draggable thumb for seeking through the timeline. Renders a `<span>` element.
+
+### SeekSliderPreviewThumb
+
+A preview indicator that follows the cursor on hover. Renders a `<span>` element.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `keepMounted` | `boolean` | `false` | Keep mounted in DOM when hidden. |
+
+| State | Type | Description |
+|-------|------|-------------|
+| `open` | `boolean` | Whether the preview is visible. |
+| `transitionStatus` | `'starting' \| 'ending' \| undefined` | The current transition status. |
+| `hoverProgress` | `number` | The hover position as a percentage. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-open` | Preview is visible. |
+| `data-closed` | Preview is hidden. |
+| `data-starting-style` | First frame when entering. |
+| `data-ending-style` | During exit animation. |
+
+### SeekSliderHover
+
+Hover progress fill that shows the hovered position. Renders a `<div>` element.
+
+| State | Type | Description |
+|-------|------|-------------|
+| `hovering` | `boolean` | Whether the pointer is hovering. |
+| `hoverProgress` | `number \| null` | The hover position as a percentage. |
+| `hoverTime` | `number \| null` | The time at the hover position in seconds. |
+
+### VolumeSlider
+
+A slider for controlling the volume level. Renders a `<div>` element.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Slider orientation. |
+
+| State | Type | Description |
+|-------|------|-------------|
+| `volume` | `number` | The current volume level (0-1). |
+| `muted` | `boolean` | Whether the audio is muted. |
+| `percentage` | `number` | The volume as a percentage. |
+| `pressing` | `boolean` | Whether the pointer is pressed down. |
+| `dragging` | `boolean` | Whether the user is dragging the thumb. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-muted` | Audio is muted. |
+| `data-volume` | Current volume level (0-1). |
+| `data-pressing` | Slider is being pressed. |
+| `data-dragging` | Slider is being dragged. |
+
+| CSS Variable | Description |
+|--------------|-------------|
+| `--volume` | Raw volume value (0-1). |
+| `--volume-percentage` | Volume as percentage (e.g., `75%`). |
+
+### VolumeSliderControl
+
+The interactive area of the volume slider. Re-exports Base UI's `Slider.Control`. Renders a `<div>` element.
+
+### VolumeSliderTrack
+
+The track that contains the range indicator and thumb. Renders a `<span>` element.
+
+### VolumeSliderRange
+
+Displays the current volume level on the track. Renders a `<span>` element.
+
+### VolumeSliderThumb
+
+The draggable thumb for adjusting volume. Renders a `<span>` element.
+
+### TimeDisplay
+
+Displays time information in various formats. Renders a `<span>` element.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `format` | `'current' \| 'duration' \| 'remaining' \| 'current / duration' \| 'hover'` | `'current / duration'` | Time format. |
+| `fixedWidth` | `boolean` | `true` | Reserve space to prevent layout shift. |
+| `align` | `'left' \| 'center' \| 'right'` | `'left'` | Text alignment within reserved space. |
+
+| State | Type | Description |
+|-------|------|-------------|
+| `currentTime` | `number` | The current playback time in seconds. |
+| `duration` | `number` | The total duration in seconds. |
+| `remaining` | `number` | The remaining time in seconds. |
+| `hoverTime` | `number \| null` | The time at the hover position in seconds. |
+| `hovering` | `boolean` | Whether hover time is available. |
+| `formattedCurrent` | `string` | The formatted current time string. |
+| `formattedDuration` | `string` | The formatted duration string. |
+| `formattedRemaining` | `string` | The formatted remaining time string. |
+| `formattedHover` | `string \| null` | The formatted hover time string. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-hovering` | Hover time is available. |
+
+### Track
+
+Defines a caption or subtitle track. Must be placed inside `Video`. Renders a `<track>` element.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `kind` | `TextTrackKind` | `'captions'` | Track kind. |
+| `src` | `string` | - | Source URL for VTT file. |
+| `label` | `string` | - | Human-readable label. |
+| `srcLang` | `string` | - | Language code (e.g., `'en'`). |
+| `default` | `boolean` | `false` | Set as default track. |
+
+### Captions
+
+Renders active caption text with full styling control. Renders a `<div>` element.
+
+| State | Type | Description |
+|-------|------|-------------|
+| `active` | `boolean` | Whether there are currently active cues. |
+| `cueText` | `string` | Combined text from all active cues (joined with newlines). |
+| `cues` | `VTTCue[]` | Raw VTTCue objects for advanced use cases. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-active` | Caption cues are being displayed. |
+
+### CaptionsButton
+
+A button that toggles captions on or off. Renders a `<button>` element.
+
+| State | Type | Description |
+|-------|------|-------------|
+| `active` | `boolean` | Whether captions are enabled. |
+| `available` | `boolean` | Whether caption tracks are available. |
+| `trackCount` | `number` | The number of available caption tracks. |
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-active` | Captions are enabled. |
+| `data-available` | Caption tracks are available. |
+
+### useVideoPlayer()
+
+Access the full player state and actions from any child component:
+
+```tsx
+import { useVideoPlayer } from '@/app/craft/2025/video-player/component'
+
+function CustomControl() {
+  const { playing, currentTime, duration, toggle, seek } = useVideoPlayer()
+  return <div>{currentTime}s / {duration}s</div>
+}
+```

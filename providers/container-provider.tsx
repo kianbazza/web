@@ -3,6 +3,7 @@
 'use client'
 
 import { AnimatePresence, motion } from 'motion/react'
+import type * as React from 'react'
 import { useScrollEdges } from '@/hooks/use-scroll-edges'
 import { cn } from '@/lib/utils'
 import styles from './fade.module.css'
@@ -12,7 +13,10 @@ export function ContainerProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex-1 flex flex-col h-full w-full">
-      <div className="fixed top-0 left-0 pointer-events-none h-svh w-svw z-[10001]">
+      <div
+        id="global-fade"
+        className="fixed top-0 left-0 pointer-events-none h-svh w-svw z-[10001]"
+      >
         <AnimatePresence>
           {!topEdgeTouched && (
             <Fade

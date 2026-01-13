@@ -53,11 +53,12 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-  const page = craftSource.getPage(['cursor-origin'])
+  // biome-ignore lint/style/noNonNullAssertion: allowed
+  const page = craftSource.getPage(['cursor-origin'])!
 
-  const MDX = page!.data.body
+  const MDX = page.data.body
 
-  const date = page!.data.published_date as unknown as Date
+  const date = page.data.published_date as unknown as Date
   const formattedDate = format(date, 'MMMM yyyy')
 
   return (
@@ -65,7 +66,7 @@ export default function Page() {
       <div className="col-span-1 flex flex-col items-end">
         <div className="fixed top-36 max-xl:hidden mr-32 flex flex-col gap-4">
           <BackToCraft />
-          <TableOfContents toc={page!.data.toc} />
+          <TableOfContents toc={page.data.toc} />
         </div>
       </div>
       <WidthContainer className="col-span-1 overflow-y-visible">
@@ -74,7 +75,7 @@ export default function Page() {
             <BackToCraft />
           </div>
           <div className="font-[450]">
-            <h1 className="text-xl">{page!.data.title}</h1>
+            <h1 className="text-xl">{page.data.title}</h1>
             <span className="text-sand-10">{formattedDate}</span>
           </div>
           <div className="space-y-12">

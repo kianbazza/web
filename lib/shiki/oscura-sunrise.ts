@@ -548,6 +548,20 @@ export const oscuraSunrise = {
     },
 
     // -------------------------------------------------------------------------
+    // JS/TS Object Property Names
+    // -------------------------------------------------------------------------
+    {
+      name: 'Object Literal Keys',
+      scope: [
+        'meta.object-literal.key',
+        'meta.object.member variable.other.readwrite',
+        'variable.object.property',
+        'meta.objectliteral meta.object.member',
+      ],
+      settings: { foreground: OSCURA.text },
+    },
+
+    // -------------------------------------------------------------------------
     // JS/TS String Special Cases
     // -------------------------------------------------------------------------
     {
