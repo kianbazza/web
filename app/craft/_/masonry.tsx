@@ -43,6 +43,17 @@ interface CraftItem {
 
 const items: CraftItem[] = [
   {
+    src: 'https://bazza-dev.b-cdn.net/craft/navattic-logo-grid.mp4',
+    type: 'video',
+    title: 'Logo grid',
+    date: 'January 2026',
+    theme: 'light',
+    dimensions: {
+      width: 3840,
+      height: 1468,
+    },
+  },
+  {
     src: 'https://bazza-dev.b-cdn.net/craft/kianbazza-2025-cursor-origin-button.mp4',
     href: '/craft/2025/cursor-origin',
     type: 'video',
