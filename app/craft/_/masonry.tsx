@@ -43,6 +43,17 @@ interface CraftItem {
 
 const items: CraftItem[] = [
   {
+    src: 'https://bazza-dev.b-cdn.net/craft/navattic-logo-grid.mp4',
+    type: 'video',
+    title: 'Company logo grid',
+    date: 'January 2026',
+    theme: 'light',
+    dimensions: {
+      width: 3840,
+      height: 1468,
+    },
+  },
+  {
     src: 'https://bazza-dev.b-cdn.net/craft/bazzaui-combobox.mp4',
     type: 'video',
     title: 'Fluid combobox',
