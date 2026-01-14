@@ -8,7 +8,8 @@ export function WidthContainer({
   return (
     <div
       className={cn(
-        'w-full max-w-[min(var(--breakpoint-sm),calc(100svw-calc(var(--spacing)*8)))] mx-auto',
+        '[--breakpoint:var(--breakpoint-sm)]',
+        'w-full max-w-[min(var(--breakpoint),calc(100svw-calc(var(--spacing)*8)))] mx-auto',
         className,
       )}
       {...props}

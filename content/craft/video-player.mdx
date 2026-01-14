@@ -6,6 +6,7 @@ published_date: 2025-12-19
 import { VideoPlayer } from '@/app/craft/2025/video-player/component'
 import { LinearCSSPlayer } from '@/app/craft/2025/video-player/examples/linear-css'
 import { LinearMotionPlayer } from '@/app/craft/2025/video-player/examples/linear-motion'
+import { ModernPlayer } from '@/app/craft/2025/video-player/examples/modern'
 import { YouTubePlayer } from '@/app/craft/2025/video-player/examples/youtube-player'
 import { Demo } from '@/app/craft/2025/video-player/components/demo'
 import { Signature } from '@/components/signature'
@@ -18,7 +19,7 @@ I'm not quite ready to publish the source code yet, but when I do, it'll be part
 
 Open source. Open code. For all to use.
 
-<Signature className="max-w-[300px] sm:max-w-[300px] pt-4 stroke-sand-12" isScrollTriggered />
+<Signature className="max-w-[300px] sm:max-w-[300px] pt-4 stroke-sand-12" />
 
 ----
 
@@ -79,6 +80,22 @@ Same Linear-style player but using Motion (Framer Motion) for animations instead
   { name: "icons.tsx", path: "app/craft/2025/video-player/examples/linear-motion/icons.tsx" },
 ]}>
   <LinearMotionPlayer
+    src="https://static.linear.app/assets/web/quality/teaser-full.90D8F66A-6715-41C0-9BC0-74FCD0B1047C.mp4"
+    captions={[
+      { src: "/linear-quality-teaser.captions.vtt", label: "English", srcLang: "en", default: true },
+    ]}
+  />
+</Demo>
+
+### Modern
+
+A modern video player design.
+
+<Demo files={[
+  { name: "index.tsx", path: "app/craft/2025/video-player/examples/modern/index.tsx" },
+  { name: "icons.tsx", path: "app/craft/2025/video-player/examples/modern/icons.tsx" },
+]}>
+  <ModernPlayer
     src="https://static.linear.app/assets/web/quality/teaser-full.90D8F66A-6715-41C0-9BC0-74FCD0B1047C.mp4"
     captions={[
       { src: "/linear-quality-teaser.captions.vtt", label: "English", srcLang: "en", default: true },
@@ -763,3 +780,5 @@ function CustomControl() {
   return <div>{currentTime}s / {duration}s</div>
 }
 ```
+
+<div className='w-full h-[800px]' />

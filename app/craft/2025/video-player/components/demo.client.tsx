@@ -45,7 +45,7 @@ export function DemoClient({ children, files }: DemoClientProps) {
       </div>
 
       {/* Code section */}
-      <div className="border-x border-b rounded-b-lg overflow-hidden border-sand-6 pt-8 -mt-8">
+      <div className="border rounded-b-lg overflow-hidden border-sand-6 pt-8 -mt-8">
         <Tabs.Root value={activeTab} onValueChange={handleTabChange}>
           {/* Header with tabs and copy button */}
           <div className="flex items-center justify-between px-4 py-2 bg-sand-1 border-b border-sand-6">

@@ -9,3 +9,7 @@ dist
 next-env.d.ts
 
 .DS_Store
+
+# Large video files
+public/gta-6-trailer-2.mp4
+public/los-angeles-timelapse.mp4

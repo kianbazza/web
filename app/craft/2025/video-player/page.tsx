@@ -1,6 +1,5 @@
 import { format } from 'date-fns'
 import type { Metadata } from 'next'
-import { HideGlobalFade } from '@/components/hide-global-fade'
 import { WidthContainer } from '@/components/width-container'
 import { env } from '@/lib/env'
 import { craftSource } from '@/lib/source'
@@ -63,23 +62,27 @@ export default function Page() {
 
   return (
     <div className="grid grid-cols-[1fr_auto_1fr] [&_h1]:scroll-mt-[114px] [&_h2]:scroll-mt-[114px] [&_h3]:scroll-mt-[114px] [&_h4]:scroll-mt-[114px] [&_h5]:scroll-mt-[114px] [&_h6]:scroll-mt-[114px]">
-      <HideGlobalFade />
+      {/*<HideGlobalFade />*/}
       <div className="col-span-1 flex flex-col items-end">
-        <div className="fixed top-36 bottom-64 max-xl:hidden mr-32 flex flex-col gap-4">
+        <div className="fixed top-36 bottom-64 max-2xl:hidden mr-48 flex flex-col gap-4">
           <BackToCraft />
-          <TableOfContents toc={page!.data.toc} />
+          <TableOfContents
+            toc={page!.data.toc}
+            showIntro
+            introLabel="Introduction"
+          />
         </div>
       </div>
-      <WidthContainer className="col-span-1 overflow-y-visible">
+      <WidthContainer className="col-span-1 [--breakpoint:var(--breakpoint-md)]">
         <div className="mt-16 sm:mt-32 flex flex-col gap-12 relative">
-          <div className="xl:hidden translate-x-3">
+          <div className="2xl:hidden translate-x-3">
             <BackToCraft />
           </div>
           <div className="font-[450]">
             <h1 className="text-xl">{page!.data.title}</h1>
             <span className="text-sand-10">{formattedDate}</span>
           </div>
-          <div className="space-y-12 -mx-12">
+          <div className="space-y-12">
             <MDX components={useMDXComponents()} />
           </div>
         </div>
