@@ -43,6 +43,17 @@ interface CraftItem {
 
 const items: CraftItem[] = [
   {
+    src: 'https://bazza-dev.b-cdn.net/craft/bazzaui-combobox.mp4',
+    type: 'video',
+    title: 'Fluid combobox',
+    date: 'January 2026',
+    theme: 'light',
+    dimensions: {
+      width: 1728,
+      height: 2160,
+    },
+  },
+  {
     src: 'https://bazza-dev.b-cdn.net/craft/kianbazza-2025-cursor-origin-button.mp4',
     href: '/craft/2025/cursor-origin',
     type: 'video',
