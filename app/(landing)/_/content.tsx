@@ -46,6 +46,7 @@ type Role = {
   startDate: Date
   endDate?: Date
   title: string
+  hideDuration?: boolean
 }
 
 type Organization = {
@@ -75,12 +76,15 @@ export const career: Array<Organization> = [
         title: 'Fused',
         icon: FusedIcon,
         startDate: new Date(2025, 7, 24),
+        endDate: new Date(2026, 0, 30),
+        hideDuration: true,
       },
       {
         title: 'Profound',
         icon: ProfoundIcon,
         startDate: new Date(2025, 4, 22),
         endDate: new Date(2025, 6, 17),
+        hideDuration: true,
       },
     ],
   },
@@ -118,6 +122,7 @@ export const consulting = [
     company: 'Fused',
     icon: FusedIcon,
     startDate: new Date(2025, 7, 24),
+    endDate: new Date(2026, 0, 30),
   },
 ]
 
