@@ -173,7 +173,13 @@ export default function Home() {
                             )}
                             <span className="text-sand-11">{role.title}</span>
                           </div>
-                          {isIncoming ? (
+                          {!role.endDate && !isIncoming && (
+                            <div className="flex items-center gap-2">
+                              <div className="size-1.5 shrink-0 bg-blue-10 rounded-full" />
+                              <span className="text-blue-9">Now</span>
+                            </div>
+                          )}
+                          {/* {isIncoming ? (
                             <div className="flex sm:hidden items-center gap-[1ch]">
                               <span className="text-plum-10">Incoming ⋅</span>
                               <span className="text-sand-9">
@@ -181,14 +187,16 @@ export default function Home() {
                               </span>
                             </div>
                           ) : (
-                            <div className="flex sm:hidden items-center gap-[1ch]">
-                              {!role.endDate && (
-                                <span className="text-blue-10">Now ⋅</span>
-                              )}
-                              <span className="text-sand-9">
-                                {durationCompact}
-                              </span>
-                            </div>
+                            !role.hideDuration && (
+                              <div className="flex sm:hidden items-center gap-[1ch]">
+                                {!role.endDate && (
+                                  <span className="text-blue-10">Now ⋅</span>
+                                )}
+                                <span className="text-sand-9">
+                                  {durationCompact}
+                                </span>
+                              </div>
+                            )
                           )}
 
                           {isIncoming ? (
@@ -199,13 +207,15 @@ export default function Home() {
                               </span>
                             </div>
                           ) : (
-                            <div className="items-center gap-[1ch] hidden sm:flex">
-                              {!role.endDate && (
-                                <span className="text-blue-10">Now ⋅</span>
-                              )}
-                              <span className="text-sand-9">{duration}</span>
-                            </div>
-                          )}
+                            !role.hideDuration && (
+                              <div className="items-center gap-[1ch] hidden sm:flex">
+                                {!role.endDate && (
+                                  <span className="text-blue-10">Now ⋅</span>
+                                )}
+                                <span className="text-sand-9">{duration}</span>
+                              </div>
+                            )
+                          )} */}
                         </li>
                       )
                     })}

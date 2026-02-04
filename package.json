@@ -28,7 +28,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "fumadocs-core": "^15.8.5",
-    "fumadocs-mdx": "^12.0.3",
+    "fumadocs-mdx": "^14.0.3",
     "install": "^0.13.0",
     "jotai": "^2.11.3",
     "jsonc-parser": "^3.3.1",
