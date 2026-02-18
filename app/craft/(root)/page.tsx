@@ -4,7 +4,7 @@ import { CraftMasonry } from '../_/masonry'
 
 export default function ExperimentsPage() {
   return (
-    <Container className="font-mono mt-16 flex flex-col gap-8 w-full mx-auto max-w-(--breakpoint-2xl)">
+    <Container className="font-mono mt-16 flex flex-col gap-8 w-full mx-auto">
       <div className="flex flex-col gap-4 w-full">
         <div className="flex flex-col gap-4 w-full max-w-(--breakpoint-sm) mx-auto">
           <h1 className="tracking-[-0.05em]! text-3xl">Craft</h1>
