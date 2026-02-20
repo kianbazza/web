@@ -40,12 +40,12 @@ const toolbarItems: ToolbarItem[] = [
     name: 'Craft',
     paths: ['/craft'],
   },
-
   {
     value: 'projects',
     name: 'Projects',
     paths: ['/projects'],
   },
+  { value: 'tools', name: 'Tools', paths: ['/tools'] },
   {
     value: 'education',
     name: 'Education',
