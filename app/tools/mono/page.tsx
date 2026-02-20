@@ -11,6 +11,8 @@ import { useEffect, useId, useMemo, useState } from 'react'
 import { H } from '@/components/h'
 import { WidthContainer } from '@/components/width-container'
 import { cn } from '@/lib/utils'
+import { BackToTools } from '../_/back-to-tools'
+import { FadeContainer } from '@/components/fade-container'
 
 const MONOSPACE_UPPERCASE_START = 0x1d670
 const MONOSPACE_LOWERCASE_START = 0x1d68a
@@ -264,210 +266,234 @@ export default function Page() {
   }
 
   return (
-    <WidthContainer>
-      <div className="relative mt-16 flex w-full flex-col gap-8">
-        <div className="pointer-events-none absolute inset-x-0 top-4 -z-10 h-56 rounded-[2rem] bg-gradient-to-b from-blue-3/50 via-sand-2 to-transparent blur-2xl" />
-        <div className="mx-auto flex w-full max-w-(--breakpoint-sm) flex-col gap-4">
-          <h1 className="tracking-[-0.05em]! text-3xl">Monospace Generator</h1>
-          <p className="font-medium text-sand-10">
-            Type your text and instantly convert it to <H>typewriter</H> symbols
-            like 𝚝𝚢𝚙𝚎𝚠𝚛𝚒𝚝𝚎𝚛.
-          </p>
+    <div className="grid grid-cols-[1fr_auto_1fr]">
+      <div className="col-span-1 flex flex-col items-end">
+        <div className="fixed top-36 max-xl:hidden mr-32">
+          <BackToTools />
         </div>
-        <div className="h-px w-full bg-sand-6" />
-        <div className="mx-auto flex w-full max-w-(--breakpoint-sm) flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor={inputId}
-              className="text-sm font-medium text-sand-11"
-            >
-              Input
-            </label>
-            <textarea
-              id={inputId}
-              value={input}
-              onChange={(event) => {
-                setHasEditedInput(true)
-                setInput(event.target.value)
-              }}
-              rows={6}
-              placeholder="Type text here"
-              className="min-h-36 w-full resize-y rounded-2xl border border-sand-6 bg-sand-2/70 px-4 py-3 font-sans text-[18px] leading-relaxed outline-hidden transition-colors focus:border-sand-8"
-            />
-            <div className="flex items-center justify-between text-xs text-sand-10">
-              <span>
-                {input.length} character{input.length === 1 ? '' : 's'}
-              </span>
-              <button
-                type="button"
-                onClick={handleReset}
-                className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 transition-colors hover:bg-sand-3 hover:text-sand-11"
-              >
-                <RotateCcwIcon className="size-3.5" />
-                Reset
-              </button>
+      </div>
+      <WidthContainer className="col-span-1">
+        <div className="relative mt-16 sm:mt-32 flex w-full flex-col gap-8">
+          <div className="pointer-events-none absolute inset-x-0 top-4 -z-10 h-56 rounded-[2rem] bg-gradient-to-b from-blue-3/50 via-sand-2 to-transparent blur-2xl" />
+          <div className="mx-auto flex w-full max-w-(--breakpoint-sm) flex-col gap-4">
+            <div className="xl:hidden translate-x-3 mb-4">
+              <BackToTools />
             </div>
+            <h1 className="tracking-[-0.05em]! text-3xl">
+              Monospace Generator
+            </h1>
+            <p className="font-medium text-sand-10">
+              Type your text and instantly convert it to <H>typewriter</H>{' '}
+              symbols like 𝚝𝚢𝚙𝚎𝚠𝚛𝚒𝚝𝚎𝚛.
+            </p>
           </div>
-
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between gap-3">
-              <h2 className="text-sm font-medium text-sand-11">Output</h2>
-              <div className="flex items-center gap-1">
+          <div className="h-px w-full bg-sand-6" />
+          <div className="mx-auto flex w-full max-w-(--breakpoint-sm) flex-col gap-6">
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor={inputId}
+                className="text-sm font-medium text-sand-11"
+              >
+                Input
+              </label>
+              <textarea
+                id={inputId}
+                value={input}
+                onChange={(event) => {
+                  setHasEditedInput(true)
+                  setInput(event.target.value)
+                }}
+                rows={6}
+                placeholder="Type text here"
+                className="min-h-36 w-full resize-y rounded-2xl border border-sand-6 bg-sand-2/70 px-4 py-3 font-sans text-[18px] leading-relaxed outline-hidden transition-colors focus:border-sand-8"
+              />
+              <div className="flex items-center justify-between text-xs text-sand-10">
+                <span>
+                  {input.length} character{input.length === 1 ? '' : 's'}
+                </span>
                 <button
                   type="button"
-                  onClick={handleSave}
-                  disabled={!output}
-                  className={cn(
-                    'inline-flex items-center gap-1.5 rounded-md justify-center size-7 text-xs font-medium',
-                    'text-sand-11 bg-transparent',
-                    'hover:text-sand-12 hover:bg-sand-3',
-                    'hover:transition-none transition-colors duration-150 ease-out',
-                  )}
+                  onClick={handleReset}
+                  className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 transition-colors hover:bg-sand-3 hover:text-sand-11"
                 >
-                  {saveState === 'saved' ? (
-                    <CheckIcon className="size-3.5" />
-                  ) : (
-                    <SaveIcon className="size-3.5" />
-                  )}
-                  {/*{saveState === 'saved' ? 'Saved' : 'Save'}*/}
+                  <RotateCcwIcon className="size-3.5" />
+                  Reset
                 </button>
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  disabled={!output}
-                  className={cn(
-                    'inline-flex items-center gap-1.5 rounded-md justify-center size-7 text-xs font-medium',
-                    'text-sand-11 bg-transparent border',
-                    'hover:text-sand-12 hover:bg-sand-3',
-                    'hover:transition-none transition-colors duration-150 ease-out',
-                  )}
-                >
-                  {copyState === 'copied' ? (
-                    <CheckIcon className="size-3.5" />
-                  ) : (
-                    <CopyIcon className="size-3.5" />
-                  )}
-                  {/*{copyState === 'copied'
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-sm font-medium text-sand-11">Output</h2>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={handleSave}
+                    disabled={!output}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 rounded-md justify-center size-7 text-xs font-medium',
+                      'text-sand-11 bg-transparent',
+                      'hover:text-sand-12 hover:bg-sand-3',
+                      'hover:transition-none transition-colors duration-150 ease-out',
+                    )}
+                  >
+                    {saveState === 'saved' ? (
+                      <CheckIcon className="size-3.5" />
+                    ) : (
+                      <SaveIcon className="size-3.5" />
+                    )}
+                    {/*{saveState === 'saved' ? 'Saved' : 'Save'}*/}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCopy}
+                    disabled={!output}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 rounded-md justify-center size-7 text-xs font-medium',
+                      'text-sand-11 bg-transparent border',
+                      'hover:text-sand-12 hover:bg-sand-3',
+                      'hover:transition-none transition-colors duration-150 ease-out',
+                    )}
+                  >
+                    {copyState === 'copied' ? (
+                      <CheckIcon className="size-3.5" />
+                    ) : (
+                      <CopyIcon className="size-3.5" />
+                    )}
+                    {/*{copyState === 'copied'
                     ? 'Copied'
                     : copyState === 'failed'
                       ? 'Copy failed'
                       : 'Copy text'}*/}
-                </button>
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div
-              className={cn(
-                'min-h-36 rounded-2xl border px-4 py-3 transition-colors',
-                output
-                  ? 'border-sand-6 bg-sand-2/40 text-sand-12'
-                  : 'border-sand-5 bg-sand-2/20 text-sand-9',
-              )}
-            >
-              <p className="whitespace-pre-wrap break-words text-xl leading-relaxed tracking-normal">
-                {output || '𝚃𝚢𝚙𝚎 𝚜𝚘𝚖𝚎 𝚝𝚎𝚡𝚝 𝚝𝚘 𝚐𝚎𝚗𝚎𝚛𝚊𝚝𝚎 𝚢𝚘𝚞𝚛 𝚘𝚞𝚝𝚙𝚞𝚝.'}
+              <div
+                className={cn(
+                  'min-h-36 rounded-2xl border px-4 py-3 transition-colors',
+                  output
+                    ? 'border-sand-6 bg-sand-2/40 text-sand-12'
+                    : 'border-sand-5 bg-sand-2/20 text-sand-9',
+                )}
+              >
+                <p className="whitespace-pre-wrap break-words text-xl leading-relaxed tracking-normal">
+                  {output || '𝚃𝚢𝚙𝚎 𝚜𝚘𝚖𝚎 𝚝𝚎𝚡𝚝 𝚝𝚘 𝚐𝚎𝚗𝚎𝚛𝚊𝚝𝚎 𝚢𝚘𝚞𝚛 𝚘𝚞𝚝𝚙𝚞𝚝.'}
+                </p>
+              </div>
+              <p className="text-xs text-sand-10">
+                Letters and numbers are converted. Spaces, punctuation, and
+                emojis stay the same.
               </p>
             </div>
-            <p className="text-xs text-sand-10">
-              Letters and numbers are converted. Spaces, punctuation, and emojis
-              stay the same.
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:items-start">
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between gap-3">
-                <h2 className="text-sm font-medium text-sand-11">Saved</h2>
-                <span className="text-xs text-sand-10">
-                  {savedItems.length} item{savedItems.length === 1 ? '' : 's'}
-                </span>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:items-start">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-3">
+                  <h2 className="text-sm font-medium text-sand-11">Saved</h2>
+                  <span className="text-xs text-sand-10">
+                    {savedItems.length} item{savedItems.length === 1 ? '' : 's'}
+                  </span>
+                </div>
+
+                {savedItems.length === 0 ? (
+                  <div className="rounded-2xl border border-dashed border-sand-6 bg-sand-2/20 px-4 py-3 text-sm text-sand-10">
+                    Save an output and it will show up here.
+                  </div>
+                ) : (
+                  <FadeContainer
+                    className="h-[390px]"
+                    topHeight={40}
+                    bottomHeight={40}
+                  >
+                    <ul className="flex flex-col gap-2">
+                      {savedItems.map((item) => (
+                        <li
+                          key={item.id}
+                          className="rounded-2xl border border-sand-6 bg-sand-2/40 px-3 py-3"
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className="min-w-0 flex-1">
+                              <p className="truncate font-sans text-xs text-sand-10">
+                                {item.input || 'Empty input'}
+                              </p>
+                              <p className="mt-1 whitespace-pre-wrap break-words text-lg leading-relaxed tracking-normal">
+                                {item.output}
+                              </p>
+                            </div>
+                            <button
+                              type="button"
+                              aria-label="Remove saved item"
+                              onClick={() => {
+                                handleRemoveSavedItem(item.id)
+                              }}
+                              className="rounded-md p-1.5 text-sand-10 transition-colors hover:bg-sand-3 hover:text-sand-11"
+                            >
+                              <XIcon className="size-4" />
+                            </button>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </FadeContainer>
+                )}
               </div>
 
-              {savedItems.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-sand-6 bg-sand-2/20 px-4 py-3 text-sm text-sand-10">
-                  Save an output and it will show up here.
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-3">
+                  <h2 className="text-sm font-medium text-sand-11">History</h2>
+                  <span className="text-xs text-sand-10">
+                    {historyItems.length} item
+                    {historyItems.length === 1 ? '' : 's'}
+                  </span>
                 </div>
-              ) : (
-                <ul className="flex flex-col gap-2">
-                  {savedItems.map((item) => (
-                    <li
-                      key={item.id}
-                      className="rounded-2xl border border-sand-6 bg-sand-2/40 px-3 py-3"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate font-sans text-xs text-sand-10">
-                            {item.input || 'Empty input'}
-                          </p>
-                          <p className="mt-1 whitespace-pre-wrap break-words text-lg leading-relaxed tracking-normal">
-                            {item.output}
-                          </p>
-                        </div>
-                        <button
-                          type="button"
-                          aria-label="Remove saved item"
-                          onClick={() => {
-                            handleRemoveSavedItem(item.id)
-                          }}
-                          className="rounded-md p-1.5 text-sand-10 transition-colors hover:bg-sand-3 hover:text-sand-11"
-                        >
-                          <XIcon className="size-4" />
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
 
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between gap-3">
-                <h2 className="text-sm font-medium text-sand-11">History</h2>
-                <span className="text-xs text-sand-10">
-                  {historyItems.length} item
-                  {historyItems.length === 1 ? '' : 's'}
-                </span>
+                {historyItems.length === 0 ? (
+                  <div className="rounded-2xl border border-dashed border-sand-6 bg-sand-2/20 px-4 py-3 text-sm text-sand-10">
+                    Your recent conversions will appear here.
+                  </div>
+                ) : (
+                  <FadeContainer
+                    className="h-[390px]"
+                    topHeight={40}
+                    bottomHeight={40}
+                  >
+                    <ul className="flex flex-col gap-2">
+                      {historyItems.map((item) => (
+                        <li
+                          key={item.id}
+                          className="rounded-2xl border border-sand-6 bg-sand-2/30 px-3 py-3"
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className="min-w-0 flex-1">
+                              <p className="truncate font-sans text-xs text-sand-10">
+                                {item.input || 'Empty input'}
+                              </p>
+                              <p className="mt-1 whitespace-pre-wrap break-words text-base leading-relaxed tracking-normal text-sand-11">
+                                {item.output}
+                              </p>
+                            </div>
+                            <button
+                              type="button"
+                              aria-label="Remove history item"
+                              onClick={() => {
+                                handleRemoveHistoryItem(item.id)
+                              }}
+                              className="rounded-md p-1.5 text-sand-10 transition-colors hover:bg-sand-3 hover:text-sand-11"
+                            >
+                              <XIcon className="size-4" />
+                            </button>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </FadeContainer>
+                )}
               </div>
-
-              {historyItems.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-sand-6 bg-sand-2/20 px-4 py-3 text-sm text-sand-10">
-                  Your recent conversions will appear here.
-                </div>
-              ) : (
-                <ul className="flex flex-col gap-2">
-                  {historyItems.map((item) => (
-                    <li
-                      key={item.id}
-                      className="rounded-2xl border border-sand-6 bg-sand-2/30 px-3 py-3"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate font-sans text-xs text-sand-10">
-                            {item.input || 'Empty input'}
-                          </p>
-                          <p className="mt-1 whitespace-pre-wrap break-words text-base leading-relaxed tracking-normal text-sand-11">
-                            {item.output}
-                          </p>
-                        </div>
-                        <button
-                          type="button"
-                          aria-label="Remove history item"
-                          onClick={() => {
-                            handleRemoveHistoryItem(item.id)
-                          }}
-                          className="rounded-md p-1.5 text-sand-10 transition-colors hover:bg-sand-3 hover:text-sand-11"
-                        >
-                          <XIcon className="size-4" />
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
             </div>
           </div>
         </div>
-      </div>
-    </WidthContainer>
+      </WidthContainer>
+    </div>
   )
 }
