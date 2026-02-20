@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { H } from '@/components/h'
+import { BackLink } from '@/components/back-link'
 import { WidthContainer } from '@/components/width-container'
 
 export default function Page() {
@@ -7,6 +7,11 @@ export default function Page() {
     <WidthContainer>
       <div className="flex flex-col gap-4 w-full mt-16">
         <div className="flex flex-col gap-4 w-full max-w-(--breakpoint-sm) mx-auto">
+          <BackLink
+            href="/"
+            label="[Index]"
+            className="text-sand-7 -translate-x-2 mb-2"
+          />
           <h1 className="tracking-[-0.05em]! text-3xl">Tools</h1>
           <p className="font-medium text-sand-10">
             Sharp tools. Built to solve. Here to stay.

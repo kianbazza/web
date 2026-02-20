@@ -2,6 +2,7 @@
 
 import { useAtom } from 'jotai'
 import { motion } from 'motion/react'
+import { BackLink } from '@/components/back-link'
 import Container from '@/components/container'
 import { H } from '@/components/h'
 import {
@@ -49,6 +50,11 @@ export default function Page() {
           data-state={isHoveringProjects ? 'projects-hover' : ''}
           className="flex flex-col gap-4 opacity-100 2xl:data-[state=projects-hover]:opacity-40 transition-opacity duration-200"
         >
+          <BackLink
+            href="/"
+            label="[Index]"
+            className="text-sand-7 -translate-x-2 mb-2"
+          />
           <h1 className="tracking-[-0.05em]! text-3xl">Projects</h1>
           <p className="font-medium text-sand-10">
             The <H>craft</H> of creation — projects born from <H>curiosity</H>,
