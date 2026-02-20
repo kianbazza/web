@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
       destination: 'https://cal.com/bazza',
       permanent: false,
     },
+    {
+      source: '/chat',
+      destination: 'https://cal.com/bazza',
+      permanent: false,
+    },
   ],
   images: {
     remotePatterns: [new URL('https://bazza-dev.b-cdn.net/**')],
