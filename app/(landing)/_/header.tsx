@@ -6,7 +6,7 @@ import { Section } from './section'
 
 export const Header = () => {
   return (
-    <Section className="space-y-8">
+    <Section className="flex flex-col gap-y-10">
       <Signature className="max-w-[300px] sm:max-w-[400px] pt-4 stroke-sand-12" />
       <div className="flex flex-col gap-y-4">
         <p className="mb-6 text-sand-12">

@@ -43,6 +43,18 @@ interface CraftItem {
 
 const items: CraftItem[] = [
   {
+    src: 'https://bazza-dev.b-cdn.net/craft/kianbazza-2026-animated-signature.mp4',
+    href: '/craft/2026/signature',
+    type: 'video',
+    title: 'Hand-drawn signature',
+    date: 'February 2026',
+    theme: 'light',
+    dimensions: {
+      width: 2426,
+      height: 1250,
+    },
+  },
+  {
     src: 'https://bazza-dev.b-cdn.net/craft/kianbazza-inline-label-creation-menu.mp4',
     type: 'video',
     title: 'Inline label creation menu',
