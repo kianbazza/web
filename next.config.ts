@@ -15,6 +15,16 @@ const nextConfig: NextConfig = {
       permanent: false,
     },
   ],
+  rewrites: async () => [
+    {
+      source: '/r',
+      destination: '/r/registry.json',
+    },
+    {
+      source: '/r/:name((?!.*\\.json$).+)',
+      destination: '/r/:name.json',
+    },
+  ],
   images: {
     remotePatterns: [new URL('https://bazza-dev.b-cdn.net/**')],
   },

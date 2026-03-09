@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf .next",
-    "dev": "portless web.kianbazza next dev --turbopack",
-    "build": "bun check && next build",
+    "dev": "bun run registry:build && portless web.kianbazza next dev --turbopack",
+    "build": "bun run registry:build && bun check && next build",
     "start": "next start",
     "format": "biome format --write .",
     "lint": "biome lint --write .",
     "check": "biome check --write .",
     "type-check": "tsc --noEmit",
+    "registry:build": "shadcn build",
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
@@ -49,6 +50,7 @@
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "postcss": "^8",
+    "shadcn": "4.0.2",
     "tailwindcss": "^4.1.11",
     "typescript": "^5"
   },

@@ -1,4 +1,10 @@
 import type { MDXComponents } from 'mdx/types'
+import {
+  CodeBlockTab,
+  CodeBlockTabs,
+  CodeBlockTabsList,
+  CodeBlockTabsTrigger,
+} from './components/code-block-tabs'
 import { Frame, FrameCode, FrameDisplay, FrameRoot } from './components/frame'
 import { cn } from './lib/utils'
 
@@ -159,6 +165,10 @@ const components = {
   FrameRoot,
   FrameDisplay,
   FrameCode,
+  CodeBlockTabs,
+  CodeBlockTabsList,
+  CodeBlockTabsTrigger,
+  CodeBlockTab,
 } satisfies MDXComponents
 
 export function useMDXComponents(): MDXComponents {

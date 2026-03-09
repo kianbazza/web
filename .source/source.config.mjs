@@ -1282,6 +1282,11 @@ var craft = defineDocs({
 });
 var source_config_default = defineConfig({
   mdxOptions: {
+    remarkNpmOptions: {
+      persist: {
+        id: "package-manager"
+      }
+    },
     rehypeCodeOptions: {
       themes: {
         light: oscuraSunrise,
