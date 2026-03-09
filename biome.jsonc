@@ -20,6 +20,9 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "correctness": {
+        "useUniqueElementIds": "warn"
+      },
       "style": {
         "useSelfClosingElements": {
           "level": "off"
