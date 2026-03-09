@@ -67,6 +67,7 @@ const items: CraftItem[] = [
   },
   {
     src: 'https://bazza-dev.b-cdn.net/craft/navattic-logo-grid.mp4',
+    href: '/craft/2026/logo-grid',
     type: 'video',
     title: 'Company logo grid',
     date: 'January 2026',

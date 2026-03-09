@@ -1,0 +1,44 @@
+---
+title: Company logo grid
+published_date: 2026-02-28
+---
+
+import { LogoGrid } from '@/app/craft/2026/logo-grid/logo-grid'
+import { Media } from '../../app/craft/_/craft-media'
+import { cn } from '@/lib/utils'
+
+<div className="relative left-1/2 w-screen max-w-(--breakpoint-2xl) -translate-x-1/2 px-4 sm:px-6 my-100">
+  <LogoGrid className="w-full" />
+</div>
+
+I reverse-engineered our production implementation from Navattic and rebuilt the same core interaction here.
+
+The recreated version keeps these behaviors:
+
+- Responsive 3x4 (mobile) and 6x2 (desktop) grid layout.
+- Logos render in grayscale by default.
+- A diagonal shimmer sweep loops across each cell with staggered delays.
+- Hover pauses the shimmer across the grid.
+- Logos with content metadata switch to full color, while the rest stay grayscale.
+- Hover an eligible logo to scale it down and reveal either "See case study" or "See showcase".
+- On mouse leave, the shimmer restarts after the hover fade transition.
+
+<div className="flex flex-col gap-4 w-full">
+  <Media
+    theme="light"
+    src="https://bazza-dev.b-cdn.net/craft/navattic-logo-grid.mp4"
+    type="video"
+    width={3840}
+    height={1468}
+    alt="Original Navattic animated logo grid"
+    wrapperClassName={cn(
+      'z-10',
+      'rounded-xl h-full w-full overflow-clip border border-sand-5',
+    )}
+  />
+  <span className="text-sm text-center text-sand-10">
+    Original Navattic production reference.
+  </span>
+</div>
+
+<div className='h-32 sm:h-64' />

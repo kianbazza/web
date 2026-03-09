@@ -1,5 +1,5 @@
 import type { MDXComponents } from 'mdx/types'
-import { Frame } from './components/frame'
+import { Frame, FrameCode, FrameDisplay, FrameRoot } from './components/frame'
 import { cn } from './lib/utils'
 
 const components = {
@@ -54,6 +54,33 @@ const components = {
       {children}
     </blockquote>
   ),
+  ul: ({ children, className, ...props }) => (
+    <ul
+      className={cn(
+        'my-4 list-outside list-disc pl-6 text-sand-12/80 !font-sans !tabular-nums leading-7 font-[420] marker:text-sand-9 space-y-2',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </ul>
+  ),
+  ol: ({ children, className, ...props }) => (
+    <ol
+      className={cn(
+        'my-4 list-outside list-decimal pl-6 text-sand-12/80 !font-sans !tabular-nums leading-7 font-[420] marker:text-sand-9 space-y-2',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </ol>
+  ),
+  li: ({ children, className, ...props }) => (
+    <li className={cn('pl-1', className)} {...props}>
+      {children}
+    </li>
+  ),
   a: ({ children, className, ...props }) => (
     <a
       className={cn(
@@ -69,6 +96,7 @@ const components = {
     <pre
       className={cn(
         'bg-white dark:bg-sand-2 overflow-scroll w-full rounded-lg border [&_code]:!text-sm py-3',
+        '[&_code]:whitespace-pre',
         '[&_code]:bg-transparent [&_code]:rounded-none [&_code]:px-0 [&_code]:py-0 [&_code]:text-inherit [&_code]:border-none [&_code]:inset-shadow-none',
         '[&>code]:!w-full [&>code]:flex [&>code]:flex-col',
         '[&_code_span.line]:px-4 [&_code_span.line]:h-6 [&_code_span.line]:flex [&_code_span.line]:items-center',
@@ -83,7 +111,7 @@ const components = {
   code: ({ children, className, ...props }) => (
     <code
       className={cn(
-        'bg-sand-2 rounded-md px-1 py-0.5 text-[14px] border inset-shadow-xs !font-mono',
+        'bg-sand-2 rounded-md px-1 py-0.5 text-[14px] border inset-shadow-xs !font-mono whitespace-nowrap',
         className,
       )}
       {...props}
@@ -128,6 +156,9 @@ const components = {
     </tr>
   ),
   Frame,
+  FrameRoot,
+  FrameDisplay,
+  FrameCode,
 } satisfies MDXComponents
 
 export function useMDXComponents(): MDXComponents {

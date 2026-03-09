@@ -1,6 +1,8 @@
 // @ts-nocheck
-import * as __fd_glob_2 from "../content/craft/video-player.mdx?collection=craft"
-import * as __fd_glob_1 from "../content/craft/signature.mdx?collection=craft"
+import * as __fd_glob_4 from "../content/craft/video-player.mdx?collection=craft"
+import * as __fd_glob_3 from "../content/craft/signature.mdx?collection=craft"
+import * as __fd_glob_2 from "../content/craft/logo-grid.mdx?collection=craft"
+import * as __fd_glob_1 from "../content/craft/hit-area.mdx?collection=craft"
 import * as __fd_glob_0 from "../content/craft/cursor-origin.mdx?collection=craft"
 import { server } from 'fumadocs-mdx/runtime/server';
 import type * as Config from '../source.config';
@@ -10,4 +12,4 @@ const create = server<typeof Config, import("fumadocs-mdx/runtime/types").Intern
   }
 }>({"doc":{"passthroughs":["extractedReferences"]}});
 
-export const craft = await create.docs("craft", "content/craft", {}, {"cursor-origin.mdx": __fd_glob_0, "signature.mdx": __fd_glob_1, "video-player.mdx": __fd_glob_2, });
+export const craft = await create.docs("craft", "content/craft", {}, {"cursor-origin.mdx": __fd_glob_0, "hit-area.mdx": __fd_glob_1, "logo-grid.mdx": __fd_glob_2, "signature.mdx": __fd_glob_3, "video-player.mdx": __fd_glob_4, });
