@@ -60,9 +60,8 @@ export function LinearMotionPlayer({ src, captions }: VideoPlayerProps) {
       ref={ref}
       hideCursorWhenIdle="always"
       className={cn(
-        'group/root relative rounded-xl overflow-hidden bg-black',
+        'group/root relative rounded-xl overflow-hidden bg-black border',
         'flex items-center justify-center',
-        'shadow-[inset_0px_0px_0px_2px_rgba(255,255,255,0.5)]',
         'aspect-video w-full h-auto',
         'data-[fullscreen]:rounded-none data-[fullscreen]:h-full data-[fullscreen]:w-full',
         'data-[fullscreen]:border-0 data-[fullscreen]:shadow-none',
@@ -132,7 +131,7 @@ export function LinearMotionPlayer({ src, captions }: VideoPlayerProps) {
           <motion.div
             {...props}
             className={cn(
-              'absolute bottom-2 left-1/2 -translate-x-1/2 h-fit w-[80%]',
+              'absolute bottom-2 left-1/2 -translate-x-1/2 h-fit group-data-[fullscreen]/root:w-[80%] w-[90%]',
               'flex items-center gap-4',
             )}
             variants={controlsVariants}

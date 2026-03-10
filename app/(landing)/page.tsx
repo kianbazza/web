@@ -3,6 +3,7 @@
 import { interval, intervalToDuration } from 'date-fns'
 import { motion } from 'motion/react'
 import Link from 'next/link'
+import posthog from 'posthog-js'
 import { Fragment } from 'react'
 import { MaybeLink } from '@/components/maybe-link'
 import { WidthContainer } from '@/components/width-container'
@@ -61,8 +62,14 @@ export default function Home() {
               {content.connect.map(({ key, icon: Icon, href }, index) => (
                 <Fragment key={key}>
                   <MaybeLink
-                    className="flex items-center gap-4 group hover-expand-3 relative"
+                    className="flex items-center gap-4 group hit-area-3 relative"
                     href={href}
+                    onClick={() => {
+                      posthog.capture('social_link_clicked', {
+                        link_key: key,
+                        link_href: href,
+                      })
+                    }}
                   >
                     {Icon ? (
                       <div className="flex items-center h-7">
@@ -87,6 +94,9 @@ export default function Home() {
             <MaybeLink
               href="https://cal.com/bazza/30min"
               className="group relative text-sand-12 font-medium"
+              onClick={() => {
+                posthog.capture('book_a_call_clicked')
+              }}
             >
               Book a call.
               <div className="h-[2px] w-0 absolute bottom-0 bg-text-quaternary rounded-full group-hover:w-full" />
@@ -230,7 +240,7 @@ export default function Home() {
           <div className="flex gap-4">
             <SectionTitle>Projects</SectionTitle>
             <Link
-              className="text-sm font-bold tracking-normal! text-blue-11 group-hover/section:opacity-100 group-hover/section:blur-none hover-expand hover:text-blue-12 transition-all ease-out inline-flex items-center gap-2 group/link"
+              className="text-sm font-bold tracking-normal! text-blue-11 group-hover/section:opacity-100 group-hover/section:blur-none hit-area hover:text-blue-12 transition-all ease-out inline-flex items-center gap-2 group/link"
               href="/projects"
             >
               Browse{' '}
@@ -246,7 +256,13 @@ export default function Home() {
                   <MaybeLink
                     href={href}
                     key={title}
-                    className="flex-col sm:flex-row flex sm:items-center gap-x-6 gap-y-1 w-full group hover-expand-1 **:!cursor-pointer"
+                    className="flex-col sm:flex-row flex sm:items-center gap-x-6 gap-y-1 w-full group hit-area-1 **:!cursor-pointer"
+                    onClick={() => {
+                      posthog.capture('project_link_clicked', {
+                        project_title: title,
+                        project_href: href,
+                      })
+                    }}
                   >
                     {/* <span className="font-bold">{year}</span> */}
                     <div className="inline-flex items-center gap-2 relative">
@@ -270,7 +286,7 @@ export default function Home() {
               ({ year, institution, description, href }) => (
                 <MaybeLink
                   key={`${year}-${institution}-${description}`}
-                  className="hover-expand-1 inline-flex items-center gap-6 group w-full"
+                  className="hit-area-1 inline-flex items-center gap-6 group w-full"
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"

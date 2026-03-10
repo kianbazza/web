@@ -1,0 +1,294 @@
+---
+title: Expand your hit areas
+published_date: 2026-03-09
+---
+
+import { Signature } from '@/components/signature'
+import { LinearMotionPlayer } from '@/app/craft/2025/video-player/examples/linear-motion'
+import { Button } from '@/app/craft/2026/hit-area/button'
+import { CheckboxColumnDemo } from '@/app/craft/2026/hit-area/checkbox-column-demo'
+import { SidebarHitAreaDemo } from '@/app/craft/2026/hit-area/sidebar-hit-area-demo'
+import { Switch } from '@/components/switch'
+import { HitAreaPlayground } from '@/app/craft/2026/hit-area/hit-area-playground'
+
+Introducing `hit-area` — a collection of Tailwind CSS utility classes for expanding the hit area of interactive elements across your codebase.
+
+<FrameRoot>
+  <FrameDisplay className='gap-y-8 relative py-24'>
+    <div className='absolute left-4 top-4 flex items-center gap-2 **:!tracking-normal **:!font-sans peer'>
+      <Switch defaultChecked={true} />
+      <span className='text-xs text-sand-9 font-medium'>Show hit area</span>
+    </div>
+    <Button className='hit-area-6 group w-[125px] flex items-center justify-center peer-has-[[data-slot="switch"][data-checked]]:hit-area-debug'>
+      <span className='group-hover:hidden font-mono'>hit-area-6</span>
+      <span className='not-group-hover:hidden group-active:hidden'>Hovered</span>
+      <span className='not-group-active:hidden'>Pressed</span>
+    </Button>
+  </FrameDisplay>
+  <FrameCode>
+    ```tsx
+    <button className="hit-area-6" />
+    ```
+  </FrameCode>
+</FrameRoot>
+
+
+By now, I'm sure some of you have heard of interaction dead zones. You may have even seen a post showing how to address them using a CSS pseudo-element, absolutely positioned on the interactive element to expand its hit area, all without impacting its layout.
+
+But what I personally have yet to see is how to practically implement this across a real codebase.
+
+That's what `hit-area` aims to solve.
+
+I've been using this across my own codebases for over two years now, but I've never shared it publicly... until today.
+
+Check out the launch video below, or dive into the installation and usage docs.
+
+<LinearMotionPlayer src="https://cdn.bazza.dev/craft/2026/hit-area/hit-area-launch-video--final.mp4" />
+
+
+
+
+## Installation
+
+You can install the `hit-area` utilities using our [shadcn registry](https://ui.shadcn.com/docs/registry):
+
+```npm
+npx shadcn@latest add https://bazza.dev/r/hit-area
+```
+
+They'll get added to your `globals.css` file, or whatever file you've configured in your `components.json` file for the `tailwind.css` property.
+
+
+## Usage
+
+### Basic
+
+Use the `hit-area-*` utility to extend the hit area uniformly on all sides.
+
+<FrameRoot>
+  <FrameDisplay className='gap-y-8 relative'>
+    <div className='absolute left-4 top-4 flex items-center gap-2 **:!tracking-normal **:!font-sans peer'>
+      <Switch defaultChecked={true} />
+      <span className='text-xs text-sand-9 font-medium'>Show hit area</span>
+    </div>
+    <Button className='font-mono hit-area-6 group w-[125px] flex items-center justify-center peer-has-[[data-slot="switch"][data-checked]]:hit-area-debug'>
+      <span className='group-hover:hidden group-active:hidden'>hit-area-6</span>
+      <span className='not-group-hover:hidden group-active:hidden'>Hovered</span>
+      <span className='not-group-active:hidden'>Pressed</span>
+    </Button>
+  </FrameDisplay>
+  <FrameCode>
+    ```tsx
+    <button className="hit-area-6" />
+    ```
+  </FrameCode>
+</FrameRoot>
+
+### Individual sides
+
+To target specific sides, use `hit-area-l-*`, `hit-area-r-*`, `hit-area-t-*`, and `hit-area-b-*` utilities.
+
+<FrameRoot>
+  <FrameDisplay className='p-16 gap-y-8 relative group/frame'>
+    <div className='absolute left-4 top-4 flex items-center gap-2 **:!tracking-normal **:!font-sans peer'>
+      <Switch defaultChecked={true} />
+      <span className='text-xs text-sand-9 font-medium'>Show hit area</span>
+    </div>
+    <div className='grid grid-cols-2 gap-8 items-center **:font-mono'>
+      <Button className='hit-area-l-4 group w-[150px] flex items-center justify-center group-has-[[data-slot="switch"][data-checked]]/frame:hit-area-debug'>
+        <span className='group-hover:hidden group-active:hidden'>hit-area-l-4</span>
+        <span className='not-group-hover:hidden group-active:hidden'>Hovered</span>
+        <span className='not-group-active:hidden'>Pressed</span>
+      </Button>
+      <Button className='hit-area-t-8 group w-[150px] flex items-center justify-center group-has-[[data-slot="switch"][data-checked]]/frame:hit-area-debug'>
+        <span className='group-hover:hidden group-active:hidden'>hit-area-t-8</span>
+        <span className='not-group-hover:hidden group-active:hidden'>Hovered</span>
+        <span className='not-group-active:hidden'>Pressed</span>
+      </Button>
+      <Button className='hit-area-b-6 group w-[150px] flex items-center justify-center group-has-[[data-slot="switch"][data-checked]]/frame:hit-area-debug'>
+        <span className='group-hover:hidden group-active:hidden'>hit-area-b-6</span>
+        <span className='not-group-hover:hidden group-active:hidden'>Hovered</span>
+        <span className='not-group-active:hidden'>Pressed</span>
+      </Button>
+      <Button className='hit-area-r-2 group w-[150px] flex items-center justify-center group-has-[[data-slot="switch"][data-checked]]/frame:hit-area-debug'>
+        <span className='group-hover:hidden group-active:hidden'>hit-area-r-2</span>
+        <span className='not-group-hover:hidden group-active:hidden'>Hovered</span>
+        <span className='not-group-active:hidden'>Pressed</span>
+      </Button>
+    </div>
+  </FrameDisplay>
+  <FrameCode>
+    ```tsx
+    <button className="hit-area-l-4" />
+    <button className="hit-area-t-8" />
+    <button className="hit-area-b-6" />
+    <button className="hit-area-r-2" />
+    ```
+  </FrameCode>
+</FrameRoot>
+
+### Horizontal/vertical
+
+Use the axis shorthands `hit-area-x-*` and `hit-area-y-*` to extend the horizontal and vertical hit areas, respectively:
+
+<FrameRoot>
+  <FrameDisplay className='p-16 gap-y-8 relative group/frame **:font-mono'>
+    <div className='absolute left-4 top-4 flex items-center gap-2 **:!tracking-normal **:!font-sans peer'>
+      <Switch defaultChecked={true} />
+      <span className='text-xs text-sand-9 font-medium'>Show hit area</span>
+    </div>
+    <div className='flex gap-x-12 items-center'>
+      <Button className='hit-area-x-4 group w-[150px] flex items-center justify-center group-has-[[data-slot="switch"][data-checked]]/frame:hit-area-debug'>
+        <span className='group-hover:hidden group-active:hidden'>hit-area-x-4</span>
+        <span className='not-group-hover:hidden group-active:hidden'>Hovered</span>
+        <span className='not-group-active:hidden'>Pressed</span>
+      </Button>
+      <Button className='hit-area-y-6 group w-[150px] flex items-center justify-center group-has-[[data-slot="switch"][data-checked]]/frame:hit-area-debug'>
+        <span className='group-hover:hidden group-active:hidden'>hit-area-y-6</span>
+        <span className='not-group-hover:hidden group-active:hidden'>Hovered</span>
+        <span className='not-group-active:hidden'>Pressed</span>
+      </Button>
+    </div>
+  </FrameDisplay>
+  <FrameCode>
+    ```tsx
+    <button className="hit-area-x-4" />
+    <button className="hit-area-y-6" />
+    ```
+  </FrameCode>
+</FrameRoot>
+
+### Combinations
+
+You can combine all the above utility classes together—they'll stack and merge as you'd expect.
+
+<FrameRoot>
+  <FrameDisplay className='p-16 gap-y-8 rounded-b-[8px] relative group/frame **:font-mono'>
+    <div className='absolute left-4 top-4 flex items-center gap-2 **:!tracking-normal **:!font-sans peer'>
+      <Switch defaultChecked={true} />
+      <span className='text-xs text-sand-9 font-medium'>Show hit area</span>
+    </div>
+    <div className='flex flex-col gap-y-24 items-center'>
+      <Button className='hit-area-l-16 hit-area-r-4 hit-area-t-2 hit-area-b-6 group h-full py-2 w-[150px] flex flex-col items-center justify-center group-has-[[data-slot="switch"][data-checked]]/frame:hit-area-debug'>
+        <div className='flex flex-col items-center justify-center group-hover:invisible group-active:invisible'>
+          <span>hit-area-l-16</span>
+          <span>hit-area-r-4</span>
+          <span>hit-area-b-6</span>
+          <span>hit-area-t-2</span>
+        </div>
+        <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 not-group-hover:hidden group-active:hidden'>Hovered</span>
+        <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 not-group-active:hidden'>Pressed</span>
+      </Button>
+      <Button className='hit-area-x-4 hit-area-y-6 group h-full py-2 w-[150px] flex flex-col items-center justify-center group-has-[[data-slot="switch"][data-checked]]/frame:hit-area-debug'>
+      <div className='flex flex-col items-center justify-center group-hover:invisible group-active:invisible'>
+
+        <span>hit-area-x-4</span>
+        <span>hit-area-y-6</span>
+        </div>
+        <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 not-group-hover:hidden group-active:hidden'>Hovered</span>
+        <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 not-group-active:hidden'>Pressed</span>
+
+      </Button>
+      <Button className='hit-area-x-8 hit-area-b-2 group h-full py-2 w-[150px] flex flex-col items-center justify-center group-has-[[data-slot="switch"][data-checked]]/frame:hit-area-debug'>
+      <div className='flex flex-col items-center justify-center group-hover:invisible group-active:invisible'>
+
+        <span>hit-area-x-8</span>
+        <span>hit-area-b-2</span>
+        </div>
+        <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 not-group-hover:hidden group-active:hidden'>Hovered</span>
+        <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 not-group-active:hidden'>Pressed</span>
+
+      </Button>
+    </div>
+  </FrameDisplay>
+</FrameRoot>
+
+### Custom values
+
+Use the `[<value>]` syntax to use fully custom values, breaking out of the Tailwind CSS spacing system:
+
+<FrameRoot>
+  <FrameDisplay className='p-16 gap-y-8 relative group/frame **:font-mono'>
+    <div className='absolute left-4 top-4 flex items-center gap-2 **:!tracking-normal **:!font-sans peer'>
+      <Switch defaultChecked={true} />
+      <span className='text-xs text-sand-9 font-medium'>Show hit area</span>
+    </div>
+    <div className='flex flex-col gap-y-12 justify-center items-center'>
+      <Button className='hit-area-x-[21px] group w-[175px] flex items-center justify-center group-has-[[data-slot="switch"][data-checked]]/frame:hit-area-debug'>
+        <span className='group-hover:hidden group-active:hidden'>hit-area-[21px]</span>
+        <span className='not-group-hover:hidden group-active:hidden'>Hovered</span>
+        <span className='not-group-active:hidden'>Pressed</span>
+      </Button>
+      <Button className='hit-area-l-[3rem] group w-[175px] flex items-center justify-center group-has-[[data-slot="switch"][data-checked]]/frame:hit-area-debug'>
+        <span className='group-hover:hidden group-active:hidden'>hit-area-l-[3rem]</span>
+        <span className='not-group-hover:hidden group-active:hidden'>Hovered</span>
+        <span className='not-group-active:hidden'>Pressed</span>
+      </Button>
+      <Button className='hit-area-b-[calc(100%+1rem)] group w-[275px] flex items-center justify-center group-has-[[data-slot="switch"][data-checked]]/frame:hit-area-debug'>
+        <span className='group-hover:hidden group-active:hidden'>hit-area-b-[calc(100%+1rem)]</span>
+        <span className='not-group-hover:hidden group-active:hidden'>Hovered</span>
+        <span className='not-group-active:hidden'>Pressed</span>
+      </Button>
+    </div>
+  </FrameDisplay>
+  <FrameCode>
+    ```tsx
+    <button className="hit-area-[21px]" />
+    <button className="hit-area-l-[3rem]" />
+    <button className="hit-area-b-[calc(3vw-8px)]" />
+    ```
+  </FrameCode>
+</FrameRoot>
+
+### Debugging
+
+To visualize the hit area, use the `hit-area-debug` utility. It's actually what we've been using in all the previous examples!
+
+<FrameRoot>
+  <FrameDisplay className='gap-y-8'>
+    <Button className='font-mono hit-area-6 hit-area-debug group w-[125px] flex items-center justify-center'>
+      <span className='group-hover:hidden group-active:hidden'>hit-area-6</span>
+      <span className='not-group-hover:hidden group-active:hidden'>Hovered</span>
+      <span className='not-group-active:hidden'>Pressed</span>
+    </Button>
+  </FrameDisplay>
+  <FrameCode>
+    ```tsx
+    <button className="hit-area-6 hit-area-debug" />
+    ```
+  </FrameCode>
+</FrameRoot>
+
+
+
+## Examples
+
+### Checkboxes
+
+Here's a practical example of using this `hit-area` utility class to expand the hit area for an interactive element: **checkboxes in a table**.
+
+The checkbox is usually small, while the cell and/or row has additional padding to enhance content readability. This produces a sub-optimal user experience when quickly using the pointer to select rows.
+
+We can expand the hit area of the checkbox so you can click anywhere on its cell to toggle selection.
+
+<Frame className='h-fit py-8 px-10'>
+  <CheckboxColumnDemo />
+</Frame>
+
+### Sidebar
+
+Sidebars with `gap-y-px` have the same problem, especially when the rows are visually separated but meant to feel continuous.
+
+<Frame className='h-fit py-8 px-10'>
+  <SidebarHitAreaDemo />
+</Frame>
+
+
+
+---
+
+That's it. Hope you enjoyed.
+
+<Signature className="max-w-[300px] sm:max-w-[300px] pt-4 stroke-sand-12" isScrollTriggered />
+
+<div className='h-32 sm:h-64' />

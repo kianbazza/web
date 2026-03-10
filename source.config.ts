@@ -19,6 +19,11 @@ export const craft = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
+    remarkNpmOptions: {
+      persist: {
+        id: 'package-manager',
+      },
+    },
     rehypeCodeOptions: {
       themes: {
         light: oscuraSunrise,

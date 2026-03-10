@@ -4,6 +4,7 @@
 
 import { useAtom } from 'jotai'
 import { AnimatePresence, motion } from 'motion/react'
+import posthog from 'posthog-js'
 import { useEffect, useMemo, useRef } from 'react'
 import { hoveredProjectRowItem } from '@/lib/atoms'
 import {
@@ -69,6 +70,12 @@ export function ProjectListItem({
           title,
           url,
           videoSrc,
+        })
+        posthog.capture('projects_page_project_hovered', {
+          project_title: title,
+          project_url: url,
+          project_year: year,
+          project_status: status,
         })
       }}
     >

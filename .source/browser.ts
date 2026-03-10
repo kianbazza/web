@@ -7,6 +7,6 @@ const create = browser<typeof Config, import("fumadocs-mdx/runtime/types").Inter
   }
 }>();
 const browserCollections = {
-  craft: create.doc("craft", {"cursor-origin.mdx": () => import("../content/craft/cursor-origin.mdx?collection=craft"), "signature.mdx": () => import("../content/craft/signature.mdx?collection=craft"), "video-player.mdx": () => import("../content/craft/video-player.mdx?collection=craft"), }),
+  craft: create.doc("craft", {"cursor-origin.mdx": () => import("../content/craft/cursor-origin.mdx?collection=craft"), "hit-area.mdx": () => import("../content/craft/hit-area.mdx?collection=craft"), "logo-grid.mdx": () => import("../content/craft/logo-grid.mdx?collection=craft"), "signature.mdx": () => import("../content/craft/signature.mdx?collection=craft"), "video-player.mdx": () => import("../content/craft/video-player.mdx?collection=craft"), }),
 };
 export default browserCollections;
