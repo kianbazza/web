@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { PostHog } from 'posthog-node'
+import { env } from '@/lib/env'
 
 export async function GET(
   _request: Request,
@@ -19,8 +20,8 @@ export async function GET(
 
   const registryItem = JSON.parse(data)
 
-  const posthog = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-    host: 'https://us.i.posthog.com',
+  const posthog = new PostHog(env.NEXT_PUBLIC_POSTHOG_KEY, {
+    host: env.NEXT_PUBLIC_POSTHOG_HOST,
   })
 
   posthog.capture({
