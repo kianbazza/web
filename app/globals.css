@@ -159,10 +159,10 @@
   &::before {
     content: "";
     position: absolute;
-    top: calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px));
-    right: calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px));
-    bottom: calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px));
-    left: calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px));
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
     pointer-events: inherit;
     @apply border border-dashed border-blue-500;
     @apply bg-blue-500/10;
@@ -180,10 +180,10 @@
   &::before {
     content: "";
     position: absolute;
-    top: calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px));
-    right: calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px));
-    bottom: calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px));
-    left: calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px));
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
     pointer-events: inherit;
   }
 }
@@ -206,10 +206,10 @@
   &::before {
     content: "";
     position: absolute;
-    top: calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px));
-    right: calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px));
-    bottom: calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px));
-    left: calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px));
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
     pointer-events: inherit;
   }
 }
@@ -223,10 +223,10 @@
   &::before {
     content: "";
     position: absolute;
-    top: calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px));
-    right: calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px));
-    bottom: calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px));
-    left: calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px));
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
     pointer-events: inherit;
   }
 }
@@ -240,10 +240,10 @@
   &::before {
     content: "";
     position: absolute;
-    top: calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px));
-    right: calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px));
-    bottom: calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px));
-    left: calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px));
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
     pointer-events: inherit;
   }
 }
@@ -257,10 +257,10 @@
   &::before {
     content: "";
     position: absolute;
-    top: calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px));
-    right: calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px));
-    bottom: calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px));
-    left: calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px));
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
     pointer-events: inherit;
   }
 }
@@ -274,10 +274,10 @@
   &::before {
     content: "";
     position: absolute;
-    top: calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px));
-    right: calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px));
-    bottom: calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px));
-    left: calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px));
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
     pointer-events: inherit;
   }
 }
@@ -294,10 +294,10 @@
   &::before {
     content: "";
     position: absolute;
-    top: calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px));
-    right: calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px));
-    bottom: calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px));
-    left: calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px));
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
     pointer-events: inherit;
   }
 }
@@ -314,95 +314,12 @@
   &::before {
     content: "";
     position: absolute;
-    top: calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px));
-    right: calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px));
-    bottom: calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px));
-    left: calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px));
+    top: var(--hit-area-t, 0px);
+    right: var(--hit-area-r, 0px);
+    bottom: var(--hit-area-b, 0px);
+    left: var(--hit-area-l, 0px);
     pointer-events: inherit;
   }
-}
-
-@utility hit-area-bleed {
-  --hit-area-t-bleed: -1px;
-  --hit-area-r-bleed: -1px;
-  --hit-area-b-bleed: -1px;
-  --hit-area-l-bleed: -1px;
-}
-
-@utility hit-area-bleed-* {
-  --hit-area-t-bleed: --spacing(--value(number) * -1);
-  --hit-area-t-bleed: calc(--value([*]) * -1);
-
-  --hit-area-r-bleed: --spacing(--value(number) * -1);
-  --hit-area-r-bleed: calc(--value([*]) * -1);
-
-  --hit-area-b-bleed: --spacing(--value(number) * -1);
-  --hit-area-b-bleed: calc(--value([*]) * -1);
-
-  --hit-area-l-bleed: --spacing(--value(number) * -1);
-  --hit-area-l-bleed: calc(--value([*]) * -1);
-}
-
-@utility hit-area-l-bleed {
-  --hit-area-l-bleed: -1px;
-}
-
-@utility hit-area-l-bleed-* {
-  --hit-area-l-bleed: --spacing(--value(number) * -1);
-  --hit-area-l-bleed: calc(--value([*]) * -1);
-}
-
-@utility hit-area-r-bleed {
-  --hit-area-r-bleed: -1px;
-}
-
-@utility hit-area-r-bleed-* {
-  --hit-area-r-bleed: --spacing(--value(number) * -1);
-  --hit-area-r-bleed: calc(--value([*]) * -1);
-}
-
-@utility hit-area-t-bleed {
-  --hit-area-t-bleed: -1px;
-}
-
-@utility hit-area-t-bleed-* {
-  --hit-area-t-bleed: --spacing(--value(number) * -1);
-  --hit-area-t-bleed: calc(--value([*]) * -1);
-}
-
-@utility hit-area-b-bleed {
-  --hit-area-b-bleed: -1px;
-}
-
-@utility hit-area-b-bleed-* {
-  --hit-area-b-bleed: --spacing(--value(number) * -1);
-  --hit-area-b-bleed: calc(--value([*]) * -1);
-}
-
-@utility hit-area-x-bleed {
-  --hit-area-l-bleed: -1px;
-  --hit-area-r-bleed: -1px;
-}
-
-@utility hit-area-x-bleed-* {
-  --hit-area-l-bleed: --spacing(--value(number) * -1);
-  --hit-area-l-bleed: calc(--value([*]) * -1);
-
-  --hit-area-r-bleed: --spacing(--value(number) * -1);
-  --hit-area-r-bleed: calc(--value([*]) * -1);
-}
-
-@utility hit-area-y-bleed {
-  --hit-area-t-bleed: -1px;
-  --hit-area-b-bleed: -1px;
-}
-
-@utility hit-area-y-bleed-* {
-  --hit-area-t-bleed: --spacing(--value(number) * -1);
-  --hit-area-t-bleed: calc(--value([*]) * -1);
-
-  --hit-area-b-bleed: --spacing(--value(number) * -1);
-  --hit-area-b-bleed: calc(--value([*]) * -1);
 }
 
 @layer utilities {

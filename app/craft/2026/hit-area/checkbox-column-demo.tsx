@@ -89,7 +89,7 @@ function SelectionTable({
 }: SelectionTableProps) {
   const checkboxClassName = cn(
     'z-10 hit-area-0',
-    useHitArea && 'hit-area-x-3 hit-area-y-4.25 hit-area-y-bleed',
+    useHitArea && 'hit-area-x-3 hit-area-y-4.25',
     debug && 'hit-area-debug',
   )
 

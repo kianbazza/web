@@ -10,10 +10,10 @@
       "&::before": {
         "content": "\"\"",
         "position": "absolute",
-        "top": "calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px))",
-        "right": "calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px))",
-        "bottom": "calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px))",
-        "left": "calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px))",
+        "top": "var(--hit-area-t, 0px)",
+        "right": "var(--hit-area-r, 0px)",
+        "bottom": "var(--hit-area-b, 0px)",
+        "left": "var(--hit-area-l, 0px)",
         "pointer-events": "inherit",
         "@apply border border-dashed border-blue-500": {},
         "@apply bg-blue-500/10": {}
@@ -28,10 +28,10 @@
       "&::before": {
         "content": "\"\"",
         "position": "absolute",
-        "top": "calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px))",
-        "right": "calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px))",
-        "bottom": "calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px))",
-        "left": "calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px))",
+        "top": "var(--hit-area-t, 0px)",
+        "right": "var(--hit-area-r, 0px)",
+        "bottom": "var(--hit-area-b, 0px)",
+        "left": "var(--hit-area-l, 0px)",
         "pointer-events": "inherit"
       }
     },
@@ -44,10 +44,10 @@
       "&::before": {
         "content": "\"\"",
         "position": "absolute",
-        "top": "calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px))",
-        "right": "calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px))",
-        "bottom": "calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px))",
-        "left": "calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px))",
+        "top": "var(--hit-area-t, 0px)",
+        "right": "var(--hit-area-r, 0px)",
+        "bottom": "var(--hit-area-b, 0px)",
+        "left": "var(--hit-area-l, 0px)",
         "pointer-events": "inherit"
       }
     },
@@ -57,10 +57,10 @@
       "&::before": {
         "content": "\"\"",
         "position": "absolute",
-        "top": "calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px))",
-        "right": "calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px))",
-        "bottom": "calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px))",
-        "left": "calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px))",
+        "top": "var(--hit-area-t, 0px)",
+        "right": "var(--hit-area-r, 0px)",
+        "bottom": "var(--hit-area-b, 0px)",
+        "left": "var(--hit-area-l, 0px)",
         "pointer-events": "inherit"
       }
     },
@@ -70,10 +70,10 @@
       "&::before": {
         "content": "\"\"",
         "position": "absolute",
-        "top": "calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px))",
-        "right": "calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px))",
-        "bottom": "calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px))",
-        "left": "calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px))",
+        "top": "var(--hit-area-t, 0px)",
+        "right": "var(--hit-area-r, 0px)",
+        "bottom": "var(--hit-area-b, 0px)",
+        "left": "var(--hit-area-l, 0px)",
         "pointer-events": "inherit"
       }
     },
@@ -83,10 +83,10 @@
       "&::before": {
         "content": "\"\"",
         "position": "absolute",
-        "top": "calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px))",
-        "right": "calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px))",
-        "bottom": "calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px))",
-        "left": "calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px))",
+        "top": "var(--hit-area-t, 0px)",
+        "right": "var(--hit-area-r, 0px)",
+        "bottom": "var(--hit-area-b, 0px)",
+        "left": "var(--hit-area-l, 0px)",
         "pointer-events": "inherit"
       }
     },
@@ -96,10 +96,10 @@
       "&::before": {
         "content": "\"\"",
         "position": "absolute",
-        "top": "calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px))",
-        "right": "calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px))",
-        "bottom": "calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px))",
-        "left": "calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px))",
+        "top": "var(--hit-area-t, 0px)",
+        "right": "var(--hit-area-r, 0px)",
+        "bottom": "var(--hit-area-b, 0px)",
+        "left": "var(--hit-area-l, 0px)",
         "pointer-events": "inherit"
       }
     },
@@ -110,10 +110,10 @@
       "&::before": {
         "content": "\"\"",
         "position": "absolute",
-        "top": "calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px))",
-        "right": "calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px))",
-        "bottom": "calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px))",
-        "left": "calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px))",
+        "top": "var(--hit-area-t, 0px)",
+        "right": "var(--hit-area-r, 0px)",
+        "bottom": "var(--hit-area-b, 0px)",
+        "left": "var(--hit-area-l, 0px)",
         "pointer-events": "inherit"
       }
     },
@@ -124,19 +124,14 @@
       "&::before": {
         "content": "\"\"",
         "position": "absolute",
-        "top": "calc(var(--hit-area-t, 0px) + var(--hit-area-t-bleed, 0px))",
-        "right": "calc(var(--hit-area-r, 0px) + var(--hit-area-r-bleed, 0px))",
-        "bottom": "calc(var(--hit-area-b, 0px) + var(--hit-area-b-bleed, 0px))",
-        "left": "calc(var(--hit-area-l, 0px) + var(--hit-area-l-bleed, 0px))",
+        "top": "var(--hit-area-t, 0px)",
+        "right": "var(--hit-area-r, 0px)",
+        "bottom": "var(--hit-area-b, 0px)",
+        "left": "var(--hit-area-l, 0px)",
         "pointer-events": "inherit"
       }
     }
   },
-  "categories": [
-    "accessibility",
-    "tailwind",
-    "utilities",
-    "hit-area"
-  ],
+  "categories": ["accessibility", "tailwind", "utilities", "hit-area"],
   "type": "registry:component"
 }
