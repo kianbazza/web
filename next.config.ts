@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
       destination: 'https://cal.com/bazza',
       permanent: false,
     },
+    {
+      source: '/hit-area',
+      destination: '/craft/2026/hit-area',
+      permanent: false,
+    },
   ],
   rewrites: async () => [
     {
