@@ -5,12 +5,11 @@
   "items": [
     {
       "name": "hit-area",
-      "type": "registry:item",
-      "title": "Hit Area",
+      "type": "registry:component",
+      "title": "Hit area",
       "description": "Tailwind CSS v4 utilities for expanding interactive hit areas without changing layout.",
       "author": "Kian Bazarjani <https://bazza.dev>",
-      "categories": ["accessibility", "tailwind", "utilities"],
-      "docs": "Tailwind CSS v4 only. Adds the hit-area, directional, axis, and hit-area-debug utilities to your global stylesheet.",
+      "categories": ["accessibility", "tailwind", "utilities", "hit-area"],
       "css": {
         "@utility hit-area-debug": {
           "position": "relative",

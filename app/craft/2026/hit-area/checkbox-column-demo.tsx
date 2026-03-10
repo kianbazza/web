@@ -10,26 +10,62 @@ const rows = [
   {
     id: 'shadcn',
     name: 'shadcn',
-    email: 'shadcn@example.com',
-    team: 'shadcn/ui',
+    email: 'shadcn@vercel.com',
+    team: 'Vercel',
   },
   {
     id: 'kian',
     name: 'Kian Bazza',
-    email: 'kian.bazza@example.com',
-    team: 'KianBazza',
+    email: 'kian@bazza.dev',
+    team: 'Bazza Labs',
   },
   {
     id: 'guillermo',
     name: 'Guillermo Rauch',
-    email: 'guillermo.rauch@example.com',
+    email: 'guillermo@vercel.com',
     team: 'Vercel',
   },
   {
     id: 'theo',
     name: 'Theo Browne',
-    email: 'theo.browne@example.com',
-    team: 't3.gg',
+    email: 'theo@t3.gg',
+    team: 'T3',
+  },
+  {
+    id: 'lee',
+    name: 'Lee Rob',
+    email: 'lee@cursor.com',
+    team: 'Cursor',
+  },
+  {
+    id: 'jared',
+    name: 'Jared Palmer',
+    email: 'jared@vercel.com',
+    team: 'Vercel',
+  },
+  {
+    id: 'tim',
+    name: 'Tim Neutkens',
+    email: 'tim@vercel.com',
+    team: 'Vercel',
+  },
+  {
+    id: 'sam',
+    name: 'Sam Selikoff',
+    email: 'sam@buildui.com',
+    team: 'Build UI',
+  },
+  {
+    id: 'dan',
+    name: 'Dan Abramov',
+    email: 'dan@bluesky.xyz',
+    team: 'Bluesky',
+  },
+  {
+    id: 'rauno',
+    name: 'Rauno Freiberg',
+    email: 'rauno@vercel.com',
+    team: 'Vercel',
   },
 ] as const
 
@@ -59,8 +95,8 @@ function SelectionTable({
 
   return (
     <div className="flex w-full min-w-0 flex-col items-center">
-      <div className="w-full min-w-0 overflow-hidden mask-r-from-0% mask-r-to-95%">
-        <div className="w-full overflow-hidden">
+      <div className="w-full min-w-0 overflow-hidden mask-r-from-0% mask-r-to-90%">
+        <div className="w-full overflow-hidden border rounded-xl">
           <table className="min-w-max border-collapse font-sans text-sm">
             <tbody>
               {rows.map((row) => {

@@ -187,7 +187,10 @@ export function CodeBlockTabsList({
     <div className="px-2 pt-1 pb-2" {...props}>
       <div className="flex items-center justify-between gap-3">
         <Tabs.List
-          className={cn('flex flex-wrap items-center gap-1', className)}
+          className={cn(
+            'flex flex-wrap items-center gap-1 *:hit-area-x-0.5',
+            className,
+          )}
         >
           {children}
         </Tabs.List>
@@ -196,21 +199,15 @@ export function CodeBlockTabsList({
           onClick={onCopy}
           disabled={!activeValue}
           className={cn(
-            'inline-flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm leading-none text-sand-11 transition-colors',
+            'inline-flex shrink-0 items-center gap-1.5 rounded-md justify-center p-1.5 text-sm leading-none text-sand-11 transition-colors',
             'hover:bg-sand-3 hover:text-sand-12',
             'disabled:cursor-not-allowed disabled:opacity-50',
           )}
         >
           {copied ? (
-            <>
-              <CheckIcon className="size-3.5" />
-              Copied
-            </>
+            <CheckIcon className="size-3.5" />
           ) : (
-            <>
-              <CopyIcon className="size-3.5" />
-              Copy
-            </>
+            <CopyIcon className="size-3.5" />
           )}
         </button>
       </div>
@@ -233,9 +230,9 @@ export function CodeBlockTabsTrigger({
     <Tabs.Tab
       value={value}
       className={cn(
-        'cursor-pointer rounded-md px-2.5 py-1.5 text-sm leading-none text-sand-11',
+        'cursor-pointer rounded-[8px] px-2.5 py-1.5 text-sm leading-none text-sand-10',
         'hover:bg-sand-3 hover:text-sand-12',
-        'data-[active]:bg-white data-[active]:text-sand-12 data-[active]:shadow-xs',
+        'data-[active]:bg-sand-4 data-[active]:text-sand-12 data-[active]:shadow-xs',
         'dark:data-[active]:bg-sand-2',
         className,
       )}

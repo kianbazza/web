@@ -31,14 +31,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Toolbar />
-          <BreakpointVisualizer />
+          {/*<Toolbar />*/}
+          {/*<BreakpointVisualizer />*/}
           <NextProvider>
-            <ContainerProvider>
-              <main className="flex flex-col h-full sm:flex-1 px-4 w-full pt-4 pb-32">
-                {children}
-              </main>
-            </ContainerProvider>
+            {/*<ContainerProvider>*/}
+            <main className="flex flex-col h-full sm:flex-1 px-4 w-full pt-4 pb-32">
+              {children}
+            </main>
+            {/*</ContainerProvider>*/}
           </NextProvider>
         </ThemeProvider>
       </body>

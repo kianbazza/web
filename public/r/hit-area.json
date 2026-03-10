@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "hit-area",
-  "title": "Hit Area",
+  "title": "Hit area",
   "author": "Kian Bazarjani <https://bazza.dev>",
   "description": "Tailwind CSS v4 utilities for expanding interactive hit areas without changing layout.",
   "css": {
@@ -132,11 +132,11 @@
       }
     }
   },
-  "docs": "Tailwind CSS v4 only. Adds the hit-area, directional, axis, and hit-area-debug utilities to your global stylesheet.",
   "categories": [
     "accessibility",
     "tailwind",
-    "utilities"
+    "utilities",
+    "hit-area"
   ],
-  "type": "registry:item"
+  "type": "registry:component"
 }
