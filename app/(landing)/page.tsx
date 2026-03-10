@@ -3,6 +3,7 @@
 import { interval, intervalToDuration } from 'date-fns'
 import { motion } from 'motion/react'
 import Link from 'next/link'
+import posthog from 'posthog-js'
 import { Fragment } from 'react'
 import { MaybeLink } from '@/components/maybe-link'
 import { WidthContainer } from '@/components/width-container'
@@ -63,6 +64,12 @@ export default function Home() {
                   <MaybeLink
                     className="flex items-center gap-4 group hit-area-3 relative"
                     href={href}
+                    onClick={() => {
+                      posthog.capture('social_link_clicked', {
+                        link_key: key,
+                        link_href: href,
+                      })
+                    }}
                   >
                     {Icon ? (
                       <div className="flex items-center h-7">
@@ -87,6 +94,9 @@ export default function Home() {
             <MaybeLink
               href="https://cal.com/bazza/30min"
               className="group relative text-sand-12 font-medium"
+              onClick={() => {
+                posthog.capture('book_a_call_clicked')
+              }}
             >
               Book a call.
               <div className="h-[2px] w-0 absolute bottom-0 bg-text-quaternary rounded-full group-hover:w-full" />
@@ -247,6 +257,12 @@ export default function Home() {
                     href={href}
                     key={title}
                     className="flex-col sm:flex-row flex sm:items-center gap-x-6 gap-y-1 w-full group hit-area-1 **:!cursor-pointer"
+                    onClick={() => {
+                      posthog.capture('project_link_clicked', {
+                        project_title: title,
+                        project_href: href,
+                      })
+                    }}
                   >
                     {/* <span className="font-bold">{year}</span> */}
                     <div className="inline-flex items-center gap-2 relative">

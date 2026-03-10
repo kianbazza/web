@@ -7,6 +7,7 @@ import {
   SaveIcon,
   XIcon,
 } from 'lucide-react'
+import posthog from 'posthog-js'
 import { useEffect, useId, useMemo, useState } from 'react'
 import { FadeContainer } from '@/components/fade-container'
 import { H } from '@/components/h'
@@ -222,6 +223,10 @@ export default function Page() {
     try {
       await navigator.clipboard.writeText(output)
       setCopyState('copied')
+      posthog.capture('mono_text_copied', {
+        input_length: input.length,
+        output_length: output.length,
+      })
     } catch {
       setCopyState('failed')
     }
@@ -251,6 +256,10 @@ export default function Page() {
     )
 
     setSaveState('saved')
+    posthog.capture('mono_text_saved', {
+      input_length: input.length,
+      output_length: output.length,
+    })
   }
 
   function handleRemoveSavedItem(id: string) {

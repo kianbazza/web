@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   ...createCraftMetadata({
     title,
     description:
-      'Expand the hit area of an interactive element using a CSS pseudo-element.',
+      'A collection of TailwindCSS utility classes for expanding the hit area of interactive elements.',
   }),
 }
 

@@ -132,11 +132,6 @@
       }
     }
   },
-  "categories": [
-    "accessibility",
-    "tailwind",
-    "utilities",
-    "hit-area"
-  ],
+  "categories": ["accessibility", "tailwind", "utilities", "hit-area"],
   "type": "registry:component"
 }

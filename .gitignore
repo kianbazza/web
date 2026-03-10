@@ -13,3 +13,4 @@ next-env.d.ts
 # Large video files
 public/gta-6-trailer-2.mp4
 public/los-angeles-timelapse.mp4
+.env.local

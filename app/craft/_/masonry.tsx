@@ -1,6 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion, type Variants } from 'motion/react'
+import posthog from 'posthog-js'
 import { useEffect, useState } from 'react'
 import { Masonry } from 'react-plock'
 import { cn } from '@/lib/utils'
@@ -239,6 +240,13 @@ export function CraftMasonry() {
                       'text-sm font-medium tracking-[-0.02em] bg-sand-4 hover:bg-sand-5 text-sand-11 hover:text-sand-12 hover:duration-0 transition-[color] duration-150 ease-out',
                       'pb-2 pt-4 -mt-2 -z-10',
                     )}
+                    onClick={() => {
+                      posthog.capture('craft_item_viewed', {
+                        craft_title: item.title,
+                        craft_date: item.date,
+                        craft_href: item.href,
+                      })
+                    }}
                   >
                     <div className="w-fit flex items-center justify-center gap-2 relative group-active/link:scale-97">
                       <span>View</span>
