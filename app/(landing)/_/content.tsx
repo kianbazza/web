@@ -7,6 +7,7 @@ import {
   FusedIcon,
   NavatticIcon,
   ProfoundIcon,
+  SummationIcon,
   XIcon,
 } from '@/lib/icons'
 
@@ -53,6 +54,7 @@ type Organization = {
   name: string
   icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element
   description?: string
+  hideNowIndicator?: boolean
   roles: Role[]
 }
 
@@ -71,7 +73,14 @@ export const career: Array<Organization> = [
     name: 'Bazza Labs',
     icon: BazzaLabsIcon,
     description: 'Partnering with startups to launch and scale.',
+    hideNowIndicator: true,
     roles: [
+      {
+        title: 'Summation',
+        icon: SummationIcon,
+        startDate: new Date(2026, 2, 6),
+        hideDuration: true,
+      },
       {
         title: 'Fused',
         icon: FusedIcon,
